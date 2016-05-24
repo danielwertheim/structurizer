@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0775822D-C8BE-4525-A379-0087AA37D933}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Structurizer</RootNamespace>
+    <AssemblyName>Structurizer</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EnsureThat, Version=4.0.0.26, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ensure.That.4.0.0\lib\net45\EnsureThat.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="DataTypeCode.cs" />
+    <Compile Include="Extensions\ExpressionExtensions.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="IStructure.cs" />
+    <Compile Include="IStructureBuilder.cs" />
+    <Compile Include="IStructureIndex.cs" />
+    <Compile Include="IStructureIndexesFactory.cs" />
+    <Compile Include="StructurizerException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schemas\Builders\AutoStructureSchemaBuilder.cs" />
+    <Compile Include="Schemas\Builders\IStructureSchemaBuilder.cs" />
+    <Compile Include="Schemas\Configuration\IStructureTypeConfig.cs" />
+    <Compile Include="Schemas\Configuration\IStructureTypeConfigurations.cs" />
+    <Compile Include="Schemas\Configuration\IStructureTypeConfigurator.cs" />
+    <Compile Include="Schemas\Configuration\StructureTypeConfig.cs" />
+    <Compile Include="Schemas\Configuration\StructureTypeConfigurations.cs" />
+    <Compile Include="Schemas\Configuration\StructureTypeConfigurator.cs" />
+    <Compile Include="Schemas\DataTypeConverter.cs" />
+    <Compile Include="Schemas\DynamicGetter.cs" />
+    <Compile Include="Schemas\DynamicPropertyFactory.cs" />
+    <Compile Include="Schemas\DynamicSetter.cs" />
+    <Compile Include="Schemas\IDataTypeConverter.cs" />
+    <Compile Include="Schemas\IStructureProperty.cs" />
+    <Compile Include="Schemas\IStructurePropertyFactory.cs" />
+    <Compile Include="Schemas\IStructureSchema.cs" />
+    <Compile Include="Schemas\IStructureSchemas.cs" />
+    <Compile Include="Schemas\IStructureType.cs" />
+    <Compile Include="Schemas\IStructureTypeFactory.cs" />
+    <Compile Include="Schemas\IStructureTypeReflecter.cs" />
+    <Compile Include="Schemas\MemberAccessors\IIndexAccessor.cs" />
+    <Compile Include="Schemas\MemberAccessors\IMemberAccessor.cs" />
+    <Compile Include="Schemas\MemberAccessors\IndexAccessor.cs" />
+    <Compile Include="Schemas\MemberAccessors\MemberAccessorBase.cs" />
+    <Compile Include="Schemas\PropertyPathBuilder.cs" />
+    <Compile Include="Schemas\StructureProperty.cs" />
+    <Compile Include="Schemas\StructurePropertyFactory.cs" />
+    <Compile Include="Schemas\StructurePropertyFactoryRules.cs" />
+    <Compile Include="Schemas\StructurePropertyInfo.cs" />
+    <Compile Include="Schemas\StructureSchema.cs" />
+    <Compile Include="Schemas\StructureSchemas.cs" />
+    <Compile Include="Schemas\StructureType.cs" />
+    <Compile Include="Schemas\StructureTypeFactory.cs" />
+    <Compile Include="Schemas\StructureTypeReflecter.cs" />
+    <Compile Include="Structure.cs" />
+    <Compile Include="StructureBuilder.cs" />
+    <Compile Include="StructureIndex.cs" />
+    <Compile Include="StructureIndexesFactory.cs" />
+    <Compile Include="StructurizerExceptionMessages.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

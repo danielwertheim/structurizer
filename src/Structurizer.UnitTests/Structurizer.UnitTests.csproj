@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0F834BEF-FD64-4C12-8794-87A00AA5DBE8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Structurizer.UnitTests</RootNamespace>
+    <AssemblyName>Structurizer.UnitTests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Moq, Version=4.5.0.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.5.0\lib\net45\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.2.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.2.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="CustomAssert.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schemas\Builders\AutoSchemaBuilderTests.cs" />
+    <Compile Include="Schemas\Configuration\StructureTypeConfigTests.cs" />
+    <Compile Include="Schemas\Configuration\StructureTypeConfigurationsTests.cs" />
+    <Compile Include="Schemas\Configuration\StructureTypeConfiguratorTests.cs" />
+    <Compile Include="Schemas\DataTypeConverterTests.cs" />
+    <Compile Include="Schemas\IndexAccessorTestFactory.cs" />
+    <Compile Include="Schemas\MemberAccessors\IndexAccessorGetValuesOnDeepGraphTests.cs" />
+    <Compile Include="Schemas\MemberAccessors\IndexAccessorGetValuesOnSubItemTests.cs" />
+    <Compile Include="Schemas\MemberAccessors\IndexAccessorGetValuesTests.cs" />
+    <Compile Include="Schemas\MemberAccessors\IndexAccessorSetValuesOnSubItemTests.cs" />
+    <Compile Include="Schemas\MemberAccessors\IndexAccessorSetValuesTests.cs" />
+    <Compile Include="Schemas\PropertyPathBuilderTests.cs" />
+    <Compile Include="Schemas\StructurePropertyTestFactory.cs" />
+    <Compile Include="Schemas\StructurePropertyTests\StructurePropertyGetGuidValueTests.cs" />
+    <Compile Include="Schemas\StructurePropertyTests\StructurePropertyGetIdentityValueTests.cs" />
+    <Compile Include="Schemas\StructurePropertyTests\StructurePropertyGetPrimitiveValueTests.cs" />
+    <Compile Include="Schemas\StructurePropertyTests\StructurePropertyGetStringValueTests.cs" />
+    <Compile Include="Schemas\StructurePropertyTests\StructurePropertyTests.cs" />
+    <Compile Include="Schemas\StructureSchemasTests.cs" />
+    <Compile Include="Schemas\StructureTypeFactoryTests.cs" />
+    <Compile Include="Schemas\StructureTypeReflecterTests\StructureTypeReflecterComplexIndexablePropertiesTests.cs" />
+    <Compile Include="Schemas\StructureTypeReflecterTests\StructureTypeReflecterEnumerableIndexablePropertiesTests.cs" />
+    <Compile Include="Schemas\StructureTypeReflecterTests\StructureTypeReflecterGetIndexablePropertiesExceptTests.cs" />
+    <Compile Include="Schemas\StructureTypeReflecterTests\StructureTypeReflecterGetSpecificIndexablePropertiesTests.cs" />
+    <Compile Include="Schemas\StructureTypeReflecterTests\StructureTypeReflecterSimpleIndexablePropertiesTests.cs" />
+    <Compile Include="Schemas\StructureTypeReflecterTests\StructureTypeReflecterTestsBase.cs" />
+    <Compile Include="StructureBuilderTests\StructureBuilderBaseTests.cs" />
+    <Compile Include="StructureBuilderTests\StructureBuilderEnumerableTests.cs" />
+    <Compile Include="StructureBuilderTests\StructureBuilderGraphTests.cs" />
+    <Compile Include="StructureBuilderTests\StructureBuilderNullablesTests.cs" />
+    <Compile Include="StructureBuilderTests\StructureBuilderTests.cs" />
+    <Compile Include="StructureIndexesFactoryTests.cs" />
+    <Compile Include="StructureSchemaTestFactory.cs" />
+    <Compile Include="UnitTestBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Structurizer\Structurizer.csproj">
+      <Project>{0775822d-c8be-4525-a379-0087aa37d933}</Project>
+      <Name>Structurizer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Structures\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

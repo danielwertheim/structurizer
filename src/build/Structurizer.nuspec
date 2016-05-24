@@ -13,6 +13,11 @@
         <releaseNotes>https://github.com/danielwertheim/structurizer/blob/master/ReleaseNotes.md</releaseNotes>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <tags>key-value structure object-graph</tags>
+        <dependencies>
+           <group targetFramework="net45">
+             <dependency id="Ensure.That" version="4.0.0" />
+           </group>
+        </dependencies>
     </metadata>
     <files>
         <file src="Structurizer\Structurizer.dll" target="lib\net45" />

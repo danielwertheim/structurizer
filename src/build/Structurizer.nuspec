@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>Structurizer</id>
+        <title>Structurizer</title>
+        <version>$version$</version>
+        <authors>danielwertheim</authors>
+        <copyright>©Daniel Wertheim</copyright>
+        <summary>Used for creating key-value representation of object graphs.</summary>
+        <description>Lets you create key-value representations of object graphs.</description>
+        <projectUrl>https://github.com/danielwertheim/structurizer</projectUrl>
+        <licenseUrl>https://raw.githubusercontent.com/danielwertheim/structurizer/master/LICENSE.txt</licenseUrl>
+        <releaseNotes>https://github.com/danielwertheim/structurizer/blob/master/ReleaseNotes.md</releaseNotes>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <tags>key-value structure object-graph</tags>
+    </metadata>
+    <files>
+        <file src="Structurizer\Structurizer.dll" target="lib\net45" />
+    </files>
+</package>

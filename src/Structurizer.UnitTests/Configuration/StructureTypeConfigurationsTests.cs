@@ -1,4 +1,5 @@
 using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 using Structurizer.Configuration;
 
@@ -8,75 +9,88 @@ namespace Structurizer.UnitTests.Configuration
     public class StructureTypeConfigurationsTests : UnitTestBase
     {
         [Test]
-        public void IsEmpty_WhenNoSpecificConfigurationExists_ReturnsFalse()
+        public void Register_Should_add_config_When_no_registration_exists()
         {
             var configs = new StructureTypeConfigurations();
 
-            Assert.IsTrue(configs.IsEmpty);
+            configs.Register(typeof(Dummy));
+
+            Assert.AreEqual(1, configs.Count());
         }
 
         [Test]
-        public void IsEmpty_WhenSpecificConfigurationExists_ReturnsTrue()
-        {
-            var configs = new StructureTypeConfigurations();
-            configs.Configure<Dummy>(cfg => { });
-
-            Assert.IsFalse(configs.IsEmpty);
-        }
-
-        [Test]
-        public void Configure_WhenNeverCalledBefore_ConfigurationIsAdded()
+        public void Register_with_empty_config_Should_add_config_When_no_registration_exists()
         {
             var configs = new StructureTypeConfigurations();
 
-            configs.Configure(typeof(Dummy), cfg => { });
+            configs.Register(typeof(Dummy), cfg => { });
 
-            Assert.AreEqual(1, configs.Items.Count());
+            Assert.AreEqual(1, configs.Count());
         }
 
         [Test]
-        public void Generic_Configure_WhenNeverCalledBefore_ConfigurationIsAdded()
+        public void Register_generic_Should_add_config_When_no_registration_exists()
         {
             var configs = new StructureTypeConfigurations();
 
-            configs.Configure<Dummy>(cfg => { });
+            configs.Register<Dummy>();
 
-            Assert.AreEqual(1, configs.Items.Count());
+            Assert.AreEqual(1, configs.Count());
         }
 
         [Test]
-        public void Configure_WhenCalledTwice_StillHasOneConfig()
+        public void Register_generic_with_empty_config_Should_add_config_When_no_registration_exists()
+        {
+            var configs = new StructureTypeConfigurations();
+
+            configs.Register<Dummy>(cfg => { });
+
+            Assert.AreEqual(1, configs.Count());
+        }
+
+        [Test]
+        public void Register_Should_add_to_existing_config_When_called_twice()
         {
             var configs = new StructureTypeConfigurations();
             IStructureTypeConfig config1 = null;
             IStructureTypeConfig config2 = null;
 
-            configs.Configure(typeof(Dummy), cfg => { config1 = cfg.Config; });
-            configs.Configure(typeof(Dummy), cfg => { config2 = cfg.Config; });
+            configs.Register(typeof(Dummy), cfg => { config1 = cfg.Config; });
+            configs.Register(typeof(Dummy), cfg => { config2 = cfg.Config; });
 
             Assert.AreSame(config1, config2);
-            Assert.AreEqual(1, configs.Items.Count());
+            Assert.AreEqual(1, configs.Count());
         }
 
         [Test]
-        public void Generic_Configure_WhenCalledTwice_StillHasOneConfig()
+        public void Register_generic_Should_add_to_existing_config_When_called_twice()
         {
             var configs = new StructureTypeConfigurations();
             IStructureTypeConfig config1 = null;
             IStructureTypeConfig config2 = null;
 
-            configs.Configure<Dummy>(cfg => { config1 = cfg.Config; });
-            configs.Configure<Dummy>(cfg => { config2 = cfg.Config; });
+            configs.Register<Dummy>(cfg => { config1 = cfg.Config; });
+            configs.Register<Dummy>(cfg => { config2 = cfg.Config; });
 
             Assert.AreSame(config1, config2);
-            Assert.AreEqual(1, configs.Items.Count());
+            Assert.AreEqual(1, configs.Count());
         }
 
         [Test]
-        public void GetConfigurations_WhenRegistreredViaNonGenericVersion_ConfigurationIsReturned()
+        public void GetConfigurations_Should_return_null_When_no_config_registration_exists()
         {
             var configs = new StructureTypeConfigurations();
-            configs.Configure(typeof(Dummy), cfg => { });
+
+            var config = configs.GetConfiguration(typeof(Dummy));
+
+            config.Should().BeNull();
+        }
+
+        [Test]
+        public void GetConfigurations_Should_return_config_When_registrated_via_generic_version()
+        {
+            var configs = new StructureTypeConfigurations();
+            configs.Register<Dummy>(cfg => { });
 
             var config = configs.GetConfiguration(typeof(Dummy));
 
@@ -85,63 +99,15 @@ namespace Structurizer.UnitTests.Configuration
         }
 
         [Test]
-        public void GetConfigurations_WhenRegistreredViaGenericVersion_ConfigurationIsReturned()
+        public void GetConfigurations_Should_return_config_When_registrated_via_non_generic_version()
         {
             var configs = new StructureTypeConfigurations();
-            configs.Configure<Dummy>(cfg => { });
+            configs.Register(typeof(Dummy), cfg => { });
 
             var config = configs.GetConfiguration(typeof(Dummy));
 
             Assert.IsNotNull(config);
             Assert.AreEqual(typeof(Dummy), config.Type);
-        }
-
-        [Test]
-        public void Generic_GetConfigurations_WhenRegistreredViaNonGenericVersion_ConfigurationIsReturned()
-        {
-            var configs = new StructureTypeConfigurations();
-            configs.Configure(typeof(Dummy), cfg => { });
-
-            var config = configs.GetConfiguration<Dummy>();
-
-            Assert.IsNotNull(config);
-            Assert.AreEqual(typeof(Dummy), config.Type);
-        }
-
-        [Test]
-        public void Generic_GetConfigurations_WhenRegistreredViaGenericVersion_ConfigurationIsReturned()
-        {
-            var configs = new StructureTypeConfigurations();
-            configs.Configure<Dummy>(cfg => { });
-
-            var config = configs.GetConfiguration<Dummy>();
-
-            Assert.IsNotNull(config);
-            Assert.AreEqual(typeof(Dummy), config.Type);
-        }
-
-        [Test]
-        public void GetConfigurations_WhenNoConfigurationExists_ReturnsNull()
-        {
-            var configs = new StructureTypeConfigurations();
-
-            var config = configs.GetConfiguration<Dummy>();
-
-            Assert.IsTrue(config.IndexConfigIsEmpty);
-            Assert.IsFalse(config.MemberPathsBeingIndexed.Any());
-            Assert.IsFalse(config.MemberPathsNotBeingIndexed.Any());
-        }
-
-        [Test]
-        public void Generic_GetConfigurations_WhenNoConfigurationExists_ReturnsDefaultConfig()
-        {
-            var configs = new StructureTypeConfigurations();
-
-            var config = configs.GetConfiguration<Dummy>();
-
-            Assert.IsTrue(config.IndexConfigIsEmpty);
-            Assert.IsFalse(config.MemberPathsBeingIndexed.Any());
-            Assert.IsFalse(config.MemberPathsNotBeingIndexed.Any());
         }
 
         private class Dummy { }

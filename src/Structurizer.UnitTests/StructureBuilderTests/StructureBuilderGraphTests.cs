@@ -7,16 +7,15 @@ namespace Structurizer.UnitTests.StructureBuilderTests
     {
         protected override void OnTestInitialize()
         {
-            Builder = new StructureBuilder();
+            Builder = StructureBuilder.Create(c => c.Register<Root>());
         }
 
         [Test]
         public void CreateStructure_WhenNestedItemExists_NestedWillBePartOfStructure()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<Root>();
             var item = new Root { IntOnRoot = 142, Nested = new Child { IntOnChild = 242 } };
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
             Assert.AreEqual(2, structure.Indexes.Count);
             Assert.AreEqual("IntOnRoot", structure.Indexes[0].Path);

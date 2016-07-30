@@ -1,4 +1,5 @@
 using System;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace Structurizer.UnitTests.StructureBuilderTests
@@ -6,80 +7,70 @@ namespace Structurizer.UnitTests.StructureBuilderTests
     [TestFixture]
     public class StructureBuilderNullablesTests : StructureBuilderBaseTests
     {
-        protected override void OnTestInitialize()
-        {
-            Builder = new StructureBuilder();
-        }
-
         [Test]
         public void CreateStructure_WhenItemWithNullablesHasValues_IndexesAreCreated()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<TestItemWithNullables>();
+            Builder = StructureBuilder.Create(c => c.Register<TestItemWithNullables>());
             var item = TestItemWithNullables.CreatePopulated();
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
-            Assert.AreEqual(3, structure.Indexes.Count);
-            Assert.AreEqual("StructureId", structure.Indexes[0].Path);
+            Assert.AreEqual(2, structure.Indexes.Count);
 
-            Assert.AreEqual("NullableInt", structure.Indexes[1].Path);
-            Assert.AreEqual(typeof(int?), structure.Indexes[1].DataType);
-            Assert.AreEqual(item.NullableInt, structure.Indexes[1].Value);
+            Assert.AreEqual("NullableInt", structure.Indexes[0].Path);
+            Assert.AreEqual(typeof(int?), structure.Indexes[0].DataType);
+            Assert.AreEqual(item.NullableInt, structure.Indexes[0].Value);
 
-            Assert.AreEqual("NullableGuid", structure.Indexes[2].Path);
-            Assert.AreEqual(typeof(Guid?), structure.Indexes[2].DataType);
-            Assert.AreEqual(item.NullableGuid, structure.Indexes[2].Value);
+            Assert.AreEqual("NullableGuid", structure.Indexes[1].Path);
+            Assert.AreEqual(typeof(Guid?), structure.Indexes[1].DataType);
+            Assert.AreEqual(item.NullableGuid, structure.Indexes[1].Value);
         }
 
         [Test]
-        public void CreateStructure_WhenItemWithNullablesHasNullValues_IndexesAreCreated()
+        public void CreateStructure_WhenItemWithNullablesHasNullValues_NoIndexesAreCreated()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<TestItemWithNullables>();
+            Builder = StructureBuilder.Create(c => c.Register<TestItemWithNullables>());
             var item = TestItemWithNullables.CreateWithNullValues();
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
-            Assert.AreEqual(1, structure.Indexes.Count);
-            Assert.AreEqual("StructureId", structure.Indexes[0].Path);
+            structure.Indexes.Should().BeEmpty();
         }
 
         [Test]
         public void CreateStructure_WhenChildItemWithInheritedNullablesHasValues_IndexesAreCreated()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<ChildWithNullables>();
+            Builder = StructureBuilder.Create(c => c.Register<ChildWithNullables>());
             var item = ChildWithNullables.CreatePopulated();
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
-            Assert.AreEqual(3, structure.Indexes.Count);
-            Assert.AreEqual("StructureId", structure.Indexes[0].Path);
+            Assert.AreEqual(2, structure.Indexes.Count);
 
-            Assert.AreEqual("NullableInt", structure.Indexes[1].Path);
-            Assert.AreEqual(typeof(int?), structure.Indexes[1].DataType);
-            Assert.AreEqual(item.NullableInt, structure.Indexes[1].Value);
+            Assert.AreEqual("NullableInt", structure.Indexes[0].Path);
+            Assert.AreEqual(typeof(int?), structure.Indexes[0].DataType);
+            Assert.AreEqual(item.NullableInt, structure.Indexes[0].Value);
 
-            Assert.AreEqual("NullableGuid", structure.Indexes[2].Path);
-            Assert.AreEqual(typeof(Guid?), structure.Indexes[2].DataType);
-            Assert.AreEqual(item.NullableGuid, structure.Indexes[2].Value);
+            Assert.AreEqual("NullableGuid", structure.Indexes[1].Path);
+            Assert.AreEqual(typeof(Guid?), structure.Indexes[1].DataType);
+            Assert.AreEqual(item.NullableGuid, structure.Indexes[1].Value);
         }
 
         [Test]
-        public void CreateStructure_WhenChildItemWithInheritedNullablesHasNullValues_IndexesAreCreated()
+        public void CreateStructure_WhenChildItemWithInheritedNullablesHasNullValues_NoIndexesAreCreated()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<ChildWithNullables>();
+            Builder = StructureBuilder.Create(c => c.Register<ChildWithNullables>());
             var item = ChildWithNullables.CreateWithNullValues();
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
-            Assert.AreEqual(1, structure.Indexes.Count);
-            Assert.AreEqual("StructureId", structure.Indexes[0].Path);
+            structure.Indexes.Should().BeEmpty();
         }
 
         private abstract class RootWithNullables
         {
-            public Guid StructureId { get; set; }
             public int? NullableInt { get; set; }
-            public Guid? NullableGuid { get; set; } 
+            public Guid? NullableGuid { get; set; }
         }
 
         private class ChildWithNullables : RootWithNullables
@@ -101,7 +92,6 @@ namespace Structurizer.UnitTests.StructureBuilderTests
 
         private class TestItemWithNullables
         {
-            public Guid StructureId { get; set; }
             public int? NullableInt { get; set; }
             public Guid? NullableGuid { get; set; }
 

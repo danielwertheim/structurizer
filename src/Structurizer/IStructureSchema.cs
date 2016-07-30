@@ -5,8 +5,8 @@ namespace Structurizer
 {
     public interface IStructureSchema
     {
-        IStructureType Type { get; }
+        IStructureType StructureType { get; }
         string Name { get; }
-        IList<IIndexAccessor> IndexAccessors { get; }
+        IReadOnlyList<IIndexAccessor> IndexAccessors { get; }
     }
 }

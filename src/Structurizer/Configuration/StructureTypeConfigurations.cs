@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using EnsureThat;
 
@@ -8,52 +9,58 @@ namespace Structurizer.Configuration
     {
         private readonly Dictionary<Type, IStructureTypeConfig> _configurations;
 
-        public bool IsEmpty => _configurations.Count < 1;
-        public IEnumerable<IStructureTypeConfig> Items => _configurations.Values;
-
         public StructureTypeConfigurations()
         {
             _configurations = new Dictionary<Type, IStructureTypeConfig>();
         }
 
-        public virtual void Clear()
+        IEnumerator<IStructureTypeConfig> IEnumerable<IStructureTypeConfig>.GetEnumerator() => _configurations.Values.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => _configurations.Values.GetEnumerator();
+
+        public IStructureTypeConfig GetConfiguration<T>() where T : class => GetConfiguration(typeof(T));
+
+        public IStructureTypeConfig GetConfiguration(Type type)
         {
-            _configurations.Clear();
+            IStructureTypeConfig config;
+
+            return _configurations.TryGetValue(type, out config) ? config : null;
         }
 
-        public virtual IStructureTypeConfig GetConfiguration(Type type)
+        public IStructureTypeConfig Register(Type type)
         {
-            return _configurations.ContainsKey(type)
-                ? _configurations[type]
-                : new StructureTypeConfig(type);
+            Ensure.That(type, nameof(type)).IsNotNull();
+
+            var config = GetConfiguration(type) ?? new StructureTypeConfig(type);
+
+            _configurations[config.Type] = config;
+
+            return config;
         }
 
-        public virtual IStructureTypeConfig GetConfiguration<T>() where T : class
+        public IStructureTypeConfig Register(Type type, Action<IStructureTypeConfigurator> configure)
         {
-            return GetConfiguration(typeof(T));
-        }
+            Ensure.That(type, nameof(type)).IsNotNull();
+            Ensure.That(configure, nameof(configure)).IsNotNull();
 
-        public virtual void Configure(Type type, Action<IStructureTypeConfigurator> configure)
-        {
-            Ensure.That(type, "type").IsNotNull();
-            Ensure.That(configure, "configure").IsNotNull();
-
-            var config = GetConfiguration(type);
+            var config = Register(type);
             var configurator = new StructureTypeConfigurator(config);
             configure(configurator);
 
-            _configurations[configurator.Config.Type] = configurator.Config;
+            return config;
         }
 
-        public virtual void Configure<T>(Action<IStructureTypeConfigurator<T>> configure) where T : class
-        {
-            Ensure.That(configure, "configure").IsNotNull();
+        public IStructureTypeConfig Register<T>() where T : class => Register(typeof(T));
 
-            var config = GetConfiguration<T>();
+        public IStructureTypeConfig Register<T>(Action<IStructureTypeConfigurator<T>> configure) where T : class
+        {
+            Ensure.That(configure, nameof(configure)).IsNotNull();
+
+            var config = Register<T>();
             var configurator = new StructureTypeConfigurator<T>(config);
             configure(configurator);
 
-            _configurations[configurator.Config.Type] = configurator.Config;
+            return config;
         }
     }
 }

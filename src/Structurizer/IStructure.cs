@@ -5,6 +5,6 @@ namespace Structurizer
     public interface IStructure
     {
         string Name { get; }
-        IList<IStructureIndex> Indexes { get; }
+        IReadOnlyList<IStructureIndex> Indexes { get; }
     }
 }

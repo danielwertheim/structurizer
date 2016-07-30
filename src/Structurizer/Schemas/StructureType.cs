@@ -13,7 +13,7 @@ namespace Structurizer.Schemas
             Type type,
             IStructureProperty[] indexableProperties = null)
         {
-            Ensure.That(type, "type").IsNotNull();
+            Ensure.That(type, nameof(type)).IsNotNull();
 
             Type = type;
             IndexableProperties = indexableProperties ?? new IStructureProperty[] { };

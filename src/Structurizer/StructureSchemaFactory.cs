@@ -15,7 +15,7 @@ namespace Structurizer
 
         public virtual IStructureSchema CreateSchema(IStructureType structureType)
         {
-            Ensure.That(structureType, "structureType").IsNotNull();
+            Ensure.That(structureType, nameof(structureType)).IsNotNull();
 
             var indexAccessors = GetIndexAccessors(structureType);
             if (indexAccessors == null || indexAccessors.Length < 1)
@@ -28,7 +28,7 @@ namespace Structurizer
         {
             var accessors = new IIndexAccessor[structureType.IndexableProperties.Length];
 
-            for (var i = 0; i < accessors.Length; i++)
+            for (var i = 0; i < structureType.IndexableProperties.Length; i++)
             {
                 var property = structureType.IndexableProperties[i];
                 accessors[i] = new IndexAccessor(property, DataTypeConverter.Convert(property));

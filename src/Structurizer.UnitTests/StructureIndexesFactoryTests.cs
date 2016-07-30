@@ -146,10 +146,10 @@ namespace Structurizer.UnitTests
         public void GetIndexes_WhenItemWithEnumerableWithOneInt_ReturnsIndexWithInt()
         {
             var item = new WithArray { IntValues = new[] { 42 } };
-            var schema = StructureSchemaTestFactory.CreateRealFrom<WithArray>();
+            var schemaStub = StructureSchemaTestFactory.CreateRealFrom<WithArray>();
 
             var factory = new StructureIndexesFactory();
-            var indexes = factory.CreateIndexes(schema, item).ToList();
+            var indexes = factory.CreateIndexes(schemaStub, item).ToList();
 
             Assert.AreEqual(42, indexes.Single(i => i.Path == "IntValues").Value);
         }

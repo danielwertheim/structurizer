@@ -5,92 +5,87 @@ using NUnit.Framework;
 
 namespace Structurizer.UnitTests.StructureBuilderTests
 {
-	[TestFixture]
-	public class StructureBuilderEnumerableTests : StructureBuilderBaseTests
-	{
-		protected override void OnTestInitialize()
-		{
-			Builder = new StructureBuilder();
-		}
+    [TestFixture]
+    public class StructureBuilderEnumerableTests : StructureBuilderBaseTests
+    {
+        [Test]
+        public void CreateStructure_WhenEnumerableIntsOnFirstLevel_ReturnsOneIndexPerElementInCorrectOrder()
+        {
+            Builder = StructureBuilder.Create(c => c.Register<TestItemForFirstLevel>());
+            var item = new TestItemForFirstLevel { IntArray = new[] { 5, 6, 7 } };
 
-		[Test]
-		public void CreateStructure_WhenEnumerableIntsOnFirstLevel_ReturnsOneIndexPerElementInCorrectOrder()
-		{
-			var schema = StructureSchemaTestFactory.CreateRealFrom<TestItemForFirstLevel>();
-			var item = new TestItemForFirstLevel { IntArray = new[] { 5, 6, 7 } };
+            var structure = Builder.CreateStructure(item);
 
-			var structure = Builder.CreateStructure(item, schema);
+            var indices = structure.Indexes.Where(i => i.Path == "IntArray").ToList();
+            Assert.AreEqual(5, indices[0].Value);
+            Assert.AreEqual(6, indices[1].Value);
+            Assert.AreEqual(7, indices[2].Value);
+        }
 
-			var indices = structure.Indexes.Where(i => i.Path == "IntArray").ToList();
-			Assert.AreEqual(5, indices[0].Value);
-			Assert.AreEqual(6, indices[1].Value);
-			Assert.AreEqual(7, indices[2].Value);
-		}
+        [Test]
+        public void CreateStructure_WhenEnumerableIntsOnFirstLevelAreNull_ReturnsNoIndex()
+        {
+            Builder = StructureBuilder.Create(c => c.Register<TestItemForFirstLevel>());
+            var item = new TestItemForFirstLevel { IntArray = null };
 
-		[Test]
-		public void CreateStructure_WhenEnumerableIntsOnFirstLevelAreNull_ReturnsNoIndex()
-		{
-			var schema = StructureSchemaTestFactory.CreateRealFrom<TestItemForFirstLevel>();
-			var item = new TestItemForFirstLevel { IntArray = null };
+            var structure = Builder.CreateStructure(item);
 
-			var structure = Builder.CreateStructure(item, schema);
+            var actual = structure.Indexes.SingleOrDefault(si => si.Path.StartsWith("IntArray"));
+            Assert.IsNull(actual);
+            Assert.AreEqual(2, structure.Indexes.Count);
+        }
 
-			var actual = structure.Indexes.SingleOrDefault(si => si.Path.StartsWith("IntArray"));
-			Assert.IsNull(actual);
-			Assert.AreEqual(2, structure.Indexes.Count);
-		}
+        [Test]
+        public void CreateStructure_WhenEnumerableIntsOnSecondLevelAreNull_ReturnsNoIndex()
+        {
+            Builder = StructureBuilder.Create(c => c.Register<TestItemForSecondLevel>());
+            var item = new TestItemForSecondLevel { Container = new Container { IntArray = null } };
 
-		[Test]
-		public void CreateStructure_WhenEnumerableIntsOnSecondLevelAreNull_ReturnsNoIndex()
-		{
-			var schema = StructureSchemaTestFactory.CreateRealFrom<TestItemForSecondLevel>();
-			var item = new TestItemForSecondLevel { Container = new Container { IntArray = null } };
+            var structure = Builder.CreateStructure(item);
 
-			var structure = Builder.CreateStructure(item, schema);
+            var actual = structure.Indexes.SingleOrDefault(si => si.Path.StartsWith("Container.IntArray"));
+            Assert.IsNull(actual);
+            Assert.AreEqual(2, structure.Indexes.Count);
+        }
 
-			var actual = structure.Indexes.SingleOrDefault(si => si.Path.StartsWith("Container.IntArray"));
-			Assert.IsNull(actual);
-			Assert.AreEqual(2, structure.Indexes.Count);
-		}
+        [Test]
+        public void CreateStructure_WhenEnumerableIntsOnSecondLevel_ReturnsOneIndexPerElementInCorrectOrder()
+        {
+            Builder = StructureBuilder.Create(c => c.Register<TestItemForSecondLevel>());
+            var item = new TestItemForSecondLevel { Container = new Container { IntArray = new[] { 5, 6, 7 } } };
 
-		[Test]
-		public void CreateStructure_WhenEnumerableIntsOnSecondLevel_ReturnsOneIndexPerElementInCorrectOrder()
-		{
-			var schema = StructureSchemaTestFactory.CreateRealFrom<TestItemForSecondLevel>();
-			var item = new TestItemForSecondLevel { Container = new Container { IntArray = new[] { 5, 6, 7 } } };
+            var structure = Builder.CreateStructure(item);
 
-			var structure = Builder.CreateStructure(item, schema);
+            var indices = structure.Indexes.Where(i => i.Path == "Container.IntArray").ToList();
+            Assert.AreEqual(5, indices[0].Value);
+            Assert.AreEqual(6, indices[1].Value);
+            Assert.AreEqual(7, indices[2].Value);
+        }
 
-			var indices = structure.Indexes.Where(i => i.Path == "Container.IntArray").ToList();
-			Assert.AreEqual(5, indices[0].Value);
-			Assert.AreEqual(6, indices[1].Value);
-			Assert.AreEqual(7, indices[2].Value);
-		}
+        [Test]
+        public void CreateStructure_WhenCustomNonGenericEnumerableWithComplexElement_ReturnsIndexesForElements()
+        {
+            Builder = StructureBuilder.Create(c => c.Register<ModelForMyCustomNonGenericEnumerable>());
+            var item = new ModelForMyCustomNonGenericEnumerable();
+            item.Items.Add(new MyElement { IntValue = 1, StringValue = "A" });
+            item.Items.Add(new MyElement { IntValue = 2, StringValue = "B" });
 
-		[Test]
-		public void CreateStructure_WhenCustomNonGenericEnumerableWithComplexElement_ReturnsIndexesForElements()
-		{
-			var schema = StructureSchemaTestFactory.CreateRealFrom<ModelForMyCustomNonGenericEnumerable>();
-			var item = new ModelForMyCustomNonGenericEnumerable();
-			item.Items.Add(new MyElement { IntValue = 1, StringValue = "A" });
-			item.Items.Add(new MyElement { IntValue = 2, StringValue = "B" });
+            var structure = Builder.CreateStructure(item);
 
-			var structure = Builder.CreateStructure(item, schema);
-
-			var indices = structure.Indexes.Skip(1).ToList();
-			Assert.AreEqual("A", indices[0].Value);
-			Assert.AreEqual("B", indices[1].Value);
-			Assert.AreEqual(1, indices[2].Value);
-			Assert.AreEqual(2, indices[3].Value);
-		}
+            var indices = structure.Indexes.Skip(1).ToList();
+            Assert.AreEqual("A", indices[0].Value);
+            Assert.AreEqual("B", indices[1].Value);
+            Assert.AreEqual(1, indices[2].Value);
+            Assert.AreEqual(2, indices[3].Value);
+        }
 
         [Test]
         public void CreateStructure_WhenHashSetOfInts_ReturnsOneIndexPerElementInCorrectOrder()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<TestItemWithHashSet>();
+            Builder = StructureBuilder.Create(c => c.Register<TestItemWithHashSet>());
             var item = new TestItemWithHashSet { HashSetOfInts = new HashSet<int> { 5, 6, 7 } };
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
             var indices = structure.Indexes.Where(i => i.Path == "HashSetOfInts").ToList();
             Assert.AreEqual(5, indices[0].Value);
@@ -101,10 +96,10 @@ namespace Structurizer.UnitTests.StructureBuilderTests
         [Test]
         public void CreateStructure_WhenHashSetOfIntsIsNull_ReturnsNoIndex()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<TestItemWithHashSet>();
+            Builder = StructureBuilder.Create(c => c.Register<TestItemWithHashSet>());
             var item = new TestItemWithHashSet { HashSetOfInts = null };
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
             var actual = structure.Indexes.SingleOrDefault(si => si.Path.StartsWith("HashSetOfInts"));
             Assert.IsNull(actual);
@@ -114,10 +109,10 @@ namespace Structurizer.UnitTests.StructureBuilderTests
         [Test]
         public void CreateStructure_WhenISetOfInts_ReturnsOneIndexPerElementInCorrectOrder()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<TestItemWithISet>();
+            Builder = StructureBuilder.Create(c => c.Register<TestItemWithISet>());
             var item = new TestItemWithISet { SetOfInts = new HashSet<int> { 5, 6, 7 } };
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
             var indices = structure.Indexes.Where(i => i.Path == "SetOfInts").ToList();
             Assert.AreEqual(5, indices[0].Value);
@@ -128,10 +123,10 @@ namespace Structurizer.UnitTests.StructureBuilderTests
         [Test]
         public void CreateStructure_WhenSetOfIntsIsNull_ReturnsNoIndex()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<TestItemWithISet>();
+            Builder = StructureBuilder.Create(c => c.Register<TestItemWithISet>());
             var item = new TestItemWithISet { SetOfInts = null };
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
             var actual = structure.Indexes.SingleOrDefault(si => si.Path.StartsWith("SetOfInts"));
             Assert.IsNull(actual);
@@ -141,10 +136,18 @@ namespace Structurizer.UnitTests.StructureBuilderTests
         [Test]
         public void CreateStructure_WhenHashSetOfComplex_ReturnsOneIndexPerElementInCorrectOrder()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<TestItemWithHashSetOfComplex>();
-            var item = new TestItemWithHashSetOfComplex { HashSetOfComplex = new HashSet<Value> { new Value { Is = 5 }, new Value { Is = 6 }, new Value { Is = 7 } } };
+            Builder = StructureBuilder.Create(c => c.Register<TestItemWithHashSetOfComplex>());
+            var item = new TestItemWithHashSetOfComplex
+            {
+                HashSetOfComplex = new HashSet<Value>
+                {
+                    new Value { Is = 5 },
+                    new Value { Is = 6 },
+                    new Value { Is = 7 }
+                }
+            };
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
             var indices = structure.Indexes.Where(i => i.Path == "HashSetOfComplex.Is").ToList();
             Assert.AreEqual(5, indices[0].Value);
@@ -155,10 +158,10 @@ namespace Structurizer.UnitTests.StructureBuilderTests
         [Test]
         public void CreateStructure_WhenHashSetOfComplex_HasThreeNullItems_ReturnsNoIndex()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<TestItemWithHashSetOfComplex>();
+            Builder = StructureBuilder.Create(c => c.Register<TestItemWithHashSetOfComplex>());
             var item = new TestItemWithHashSetOfComplex { HashSetOfComplex = new HashSet<Value> { null, null, null } };
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
             var actual = structure.Indexes.SingleOrDefault(si => si.Path.StartsWith("HashSetOfComplex.Is"));
             Assert.IsNull(actual);
@@ -167,10 +170,18 @@ namespace Structurizer.UnitTests.StructureBuilderTests
         [Test]
         public void CreateStructure_WhenIDictionary_ReturnsOneIndexPerElementInCorrectOrder()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<TestItemWithIDictionary>();
-            var item = new TestItemWithIDictionary { KeyValues = new Dictionary<string, int> { { "Key1", 5 }, { "Key2", 6 }, { "Key3", 7 } } };
+            Builder = StructureBuilder.Create(c => c.Register<TestItemWithIDictionary>());
+            var item = new TestItemWithIDictionary
+            {
+                KeyValues = new Dictionary<string, int>
+                {
+                    { "Key1", 5 },
+                    { "Key2", 6 },
+                    { "Key3", 7 }
+                }
+            };
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
             var indices = structure.Indexes.Where(i => i.Path.StartsWith("KeyValues")).ToList();
             Assert.AreEqual(6, indices.Count);
@@ -193,10 +204,10 @@ namespace Structurizer.UnitTests.StructureBuilderTests
         [Test]
         public void CreateStructure_WhenDictionary_ReturnsOneIndexPerElementInCorrectOrder()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<TestItemWithDictionary>();
+            Builder = StructureBuilder.Create(c => c.Register<TestItemWithDictionary>());
             var item = new TestItemWithDictionary { KeyValues = new Dictionary<string, int> { { "Key1", 5 }, { "Key2", 6 }, { "Key3", 7 } } };
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
             var indices = structure.Indexes.Where(i => i.Path.StartsWith("KeyValues")).ToList();
             Assert.AreEqual(6, indices.Count);
@@ -219,10 +230,18 @@ namespace Structurizer.UnitTests.StructureBuilderTests
         [Test]
         public void CreateStructure_WhenIDictionaryWithComplex_ReturnsOneIndexPerElementInCorrectOrder()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<TestItemWithIDictionaryOfComplex>();
-            var item = new TestItemWithIDictionaryOfComplex { KeyValues = new Dictionary<string, Value> { { "Key1", new Value { Is = 5 } }, { "Key2", new Value { Is = 6 } }, { "Key3", new Value { Is = 7 } } } };
+            Builder = StructureBuilder.Create(c => c.Register<TestItemWithIDictionaryOfComplex>());
+            var item = new TestItemWithIDictionaryOfComplex
+            {
+                KeyValues = new Dictionary<string, Value>
+                {
+                    { "Key1", new Value { Is = 5 } },
+                    { "Key2", new Value { Is = 6 } },
+                    { "Key3", new Value { Is = 7 } }
+                }
+            };
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
             var indices = structure.Indexes.Where(i => i.Path.StartsWith("KeyValues")).ToList();
             Assert.AreEqual(6, indices.Count);
@@ -245,10 +264,10 @@ namespace Structurizer.UnitTests.StructureBuilderTests
         [Test]
         public void CreateStructure_WhenDictionaryWithComplex_ReturnsOneIndexPerElementInCorrectOrder()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<TestItemWithDictionaryOfComplex>();
+            Builder = StructureBuilder.Create(c => c.Register<TestItemWithDictionaryOfComplex>());
             var item = new TestItemWithDictionaryOfComplex { KeyValues = new Dictionary<string, Value> { { "Key1", new Value { Is = 5 } }, { "Key2", new Value { Is = 6 } }, { "Key3", new Value { Is = 7 } } } };
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
             var indexes = structure.Indexes.Where(i => i.Path.StartsWith("KeyValues")).ToList();
             Assert.AreEqual(6, indexes.Count);
@@ -268,49 +287,49 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(7, indexes[5].Value);
         }
 
-		private class ModelForMyCustomNonGenericEnumerable
-		{
-			public Guid StructureId { get; set; }
-			public MyCustomNonGenericEnumerable Items { get; set; }
+        private class ModelForMyCustomNonGenericEnumerable
+        {
+            public Guid StructureId { get; set; }
+            public MyCustomNonGenericEnumerable Items { get; set; }
 
-			public ModelForMyCustomNonGenericEnumerable()
-			{
-				Items = new MyCustomNonGenericEnumerable();
-			}
-		}
+            public ModelForMyCustomNonGenericEnumerable()
+            {
+                Items = new MyCustomNonGenericEnumerable();
+            }
+        }
 
-		private class MyCustomNonGenericEnumerable : System.Collections.Generic.List<MyElement>
-		{
-		}
+        private class MyCustomNonGenericEnumerable : System.Collections.Generic.List<MyElement>
+        {
+        }
 
-		private class MyElement
-		{
-			public string StringValue { get; set; }
-			public int IntValue { get; set; }
-		}
+        private class MyElement
+        {
+            public string StringValue { get; set; }
+            public int IntValue { get; set; }
+        }
 
-		private class TestItemForFirstLevel
-		{
-			public Guid StructureId { get; set; }
+        private class TestItemForFirstLevel
+        {
+            public Guid StructureId { get; set; }
 
-			public int IntValue { get; set; }
+            public int IntValue { get; set; }
 
-			public int[] IntArray { get; set; }
-		}
+            public int[] IntArray { get; set; }
+        }
 
-		private class TestItemForSecondLevel
-		{
-			public Guid StructureId { get; set; }
+        private class TestItemForSecondLevel
+        {
+            public Guid StructureId { get; set; }
 
-			public Container Container { get; set; }
-		}
+            public Container Container { get; set; }
+        }
 
-		private class Container
-		{
-			public int IntValue { get; set; }
+        private class Container
+        {
+            public int IntValue { get; set; }
 
-			public int[] IntArray { get; set; }
-		}
+            public int[] IntArray { get; set; }
+        }
 
         private class Value
         {
@@ -379,5 +398,5 @@ namespace Structurizer.UnitTests.StructureBuilderTests
 
             public int IntValue { get; set; }
         }
-	}
+    }
 }

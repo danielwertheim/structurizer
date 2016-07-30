@@ -59,7 +59,7 @@
     <Compile Include="Configuration\StructureTypeConfig.cs" />
     <Compile Include="Configuration\StructureTypeConfigurations.cs" />
     <Compile Include="Configuration\StructureTypeConfigurator.cs" />
-    <Compile Include="Schemas\DataTypeConverter.cs" />
+    <Compile Include="DataTypeConverter.cs" />
     <Compile Include="Schemas\DynamicGetter.cs" />
     <Compile Include="Schemas\DynamicPropertyFactory.cs" />
     <Compile Include="Schemas\DynamicSetter.cs" />

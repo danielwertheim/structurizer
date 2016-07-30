@@ -1,27 +1,18 @@
 using System.Collections.Generic;
 using NUnit.Framework;
-using Structurizer.Schemas;
 
 namespace Structurizer.UnitTests.StructureBuilderTests
 {
     [TestFixture]
-    public class StructureBuilderOnlyIndexThisTests : StructureBuilderBaseTests
+    public class StructureBuilderIncludeAndExcludeTests : StructureBuilderBaseTests
     {
-        protected override void OnTestInitialize()
-        {
-            Builder = new StructureBuilder();
-        }
-
         [Test]
         public void Should_be_able_to_index_nested_child_by_registrating_child_only()
         {
-            var schemaBuilder = new StructureSchemaFactory();
-            var structureTypeFactory = new StructureTypeFactory();
-            structureTypeFactory.Configurations.Configure<MyRoot>(i => i.OnlyIndexThis(
+            Builder = StructureBuilder.Create(c => c.Register<MyRoot>(i => i.OnlyIndexThis(
                 //e => e.OneChild,
                 //e => e.OneChild.GrandChild,
-                e => e.OneChild.GrandChild.SomeInt));
-            var schema = schemaBuilder.CreateSchema(structureTypeFactory.CreateFor<MyRoot>());
+                e => e.OneChild.GrandChild.SomeInt)));
 
             var item = new MyRoot
             {
@@ -62,7 +53,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
                 }
             };
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
             Assert.AreEqual(1, structure.Indexes.Count);
         }

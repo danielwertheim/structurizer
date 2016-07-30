@@ -7,18 +7,13 @@ namespace Structurizer.UnitTests.StructureBuilderTests
     [TestFixture]
     public class StructureBuilderTests : StructureBuilderBaseTests
     {
-        protected override void OnTestInitialize()
-        {
-            Builder = new StructureBuilder();
-        }
-
         [Test]
         public void CreateStructure_WhenIntOnFirstLevel_ReturnsSimpleValue()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<TestItemForFirstLevel>();
+            Builder = StructureBuilder.Create(c => c.Register<TestItemForFirstLevel>());
             var item = new TestItemForFirstLevel { IntValue = 42 };
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
             var actual = structure.Indexes.Single(si => si.Path == "IntValue").Value;
             Assert.AreEqual(42, actual);
@@ -27,10 +22,10 @@ namespace Structurizer.UnitTests.StructureBuilderTests
         [Test]
         public void CreateStructure_WhenUIntOnFirstLevel_ReturnsSimpleValue()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<TestItemForFirstLevel>();
+            Builder = StructureBuilder.Create(c => c.Register<TestItemForFirstLevel>());
             var item = new TestItemForFirstLevel { UIntValue = 42 };
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
             var actual = structure.Indexes.Single(si => si.Path == "UIntValue").Value;
             Assert.AreEqual(42, actual);
@@ -39,10 +34,10 @@ namespace Structurizer.UnitTests.StructureBuilderTests
         [Test]
         public void CreateStructure_WhenIntOnSecondLevel_ReturnsSimpleValue()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<TestItemForSecondLevel>();
+            Builder = StructureBuilder.Create(c => c.Register<TestItemForSecondLevel>());
             var item = new TestItemForSecondLevel { Container = new Container { IntValue = 42 } };
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
             var actual = structure.Indexes.Single(si => si.Path == "Container.IntValue").Value;
             Assert.AreEqual(42, actual);
@@ -51,10 +46,10 @@ namespace Structurizer.UnitTests.StructureBuilderTests
         [Test]
         public void CreateStructure_WhenStructureContainsStructWithValue_ValueOfStructIsRepresentedInIndex()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<IHaveStruct>();
+            Builder = StructureBuilder.Create(c => c.Register<IHaveStruct>());
             var item = new IHaveStruct { Content = "My content" };
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
             Assert.AreEqual(1, structure.Indexes.Count);
             Assert.AreEqual("Content", structure.Indexes[0].Path);
@@ -65,10 +60,10 @@ namespace Structurizer.UnitTests.StructureBuilderTests
         [Test]
         public void CreateStructure_When_structure_has_null_collection_It_should_create_structure_with_index_for_other_members()
         {
-            var schema = StructureSchemaTestFactory.CreateRealFrom<WithNullCollection>();
+            Builder = StructureBuilder.Create(c => c.Register<WithNullCollection>());
             var item = new WithNullCollection { Temp = "Foo", Values = null };
 
-            var structure = Builder.CreateStructure(item, schema);
+            var structure = Builder.CreateStructure(item);
 
             Assert.AreEqual(1, structure.Indexes.Count);
             Assert.AreEqual("Temp", structure.Indexes[0].Path);

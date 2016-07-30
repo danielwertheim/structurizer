@@ -10,7 +10,6 @@ namespace Structurizer
         DateTime,
         Guid,
         String,
-        Text,
         Enum
     }
 }

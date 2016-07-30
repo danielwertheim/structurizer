@@ -93,15 +93,6 @@ namespace Structurizer.UnitTests.Schemas
 			Assert.AreEqual(DataTypeCode.String, _converter.Convert(CreateProperty(type)));
 		}
 
-        [Test]
-        [TestCase(typeof(string), "MyText")]
-        [TestCase(typeof(string), "MyDescription")]
-        [TestCase(typeof(string), "MyContent")]
-        public void Convert_When_typeIsString_but_name_should_by_convention_be_converted_to_Text_Then_it_should_return_Text(Type type, string name)
-        {
-            Assert.AreEqual(DataTypeCode.Text, _converter.Convert(CreateProperty(type, name)));
-        }
-
 		[Test]
 		[TestCase(typeof(DataTypeCode))]
 		[TestCase(typeof(DataTypeCode?))]

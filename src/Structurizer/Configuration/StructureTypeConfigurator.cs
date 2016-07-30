@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using EnsureThat;
-using Structurizer.Extensions.NCore.Expressions;
+using Structurizer.Extensions;
 
 namespace Structurizer.Configuration
 {

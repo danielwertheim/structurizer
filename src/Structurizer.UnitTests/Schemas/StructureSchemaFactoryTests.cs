@@ -1,21 +1,17 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using Structurizer.Extensions;
-using Structurizer.Schemas;
-using Structurizer.Schemas.Builders;
 using Structurizer.Schemas.MemberAccessors;
 
-namespace Structurizer.UnitTests.Schemas.Builders
+namespace Structurizer.UnitTests.Schemas
 {
     [TestFixture]
-    public class AutoSchemaBuilderTests : UnitTestBase
+    public class StructureSchemaFactoryTests : UnitTestBase
     {
         private readonly IStructureTypeFactory _structureTypeFactory = new StructureTypeFactory();
-        private readonly IStructureSchemaBuilder _structureSchemaBuilder = new AutoStructureSchemaBuilder();
+        private readonly IStructureSchemaFactory _structureSchemaFactory = new StructureSchemaFactory();
 
         private IStructureType GetStructureTypeFor<T>()
             where T : class
@@ -29,7 +25,7 @@ namespace Structurizer.UnitTests.Schemas.Builders
             const string expectedName = "WithIdAndIndexableFirstLevelMembers";
             var structureType = GetStructureTypeFor<WithIdAndIndexableFirstLevelMembers>();
 
-            var schema = _structureSchemaBuilder.CreateSchema(structureType);
+            var schema = _structureSchemaFactory.CreateSchema(structureType);
 
             Assert.AreEqual(expectedName, schema.Name);
         }
@@ -39,7 +35,7 @@ namespace Structurizer.UnitTests.Schemas.Builders
         {
             var structureType = GetStructureTypeFor<WithFirstSecondAndThirdLevelMembers>();
 
-            var schema = _structureSchemaBuilder.CreateSchema(structureType);
+            var schema = _structureSchemaFactory.CreateSchema(structureType);
 
             var hasSecondLevelAccessors = schema.IndexAccessors.Any(iac => HasLevel(iac, 1));
             Assert.IsTrue(hasSecondLevelAccessors);
@@ -50,10 +46,10 @@ namespace Structurizer.UnitTests.Schemas.Builders
         {
             var structureType = GetStructureTypeFor<WithFirstSecondAndThirdLevelMembers>();
 
-            var schema = _structureSchemaBuilder.CreateSchema(structureType);
+            var schema = _structureSchemaFactory.CreateSchema(structureType);
 
             var secondLevelItems = schema.IndexAccessors.Where(iac => HasLevel(iac, 1));
-            CustomAssert.ForAll(secondLevelItems, iac => iac.Path.StartsWith("SecondLevelItem."));
+            Assert.IsTrue(secondLevelItems.All(iac => iac.Path.StartsWith("SecondLevelItem.")));
         }
 
         [Test]
@@ -61,7 +57,7 @@ namespace Structurizer.UnitTests.Schemas.Builders
         {
             var structureType = GetStructureTypeFor<WithFirstSecondAndThirdLevelMembers>();
 
-            var schema = _structureSchemaBuilder.CreateSchema(structureType);
+            var schema = _structureSchemaFactory.CreateSchema(structureType);
 
             var hasThirdLevelAccessors = schema.IndexAccessors.Any(iac => HasLevel(iac, 2));
             Assert.IsTrue(hasThirdLevelAccessors);
@@ -72,10 +68,10 @@ namespace Structurizer.UnitTests.Schemas.Builders
         {
             var structureType = GetStructureTypeFor<WithFirstSecondAndThirdLevelMembers>();
 
-            var schema = _structureSchemaBuilder.CreateSchema(structureType);
+            var schema = _structureSchemaFactory.CreateSchema(structureType);
 
             var thirdLevelItems = schema.IndexAccessors.Where(iac => HasLevel(iac, 2));
-            CustomAssert.ForAll(thirdLevelItems, iac => iac.Path.StartsWith("SecondLevelItem.ThirdLevelItem."));
+            Assert.IsTrue(thirdLevelItems.All(iac => iac.Path.StartsWith("SecondLevelItem.ThirdLevelItem.")));
         }
 
         [Test]
@@ -83,7 +79,7 @@ namespace Structurizer.UnitTests.Schemas.Builders
         {
             var structureType = GetStructureTypeFor<WithFirstSecondAndThirdLevelMembers>();
 
-            var schema = _structureSchemaBuilder.CreateSchema(structureType);
+            var schema = _structureSchemaFactory.CreateSchema(structureType);
 
             var hasThirdLevelAccessors = schema.IndexAccessors.Any(iac => HasLevel(iac, 2) && iac.Path == "SecondLevelItem.ThirdLevelItem.Numbers");
             Assert.IsTrue(hasThirdLevelAccessors);
@@ -94,7 +90,7 @@ namespace Structurizer.UnitTests.Schemas.Builders
         {
             var structureType = GetStructureTypeFor<WithIdAndIndexableFirstLevelMembers>();
 
-            var schema = _structureSchemaBuilder.CreateSchema(structureType);
+            var schema = _structureSchemaFactory.CreateSchema(structureType);
 
             CollectionAssert.IsNotEmpty(schema.IndexAccessors);
         }
@@ -106,7 +102,7 @@ namespace Structurizer.UnitTests.Schemas.Builders
             structureType.Setup(s => s.Name).Returns("TmpType");
 
             var ex = Assert.Throws<StructurizerException>(
-                () => _structureSchemaBuilder.CreateSchema(structureType.Object));
+                () => _structureSchemaFactory.CreateSchema(structureType.Object));
 
             var expectedMessage = string.Format(StructurizerExceptionMessages.AutoSchemaBuilder_MissingIndexableMembers, "TmpType");
             Assert.AreEqual(expectedMessage, ex.Message);
@@ -119,7 +115,7 @@ namespace Structurizer.UnitTests.Schemas.Builders
             structureType.Setup(s => s.Name).Returns("TmpType");
 
             var ex = Assert.Throws<StructurizerException>(
-                () => _structureSchemaBuilder.CreateSchema(structureType.Object));
+                () => _structureSchemaFactory.CreateSchema(structureType.Object));
 
             var expectedMessage = string.Format(StructurizerExceptionMessages.AutoSchemaBuilder_MissingIndexableMembers, "TmpType");
             Assert.AreEqual(expectedMessage, ex.Message);
@@ -130,11 +126,11 @@ namespace Structurizer.UnitTests.Schemas.Builders
         {
             var structureType = GetStructureTypeFor<WithByte>();
 
-            var schema = _structureSchemaBuilder.CreateSchema(structureType);
+            var schema = _structureSchemaFactory.CreateSchema(structureType);
 
             var byteIac = schema.IndexAccessors.SingleOrDefault(iac => iac.Path == "Byte");
             Assert.IsNotNull(byteIac);
-            Assert.IsTrue(byteIac.DataType.IsByteType());
+            Assert.IsTrue(byteIac.DataType == typeof(byte));
         }
 
         [Test]
@@ -142,11 +138,11 @@ namespace Structurizer.UnitTests.Schemas.Builders
         {
             var structureType = GetStructureTypeFor<WithNullableByte>();
 
-            var schema = _structureSchemaBuilder.CreateSchema(structureType);
+            var schema = _structureSchemaFactory.CreateSchema(structureType);
 
             var byteIac = schema.IndexAccessors.SingleOrDefault(iac => iac.Path == "Byte");
             Assert.IsNotNull(byteIac);
-            Assert.IsTrue(byteIac.DataType.IsNullableByteType());
+            Assert.IsTrue(byteIac.DataType == typeof(byte?));
         }
 
         [Test]
@@ -154,7 +150,7 @@ namespace Structurizer.UnitTests.Schemas.Builders
         {
             var structureType = GetStructureTypeFor<WithBytes>();
 
-            var schema = _structureSchemaBuilder.CreateSchema(structureType);
+            var schema = _structureSchemaFactory.CreateSchema(structureType);
 
             Assert.AreEqual(1, schema.IndexAccessors.Count);
             Assert.IsTrue(schema.IndexAccessors[0].Path.StartsWith("DummyMember"));
@@ -165,7 +161,7 @@ namespace Structurizer.UnitTests.Schemas.Builders
         {
             var structureType = GetStructureTypeFor<WithStruct>();
 
-            var schema = _structureSchemaBuilder.CreateSchema(structureType);
+            var schema = _structureSchemaFactory.CreateSchema(structureType);
 
             Assert.AreEqual(1, schema.IndexAccessors.Count);
             Assert.AreEqual("Content", schema.IndexAccessors[0].Path);
@@ -233,7 +229,6 @@ namespace Structurizer.UnitTests.Schemas.Builders
             public MyText Content { get; set; }
         }
 
-        [Serializable]
         private struct MyText
         {
             private readonly string _value;

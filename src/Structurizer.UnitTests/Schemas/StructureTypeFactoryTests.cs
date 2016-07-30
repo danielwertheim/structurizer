@@ -19,7 +19,7 @@ namespace Structurizer.UnitTests.Schemas
                 return new[] { indexProperty.Object };
             });
 
-            var factory = new StructureTypeFactory(t => reflecterMock.Object);
+            var factory = new StructureTypeFactory(reflecterMock.Object);
             factory.CreateFor(type);
 
             reflecterMock.Verify(m => m.GetIndexableProperties(type));
@@ -37,7 +37,7 @@ namespace Structurizer.UnitTests.Schemas
                  return new[] { indexProperty.Object };
              });
 
-            var factory = new StructureTypeFactory(t => reflecterMock.Object);
+            var factory = new StructureTypeFactory(reflecterMock.Object);
             factory.Configurations.Configure(type, cfg => cfg.DoNotIndexThis("ExcludeTEMP"));
             factory.CreateFor(type);
 
@@ -56,7 +56,7 @@ namespace Structurizer.UnitTests.Schemas
                 return new[] { indexProperty.Object };
             });
 
-            var factory = new StructureTypeFactory(t => reflecterMock.Object);
+            var factory = new StructureTypeFactory(reflecterMock.Object);
             factory.Configurations.Configure(type, cfg => cfg.OnlyIndexThis("IncludeTEMP"));
             factory.CreateFor(type);
 

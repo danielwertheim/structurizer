@@ -1,31 +1,29 @@
 ﻿using System;
-using Structurizer.Schemas.Configuration;
+using Structurizer.Configuration;
+using Structurizer.Schemas;
 
-namespace Structurizer.Schemas
+namespace Structurizer
 {
     public class StructureTypeFactory : IStructureTypeFactory
     {
-        public Func<IStructureTypeConfig, IStructureTypeReflecter> ReflecterFn { get; }
+        public IStructureTypeReflecter Reflecter { get; }
 
         public IStructureTypeConfigurations Configurations { get; }
 
         public StructureTypeFactory(
-            Func<IStructureTypeConfig, IStructureTypeReflecter> reflecterFn = null,
+            IStructureTypeReflecter reflecter = null,
             IStructureTypeConfigurations configurations = null)
         {
-            ReflecterFn = reflecterFn ?? (cfg => new StructureTypeReflecter());
+            Reflecter = reflecter ?? new StructureTypeReflecter();
             Configurations = configurations ?? new StructureTypeConfigurations();
         }
 
-        public IStructureType CreateFor<T>() where T : class
-        {
-            return CreateFor(typeof(T));
-        }
+        public IStructureType CreateFor<T>() where T : class => CreateFor(typeof(T));
 
         public IStructureType CreateFor(Type structureType)
         {
             var config = Configurations.GetConfiguration(structureType);
-            var reflecter = ReflecterFn(config);
+            var reflecter = Reflecter;
             var shouldIndexAllMembers = config.IndexConfigIsEmpty;
 
             if (shouldIndexAllMembers)

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Structurizer.Schemas.Builders;
 
-namespace Structurizer.Schemas
+namespace Structurizer
 {
     public interface IStructureSchemas
     {
         IStructureTypeFactory StructureTypeFactory { get; set; }
-        IStructureSchemaBuilder StructureSchemaBuilder { get; set; }
+        IStructureSchemaFactory StructureSchemaFactory { get; set; }
 
         void Clear();
         IEnumerable<KeyValuePair<Type, IStructureSchema>> GetRegistrations();

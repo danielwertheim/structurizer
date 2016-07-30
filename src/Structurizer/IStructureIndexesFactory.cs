@@ -1,5 +1,3 @@
-using Structurizer.Schemas;
-
 namespace Structurizer
 {
     public interface IStructureIndexesFactory

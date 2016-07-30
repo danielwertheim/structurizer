@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Structurizer.Schemas.MemberAccessors;
 
-namespace Structurizer.Schemas
+namespace Structurizer
 {
     public interface IStructureSchema
     {

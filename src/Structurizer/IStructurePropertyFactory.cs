@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Structurizer.Schemas
+namespace Structurizer
 {
     public interface IStructurePropertyFactory
     {

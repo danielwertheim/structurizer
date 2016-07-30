@@ -2,7 +2,6 @@
 using System.Linq;
 using NUnit.Framework;
 using Structurizer.Schemas;
-using Structurizer.Schemas.Builders;
 
 namespace Structurizer.UnitTests.Schemas
 {
@@ -12,7 +11,7 @@ namespace Structurizer.UnitTests.Schemas
         [Test]
         public void GetSchema_InvokedUsingGenerics_WillGenerateSchema()
         {
-            var schemas = new StructureSchemas(new StructureTypeFactory(), new AutoStructureSchemaBuilder());
+            var schemas = new StructureSchemas(new StructureTypeFactory(), new StructureSchemaFactory());
 
             var schema = schemas.GetSchema<X>();
 
@@ -22,7 +21,7 @@ namespace Structurizer.UnitTests.Schemas
         [Test]
         public void GetSchema_InvokedUsingType_WillGenerateSchema()
         {
-            var schemas = new StructureSchemas(new StructureTypeFactory(), new AutoStructureSchemaBuilder());
+            var schemas = new StructureSchemas(new StructureTypeFactory(), new StructureSchemaFactory());
 
             var schema = schemas.GetSchema(typeof(X));
 
@@ -32,7 +31,7 @@ namespace Structurizer.UnitTests.Schemas
         [Test]
         public void GetSchemas_WhenEmpty_YieldsEmptyStream()
         {
-            var schemas = new StructureSchemas(new StructureTypeFactory(), new AutoStructureSchemaBuilder());
+            var schemas = new StructureSchemas(new StructureTypeFactory(), new StructureSchemaFactory());
 
             var numOfSchemas = schemas.GetSchemas().Count();
 
@@ -42,7 +41,7 @@ namespace Structurizer.UnitTests.Schemas
         [Test]
         public void GetSchemas_WhenContainingASchema_YieldsOneSchema()
         {
-            var schemas = new StructureSchemas(new StructureTypeFactory(), new AutoStructureSchemaBuilder());
+            var schemas = new StructureSchemas(new StructureTypeFactory(), new StructureSchemaFactory());
             var schema = schemas.GetSchema<X>();
 
             var fetchedSchema = schemas.GetSchemas().First();
@@ -53,7 +52,7 @@ namespace Structurizer.UnitTests.Schemas
 		[Test]
 		public void GetSchema_WhenCustomConfigurationExists_ReturnsSchemaWithCorrectIndexAccessor()
 		{
-            var schemas = new StructureSchemas(new StructureTypeFactory(), new AutoStructureSchemaBuilder());
+            var schemas = new StructureSchemas(new StructureTypeFactory(), new StructureSchemaFactory());
             schemas.StructureTypeFactory.Configurations.Configure<FooCustomer>(cfg => cfg.OnlyIndexThis("CustomerNo"));
 
 			var schema = schemas.GetSchema<FooCustomer>();
@@ -64,7 +63,7 @@ namespace Structurizer.UnitTests.Schemas
 		[Test]
 		public void GetSchema_WhenCustomConfigurationExists_ViaLambdas_ReturnsSchemaWithCorrectIndexAccessor()
 		{
-            var schemas = new StructureSchemas(new StructureTypeFactory(), new AutoStructureSchemaBuilder());
+            var schemas = new StructureSchemas(new StructureTypeFactory(), new StructureSchemaFactory());
             schemas.StructureTypeFactory.Configurations.Configure<FooCustomer>(cfg => cfg.OnlyIndexThis(c => c.CustomerNo));
 
 			var schema = schemas.GetSchema<FooCustomer>();
@@ -75,7 +74,7 @@ namespace Structurizer.UnitTests.Schemas
 		[Test]
 		public void GetSchema_WhenCustomConfigurationExists_ViaNonGenericConfig_ReturnsSchemaWithCorrectIndexAccessor()
 		{
-            var schemas = new StructureSchemas(new StructureTypeFactory(), new AutoStructureSchemaBuilder());
+            var schemas = new StructureSchemas(new StructureTypeFactory(), new StructureSchemaFactory());
             schemas.StructureTypeFactory.Configurations.Configure(typeof(FooCustomer), cfg => cfg.OnlyIndexThis("CustomerNo"));
 
 			var schema = schemas.GetSchema<FooCustomer>();

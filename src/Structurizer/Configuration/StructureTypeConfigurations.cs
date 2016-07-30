@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using EnsureThat;
 
-namespace Structurizer.Schemas.Configuration
+namespace Structurizer.Configuration
 {
     public class StructureTypeConfigurations : IStructureTypeConfigurations
     {

@@ -3,28 +3,28 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using EnsureThat;
-using Structurizer.Schemas.Builders;
 
 namespace Structurizer.Schemas
 {
+    //TODO: Morph into CachedStructureSchemaFactory
     public class StructureSchemas : IStructureSchemas
     {
         private readonly ConcurrentDictionary<Type, IStructureSchema> _schemas;
         private readonly Func<Type, IStructureSchema> _schemaFactoryFn;
 
         public IStructureTypeFactory StructureTypeFactory { get; set; }
-        public IStructureSchemaBuilder StructureSchemaBuilder { get; set; }
+        public IStructureSchemaFactory StructureSchemaFactory { get; set; }
 
-        public StructureSchemas(IStructureTypeFactory structureTypeFactory, IStructureSchemaBuilder structureSchemaBuilder)
+        public StructureSchemas(IStructureTypeFactory structureTypeFactory, IStructureSchemaFactory structureSchemaFactory)
         {
             Ensure.That(structureTypeFactory, "structureTypeFactory").IsNotNull();
-            Ensure.That(structureSchemaBuilder, "StructureSchemaBuilder").IsNotNull();
+            Ensure.That(structureSchemaFactory, "StructureSchemaFactory").IsNotNull();
 
             StructureTypeFactory = structureTypeFactory;
-            StructureSchemaBuilder = structureSchemaBuilder;
+            StructureSchemaFactory = structureSchemaFactory;
             _schemas = new ConcurrentDictionary<Type, IStructureSchema>();
 
-            _schemaFactoryFn = t => StructureSchemaBuilder.CreateSchema(StructureTypeFactory.CreateFor(t));
+            _schemaFactoryFn = t => StructureSchemaFactory.CreateSchema(StructureTypeFactory.CreateFor(t));
         }
 
         public IStructureSchema GetSchema<T>() where T : class

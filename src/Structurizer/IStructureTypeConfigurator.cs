@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Structurizer.Schemas.Configuration
+namespace Structurizer
 {
     public interface IStructureTypeConfigurator
     {

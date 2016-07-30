@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using EnsureThat;
 using Structurizer.Extensions.NCore.Expressions;
 
-namespace Structurizer.Schemas.Configuration
+namespace Structurizer.Configuration
 {
     public class StructureTypeConfigurator : IStructureTypeConfigurator
     {

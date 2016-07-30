@@ -51,26 +51,26 @@
     <Compile Include="IStructureIndexesFactory.cs" />
     <Compile Include="StructurizerException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Schemas\Builders\AutoStructureSchemaBuilder.cs" />
-    <Compile Include="Schemas\Builders\IStructureSchemaBuilder.cs" />
-    <Compile Include="Schemas\Configuration\IStructureTypeConfig.cs" />
-    <Compile Include="Schemas\Configuration\IStructureTypeConfigurations.cs" />
-    <Compile Include="Schemas\Configuration\IStructureTypeConfigurator.cs" />
-    <Compile Include="Schemas\Configuration\StructureTypeConfig.cs" />
-    <Compile Include="Schemas\Configuration\StructureTypeConfigurations.cs" />
-    <Compile Include="Schemas\Configuration\StructureTypeConfigurator.cs" />
+    <Compile Include="StructureSchemaFactory.cs" />
+    <Compile Include="IStructureSchemaFactory.cs" />
+    <Compile Include="IStructureTypeConfig.cs" />
+    <Compile Include="IStructureTypeConfigurations.cs" />
+    <Compile Include="IStructureTypeConfigurator.cs" />
+    <Compile Include="Configuration\StructureTypeConfig.cs" />
+    <Compile Include="Configuration\StructureTypeConfigurations.cs" />
+    <Compile Include="Configuration\StructureTypeConfigurator.cs" />
     <Compile Include="Schemas\DataTypeConverter.cs" />
     <Compile Include="Schemas\DynamicGetter.cs" />
     <Compile Include="Schemas\DynamicPropertyFactory.cs" />
     <Compile Include="Schemas\DynamicSetter.cs" />
-    <Compile Include="Schemas\IDataTypeConverter.cs" />
-    <Compile Include="Schemas\IStructureProperty.cs" />
-    <Compile Include="Schemas\IStructurePropertyFactory.cs" />
-    <Compile Include="Schemas\IStructureSchema.cs" />
-    <Compile Include="Schemas\IStructureSchemas.cs" />
-    <Compile Include="Schemas\IStructureType.cs" />
-    <Compile Include="Schemas\IStructureTypeFactory.cs" />
-    <Compile Include="Schemas\IStructureTypeReflecter.cs" />
+    <Compile Include="IDataTypeConverter.cs" />
+    <Compile Include="IStructureProperty.cs" />
+    <Compile Include="IStructurePropertyFactory.cs" />
+    <Compile Include="IStructureSchema.cs" />
+    <Compile Include="IStructureSchemas.cs" />
+    <Compile Include="IStructureType.cs" />
+    <Compile Include="IStructureTypeFactory.cs" />
+    <Compile Include="IStructureTypeReflecter.cs" />
     <Compile Include="Schemas\MemberAccessors\IIndexAccessor.cs" />
     <Compile Include="Schemas\MemberAccessors\IMemberAccessor.cs" />
     <Compile Include="Schemas\MemberAccessors\IndexAccessor.cs" />
@@ -83,7 +83,7 @@
     <Compile Include="Schemas\StructureSchema.cs" />
     <Compile Include="Schemas\StructureSchemas.cs" />
     <Compile Include="Schemas\StructureType.cs" />
-    <Compile Include="Schemas\StructureTypeFactory.cs" />
+    <Compile Include="StructureTypeFactory.cs" />
     <Compile Include="Schemas\StructureTypeReflecter.cs" />
     <Compile Include="Structure.cs" />
     <Compile Include="StructureBuilder.cs" />
@@ -92,7 +92,9 @@
     <Compile Include="StructurizerExceptionMessages.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

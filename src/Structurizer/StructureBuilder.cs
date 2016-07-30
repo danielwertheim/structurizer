@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
-using Structurizer.Schemas;
 
 namespace Structurizer
 {
     public class StructureBuilder : IStructureBuilder
     {
         public IStructureIndexesFactory IndexesFactory { get; set; }
+        public IStructureSchemaFactory SchemaFactory { get; set; } //TODO: Use this, and adapt StructureBuilder to only take item as argument
 
         public StructureBuilder()
         {

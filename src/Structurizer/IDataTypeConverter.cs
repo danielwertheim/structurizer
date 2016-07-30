@@ -1,6 +1,6 @@
 using System;
 
-namespace Structurizer.Schemas
+namespace Structurizer
 {
     public interface IDataTypeConverter
     {

@@ -6,9 +6,9 @@ namespace Structurizer.Extensions
 {
     namespace NCore.Expressions
     {
-        public static class ExpressionExtensions
+        internal static class ExpressionExtensions
         {
-            public static object Evaluate(this Expression e)
+            internal static object Evaluate(this Expression e)
             {
                 if (e is MethodCallExpression)
                     return (e as MethodCallExpression).Evaluate();
@@ -29,12 +29,12 @@ namespace Structurizer.Extensions
                     string.Format(StructurizerExceptionMessages.ExpressionEvaluation_DontKnowHowToEvalExpression, e.GetType().Name));
             }
 
-            public static object[] Evaluate(this NewArrayExpression e)
+            internal static object[] Evaluate(this NewArrayExpression e)
             {
                 return e.Expressions.Select(ie => ie.Evaluate()).ToArray();
             }
 
-            public static object Evaluate(this UnaryExpression e)
+            internal static object Evaluate(this UnaryExpression e)
             {
                 if (e.Operand is ConstantExpression)
                     return (e.Operand as ConstantExpression).Evaluate();
@@ -46,7 +46,7 @@ namespace Structurizer.Extensions
                     string.Format(StructurizerExceptionMessages.ExpressionEvaluation_DontKnowHowToEvalUnaryExpression, e.NodeType));
             }
 
-            public static object Evaluate(this MethodCallExpression methodExpression)
+            internal static object Evaluate(this MethodCallExpression methodExpression)
             {
                 if (methodExpression.Object == null)
                 {
@@ -58,7 +58,7 @@ namespace Structurizer.Extensions
                 return Expression.Lambda(methodExpression).Compile().DynamicInvoke();
             }
 
-            public static object Evaluate(this MemberExpression memberExpression)
+            internal static object Evaluate(this MemberExpression memberExpression)
             {
                 if (memberExpression.Member.MemberType == MemberTypes.Field && memberExpression.Expression is ConstantExpression)
                 {
@@ -71,12 +71,12 @@ namespace Structurizer.Extensions
                 return Expression.Lambda(memberExpression).Compile().DynamicInvoke();
             }
 
-            public static object Evaluate(this ConstantExpression constantExpression)
+            internal static object Evaluate(this ConstantExpression constantExpression)
             {
                 return constantExpression.Value;
             }
 
-            public static MemberExpression GetRightMostMember(this Expression e)
+            internal static MemberExpression GetRightMostMember(this Expression e)
             {
                 if (e is LambdaExpression)
                     return GetRightMostMember(((LambdaExpression)e).Body);
@@ -104,7 +104,7 @@ namespace Structurizer.Extensions
                 return null;
             }
 
-            public static string ToPath(this MemberExpression e)
+            internal static string ToPath(this MemberExpression e)
             {
                 var parent = e.Expression as MemberExpression;
                 var path = "";

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Structurizer.Schemas.Configuration
+namespace Structurizer
 {
     public interface IStructureTypeConfig
     {

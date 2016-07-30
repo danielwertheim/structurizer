@@ -1,6 +1,4 @@
-﻿using Structurizer.Schemas;
-
-namespace Structurizer
+﻿namespace Structurizer
 {
     /// <summary>
     /// Builds <see cref="IStructure"/> instances from sent Items.
@@ -14,7 +12,6 @@ namespace Structurizer
 
         /// <summary>
         /// Creates a single <see cref="IStructure"/> for sent <typeparamref name="T"/> item.
-        /// The item will be assigned a new Sequential Guid Id as StructureId.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="item"></param>
@@ -24,7 +21,6 @@ namespace Structurizer
 
         /// <summary>
         /// Yields each item as an <see cref="IStructure"/>.
-        /// All items will be assigned a new Sequential Guid Id as StructureId.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="items"></param>

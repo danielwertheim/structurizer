@@ -1,8 +1,8 @@
 using System.Linq;
 using NUnit.Framework;
-using Structurizer.Schemas.Configuration;
+using Structurizer.Configuration;
 
-namespace Structurizer.UnitTests.Schemas.Configuration
+namespace Structurizer.UnitTests.Configuration
 {
     [TestFixture]
     public class StructureTypeConfigurationsTests : UnitTestBase

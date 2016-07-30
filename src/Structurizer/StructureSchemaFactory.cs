@@ -1,15 +1,16 @@
 ﻿using EnsureThat;
+using Structurizer.Schemas;
 using Structurizer.Schemas.MemberAccessors;
 
-namespace Structurizer.Schemas.Builders
+namespace Structurizer
 {
-    public class AutoStructureSchemaBuilder : IStructureSchemaBuilder
+    public class StructureSchemaFactory : IStructureSchemaFactory
     {
-        public IDataTypeConverter DataTypeConverter { get; set; }
+        protected IDataTypeConverter DataTypeConverter { get; }
 
-        public AutoStructureSchemaBuilder()
+        public StructureSchemaFactory(IDataTypeConverter dataTypeConverter = null)
         {
-            DataTypeConverter = new DataTypeConverter();
+            DataTypeConverter = dataTypeConverter ?? new DataTypeConverter();
         }
 
         public virtual IStructureSchema CreateSchema(IStructureType structureType)

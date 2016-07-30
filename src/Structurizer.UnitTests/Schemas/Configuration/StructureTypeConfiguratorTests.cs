@@ -29,23 +29,7 @@ namespace Structurizer.UnitTests.Schemas.Configuration
         }
 
         [Test]
-        public void AllowNestedStructures_WhenCalled_IncludeContainedStructureMembersBecomesTrue()
-        {
-            var config = UseNonGenericConfiguratorFor<Dummy>(cfg => cfg.AllowNestedStructures());
-
-            Assert.IsTrue(config.IncludeContainedStructureMembers);
-        }
-
-        [Test]
-        public void Generic_AllowNestedStructures_WhenCalled_IncludeContainedStructureMembersBecomesTrue()
-        {
-            var config = UseGenericConfiguratorFor<Dummy>(cfg => cfg.AllowNestedStructures());
-
-            Assert.IsTrue(config.IncludeContainedStructureMembers);
-        }
-
-        [Test]
-        public void OnlyIndexThis_WhenFirstTimeCalled_MemberPathsIsStoredIn_MemberPathsBeingIndexedCollection()
+        public void StringBased_OnlyIndexThis_Should_Have_MemberPaths_StoredIn_MemberPathsBeingIndexedCollection()
         {
             var config = UseNonGenericConfiguratorFor<Dummy>(cfg => cfg.OnlyIndexThis("Int1", "String1", "Nested.Int1", "Nested.String1"));
 
@@ -58,7 +42,7 @@ namespace Structurizer.UnitTests.Schemas.Configuration
         }
 
         [Test]
-        public void Generic_OnlyIndexThis_WhenFirstTimeCalled_MemberPathsIsStoredIn_MemberPathsBeingIndexedCollection()
+        public void ExpressionBased_OnlyIndexThis_Should_Have_MemberPaths_StoredIn_MemberPathsBeingIndexedCollection()
         {
             var config = UseGenericConfiguratorFor<Dummy>(cfg => cfg.OnlyIndexThis(x => x.Int1, x => x.String1, x => x.Nested.Int1, x => x.Nested.String1));
 
@@ -71,7 +55,7 @@ namespace Structurizer.UnitTests.Schemas.Configuration
         }
 
         [Test]
-        public void OnlyIndexThis_WhenCalledWithSameValueTwice_OnlyStoredOnce()
+        public void StringBased_OnlyIndexThis_WhenCalledWithSameValueTwice_OnlyStoredOnce()
         {
             var config = UseNonGenericConfiguratorFor<Dummy>(cfg => cfg.OnlyIndexThis("String1", "String1"));
 
@@ -79,7 +63,7 @@ namespace Structurizer.UnitTests.Schemas.Configuration
         }
 
         [Test]
-        public void Generic_OnlyIndexThis_WhenCalledWithSameValueTwice_OnlyStoredOnce()
+        public void ExpressionBased_OnlyIndexThis_WhenCalledWithSameValueTwice_OnlyStoredOnce()
         {
             var config = UseGenericConfiguratorFor<Dummy>(cfg => cfg.OnlyIndexThis(x => x.String1, x => x.String1));
 
@@ -87,7 +71,7 @@ namespace Structurizer.UnitTests.Schemas.Configuration
         }
 
         [Test]
-        public void OnlyIndexThis_WhenSpecificNotIndexedMemberPathsExists_MemberPathsNotBeingIndexedGetsCleared()
+        public void StringBased_OnlyIndexThis_WhenSpecificNotIndexedMemberPathsExists_MemberPathsNotBeingIndexedGetsCleared()
         {
             var config = UseNonGenericConfiguratorFor<Dummy>(cfg =>
             {
@@ -99,7 +83,7 @@ namespace Structurizer.UnitTests.Schemas.Configuration
         }
 
         [Test]
-        public void Generic_OnlyIndexThis_WhenSpecificNotIndexedMemberPathsExists_MemberPathsNotBeingIndexedGetsCleared()
+        public void ExpressionBased_OnlyIndexThis_WhenSpecificNotIndexedMemberPathsExists_MemberPathsNotBeingIndexedGetsCleared()
         {
             var config = UseGenericConfiguratorFor<Dummy>(cfg =>
             {
@@ -111,7 +95,7 @@ namespace Structurizer.UnitTests.Schemas.Configuration
         }
 
         [Test]
-        public void DoNotIndexThis_WhenSpecificOnlyIndexthisMemberPathsExists_MemberPathsBeingIndexedGetsCleared()
+        public void StringBased_DoNotIndexThis_WhenSpecificOnlyIndexthisMemberPathsExists_MemberPathsBeingIndexedGetsCleared()
         {
             var config = UseNonGenericConfiguratorFor<Dummy>(cfg =>
             {
@@ -123,7 +107,7 @@ namespace Structurizer.UnitTests.Schemas.Configuration
         }
 
         [Test]
-        public void Generic_DoNotIndexThis_WhenSpecificOnlyIndexthisMemberPathsExists_MemberPathsBeingIndexedGetsCleared()
+        public void ExpressionBased_DoNotIndexThis_WhenSpecificOnlyIndexthisMemberPathsExists_MemberPathsBeingIndexedGetsCleared()
         {
             var config = UseGenericConfiguratorFor<Dummy>(cfg =>
             {
@@ -135,7 +119,7 @@ namespace Structurizer.UnitTests.Schemas.Configuration
         }
 
         [Test]
-        public void DoNotIndexThis_WhenFirstTimeCalled_MemberPathsIsStoredIn_MemberPathsNotBeingIndexedCollection()
+        public void StringBased_DoNotIndexThis_WhenFirstTimeCalled_MemberPathsIsStoredIn_MemberPathsNotBeingIndexedCollection()
         {
             var config = UseNonGenericConfiguratorFor<Dummy>(cfg => cfg.DoNotIndexThis("Int1", "String1", "Nested.Int1", "Nested.String1"));
 
@@ -148,7 +132,7 @@ namespace Structurizer.UnitTests.Schemas.Configuration
         }
 
         [Test]
-        public void Generic_DoNotIndexThis_WhenFirstTimeCalled_MemberPathsIsStoredIn_MemberPathsNotBeingIndexedCollection()
+        public void ExpressionBased_DoNotIndexThis_WhenFirstTimeCalled_MemberPathsIsStoredIn_MemberPathsNotBeingIndexedCollection()
         {
             var config = UseGenericConfiguratorFor<Dummy>(cfg => cfg.DoNotIndexThis(x => x.Int1, x => x.String1, x => x.Nested.Int1, x => x.Nested.String1));
 

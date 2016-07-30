@@ -5,11 +5,13 @@ namespace Structurizer.Schemas
 {
     public class StructureTypeFactory : IStructureTypeFactory
     {
-        public Func<IStructureTypeConfig, IStructureTypeReflecter> ReflecterFn { get; set; }
+        public Func<IStructureTypeConfig, IStructureTypeReflecter> ReflecterFn { get; }
 
-        public IStructureTypeConfigurations Configurations { get; set; }
+        public IStructureTypeConfigurations Configurations { get; }
 
-        public StructureTypeFactory(Func<IStructureTypeConfig, IStructureTypeReflecter> reflecterFn = null, IStructureTypeConfigurations configurations = null)
+        public StructureTypeFactory(
+            Func<IStructureTypeConfig, IStructureTypeReflecter> reflecterFn = null,
+            IStructureTypeConfigurations configurations = null)
         {
             ReflecterFn = reflecterFn ?? (cfg => new StructureTypeReflecter());
             Configurations = configurations ?? new StructureTypeConfigurations();
@@ -31,10 +33,10 @@ namespace Structurizer.Schemas
                     structureType,
                     reflecter.GetIndexableProperties(structureType));
 
-            var shouldIndexAllMembersExcept = config.MemberPathsNotBeingIndexed.Count > 0;
+            var shouldExcludeMembers = config.MemberPathsNotBeingIndexed.Count > 0;
             return new StructureType(
                 structureType,
-                shouldIndexAllMembersExcept
+                shouldExcludeMembers
                     ? reflecter.GetIndexablePropertiesExcept(structureType, config.MemberPathsNotBeingIndexed)
                     : reflecter.GetSpecificIndexableProperties(structureType, config.MemberPathsBeingIndexed));
         }

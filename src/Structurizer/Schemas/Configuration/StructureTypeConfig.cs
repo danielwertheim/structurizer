@@ -4,7 +4,6 @@ using EnsureThat;
 
 namespace Structurizer.Schemas.Configuration
 {
-    [Serializable]
     public class StructureTypeConfig : IStructureTypeConfig
     {
         private readonly HashSet<string> _memberPathsBeingIndexed;
@@ -14,7 +13,6 @@ namespace Structurizer.Schemas.Configuration
         public bool IndexConfigIsEmpty => MemberPathsBeingIndexed.Count < 1 && MemberPathsNotBeingIndexed.Count < 1;
         public bool IncludeContainedStructureMembers { get; set; }
         public ISet<string> MemberPathsBeingIndexed => _memberPathsBeingIndexed;
-
         public ISet<string> MemberPathsNotBeingIndexed => _memberPathsNotBeingIndexed;
 
         public StructureTypeConfig(Type structureType)

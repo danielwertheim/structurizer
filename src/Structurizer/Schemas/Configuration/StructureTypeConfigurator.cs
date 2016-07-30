@@ -8,22 +8,13 @@ namespace Structurizer.Schemas.Configuration
 {
     public class StructureTypeConfigurator : IStructureTypeConfigurator
     {
-        private readonly IStructureTypeConfig _config;
-
-        public IStructureTypeConfig Config => _config;
+        public IStructureTypeConfig Config { get; }
 
         public StructureTypeConfigurator(IStructureTypeConfig config)
         {
             Ensure.That(config, "config").IsNotNull();
 
-            _config = config;
-        }
-
-        public virtual IStructureTypeConfigurator AllowNestedStructures()
-        {
-            Config.IncludeContainedStructureMembers = true;
-
-            return this;
+            Config = config;
         }
 
         public virtual IStructureTypeConfigurator OnlyIndexThis(params string[] memberPaths)
@@ -56,13 +47,6 @@ namespace Structurizer.Schemas.Configuration
         public StructureTypeConfigurator(IStructureTypeConfig config)
         {
             InternalConfigurator = new StructureTypeConfigurator(config);
-        }
-
-        public virtual IStructureTypeConfigurator<T> AllowNestedStructures()
-        {
-            Config.IncludeContainedStructureMembers = true;
-
-            return this;
         }
 
         public virtual IStructureTypeConfigurator<T> OnlyIndexThis(params string[] memberPaths)

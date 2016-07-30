@@ -67,7 +67,6 @@
     <Compile Include="IStructureProperty.cs" />
     <Compile Include="IStructurePropertyFactory.cs" />
     <Compile Include="IStructureSchema.cs" />
-    <Compile Include="IStructureSchemas.cs" />
     <Compile Include="IStructureType.cs" />
     <Compile Include="IStructureTypeFactory.cs" />
     <Compile Include="IStructureTypeReflecter.cs" />
@@ -81,7 +80,6 @@
     <Compile Include="Schemas\StructurePropertyFactoryRules.cs" />
     <Compile Include="Schemas\StructurePropertyInfo.cs" />
     <Compile Include="Schemas\StructureSchema.cs" />
-    <Compile Include="Schemas\StructureSchemas.cs" />
     <Compile Include="Schemas\StructureType.cs" />
     <Compile Include="StructureTypeFactory.cs" />
     <Compile Include="Schemas\StructureTypeReflecter.cs" />

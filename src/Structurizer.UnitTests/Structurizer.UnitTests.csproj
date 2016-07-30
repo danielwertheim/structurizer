@@ -65,7 +65,6 @@
     <Compile Include="Schemas\StructurePropertyTests\StructurePropertyGetPrimitiveValueTests.cs" />
     <Compile Include="Schemas\StructurePropertyTests\StructurePropertyGetStringValueTests.cs" />
     <Compile Include="Schemas\StructurePropertyTests\StructurePropertyTests.cs" />
-    <Compile Include="Schemas\StructureSchemasTests.cs" />
     <Compile Include="Schemas\StructureTypeFactoryTests.cs" />
     <Compile Include="Schemas\StructureTypeReflecterTests\StructureTypeReflecterComplexIndexablePropertiesTests.cs" />
     <Compile Include="Schemas\StructureTypeReflecterTests\StructureTypeReflecterEnumerableIndexablePropertiesTests.cs" />

@@ -7,13 +7,13 @@ using EnsureThat;
 namespace Structurizer.Schemas
 {
     //TODO: Morph into CachedStructureSchemaFactory
-    public class StructureSchemas : IStructureSchemas
+    public class StructureSchemas
     {
         private readonly ConcurrentDictionary<Type, IStructureSchema> _schemas;
         private readonly Func<Type, IStructureSchema> _schemaFactoryFn;
 
-        public IStructureTypeFactory StructureTypeFactory { get; set; }
-        public IStructureSchemaFactory StructureSchemaFactory { get; set; }
+        protected IStructureTypeFactory StructureTypeFactory { get; }
+        protected IStructureSchemaFactory StructureSchemaFactory { get; }
 
         public StructureSchemas(IStructureTypeFactory structureTypeFactory, IStructureSchemaFactory structureSchemaFactory)
         {

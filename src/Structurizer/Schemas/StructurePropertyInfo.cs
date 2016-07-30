@@ -3,7 +3,6 @@ using EnsureThat;
 
 namespace Structurizer.Schemas
 {
-    [Serializable]
     public struct StructurePropertyInfo
     {
         public readonly IStructureProperty Parent;

@@ -3,7 +3,6 @@ using EnsureThat;
 
 namespace Structurizer.Schemas
 {
-    [Serializable]
     public class StructureType : IStructureType
     {
         public Type Type { get; }

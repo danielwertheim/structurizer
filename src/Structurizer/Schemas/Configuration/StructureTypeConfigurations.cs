@@ -4,7 +4,6 @@ using EnsureThat;
 
 namespace Structurizer.Schemas.Configuration
 {
-    [Serializable]
     public class StructureTypeConfigurations : IStructureTypeConfigurations
     {
         private readonly Dictionary<Type, IStructureTypeConfig> _configurations;

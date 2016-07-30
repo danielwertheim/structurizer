@@ -107,7 +107,6 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             public string Value { get; set; }
         }
 
-        [Serializable]
         private struct MyText
         {
             private readonly string _value;

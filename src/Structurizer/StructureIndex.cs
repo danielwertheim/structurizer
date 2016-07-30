@@ -3,7 +3,6 @@ using EnsureThat;
 
 namespace Structurizer
 {
-    [Serializable]
     public class StructureIndex : IStructureIndex
     {
         public string Path { get; }

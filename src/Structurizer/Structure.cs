@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using EnsureThat;
 
 namespace Structurizer
 {
-    [Serializable]
     public class Structure : IStructure
     {
         public string Name { get; }

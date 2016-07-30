@@ -1,8 +1,5 @@
-using System;
-
 namespace Structurizer
 {
-    [Serializable]
     public enum DataTypeCode
     {
         Unknown,

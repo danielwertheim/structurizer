@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using EnsureThat;
@@ -8,77 +9,68 @@ namespace Structurizer.Configuration
 {
     public class StructureTypeConfigurator : IStructureTypeConfigurator
     {
-        public IStructureTypeConfig Config { get; }
+        private readonly Type _structureType;
+        private readonly ISet<string> _memberPaths = new HashSet<string>();
+        private IndexMode _indexMode;
 
-        public StructureTypeConfigurator(IStructureTypeConfig config)
+        public StructureTypeConfigurator(Type structureType)
         {
-            Ensure.That(config, "config").IsNotNull();
+            Ensure.That(structureType, nameof(structureType)).IsNotNull();
 
-            Config = config;
+            _structureType = structureType;
         }
 
-        public virtual IStructureTypeConfigurator OnlyIndexThis(params string[] memberPaths)
+        public IStructureTypeConfigurator UsingIndexMode(IndexMode mode)
         {
-            Config.MemberPathsNotBeingIndexed.Clear();
-
-            foreach (var memberPath in memberPaths)
-                Config.MemberPathsBeingIndexed.Add(memberPath);
+            _indexMode = mode;
 
             return this;
         }
 
-        public virtual IStructureTypeConfigurator DoNotIndexThis(params string[] memberPaths)
+        public virtual IStructureTypeConfigurator Members(params string[] memberPaths)
         {
-            Config.MemberPathsBeingIndexed.Clear();
-
             foreach (var memberPath in memberPaths)
-                Config.MemberPathsNotBeingIndexed.Add(memberPath);
+                _memberPaths.Add(memberPath);
 
             return this;
         }
+
+        public IStructureTypeConfig GenerateConfig()
+            => new StructureTypeConfig(_structureType, _indexMode, _memberPaths);
     }
 
     public class StructureTypeConfigurator<T> : IStructureTypeConfigurator<T> where T : class
     {
-        protected readonly IStructureTypeConfigurator InternalConfigurator;
+        private readonly IStructureTypeConfigurator _internalConfigurator;
 
-        public IStructureTypeConfig Config => InternalConfigurator.Config;
-
-        public StructureTypeConfigurator(IStructureTypeConfig config)
+        public StructureTypeConfigurator(Type structureType)
         {
-            InternalConfigurator = new StructureTypeConfigurator(config);
+            _internalConfigurator = new StructureTypeConfigurator(structureType);
         }
 
-        public virtual IStructureTypeConfigurator<T> OnlyIndexThis(params string[] memberPaths)
+        public IStructureTypeConfigurator<T> UsingIndexMode(IndexMode mode)
         {
-            InternalConfigurator.OnlyIndexThis(memberPaths);
+            _internalConfigurator.UsingIndexMode(mode);
 
             return this;
         }
 
-        public virtual IStructureTypeConfigurator<T> OnlyIndexThis(params Expression<Func<T, object>>[] members)
+        public virtual IStructureTypeConfigurator<T> Members(params string[] memberPaths)
         {
-            OnlyIndexThis(members
+            _internalConfigurator.Members(memberPaths);
+
+            return this;
+        }
+
+        public virtual IStructureTypeConfigurator<T> Members(params Expression<Func<T, object>>[] members)
+        {
+            Members(members
                 .Select(e => e.GetRightMostMember().ToPath())
                 .ToArray());
 
             return this;
         }
 
-        public virtual IStructureTypeConfigurator<T> DoNotIndexThis(params string[] memberPaths)
-        {
-            InternalConfigurator.DoNotIndexThis(memberPaths);
-
-            return this;
-        }
-
-        public virtual IStructureTypeConfigurator<T> DoNotIndexThis(params Expression<Func<T, object>>[] members)
-        {
-            DoNotIndexThis(members
-                .Select(e => e.GetRightMostMember().ToPath())
-                .ToArray());
-
-            return this;
-        }
+        public IStructureTypeConfig GenerateConfig() => _internalConfigurator.GenerateConfig();
     }
 }

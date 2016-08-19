@@ -9,10 +9,9 @@ namespace Structurizer.UnitTests.StructureBuilderTests
         [Test]
         public void Should_be_able_to_index_nested_child_by_registrating_child_only()
         {
-            Builder = StructureBuilder.Create(c => c.Register<MyRoot>(i => i.OnlyIndexThis(
-                //e => e.OneChild,
-                //e => e.OneChild.GrandChild,
-                e => e.OneChild.GrandChild.SomeInt)));
+            Builder = StructureBuilder.Create(c => c.Register<MyRoot>(cfg => cfg
+                .UsingIndexMode(IndexMode.Inclusive)
+                .Members(e => e.OneChild.GrandChild.SomeInt)));
 
             var item = new MyRoot
             {

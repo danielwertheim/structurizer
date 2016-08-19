@@ -15,7 +15,7 @@ namespace Structurizer
         protected IStructureSchemaFactory SchemaFactory { get; }
         protected IStructureIndexesFactory IndexesFactory { get; }
 
-        private StructureBuilder(
+        protected StructureBuilder(
             IStructureTypeConfigurations typeConfigurations,
             IStructureTypeFactory structureTypeFactory,
             IStructureSchemaFactory schemaFactory,

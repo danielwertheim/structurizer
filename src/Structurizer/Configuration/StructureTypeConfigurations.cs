@@ -27,40 +27,28 @@ namespace Structurizer.Configuration
             return _configurations.TryGetValue(type, out config) ? config : null;
         }
 
-        public IStructureTypeConfig Register(Type type)
+        public IStructureTypeConfig Register(Type structureType, Action<IStructureTypeConfigurator> config = null)
         {
-            Ensure.That(type, nameof(type)).IsNotNull();
+            Ensure.That(structureType, nameof(structureType)).IsNotNull();
 
-            var config = GetConfiguration(type) ?? new StructureTypeConfig(type);
+            var configurator = new StructureTypeConfigurator(structureType);
+            config?.Invoke(configurator);
 
-            _configurations[config.Type] = config;
+            var typeConfig = configurator.GenerateConfig();
+            _configurations.Add(typeConfig.Type, typeConfig);
 
-            return config;
+            return typeConfig;
         }
 
-        public IStructureTypeConfig Register(Type type, Action<IStructureTypeConfigurator> configure)
+        public IStructureTypeConfig Register<T>(Action<IStructureTypeConfigurator<T>> config = null) where T : class
         {
-            Ensure.That(type, nameof(type)).IsNotNull();
-            Ensure.That(configure, nameof(configure)).IsNotNull();
+            var configurator = new StructureTypeConfigurator<T>(typeof(T));
+            config?.Invoke(configurator);
 
-            var config = Register(type);
-            var configurator = new StructureTypeConfigurator(config);
-            configure(configurator);
+            var typeConfig = configurator.GenerateConfig();
+            _configurations.Add(typeConfig.Type, typeConfig);
 
-            return config;
-        }
-
-        public IStructureTypeConfig Register<T>() where T : class => Register(typeof(T));
-
-        public IStructureTypeConfig Register<T>(Action<IStructureTypeConfigurator<T>> configure) where T : class
-        {
-            Ensure.That(configure, nameof(configure)).IsNotNull();
-
-            var config = Register<T>();
-            var configurator = new StructureTypeConfigurator<T>(config);
-            configure(configurator);
-
-            return config;
+            return typeConfig;
         }
     }
 }

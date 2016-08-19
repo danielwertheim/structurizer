@@ -12,7 +12,7 @@ namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
         {
             var ex = Assert.Throws<ArgumentException>(() => ReflecterFor().GetIndexablePropertiesExcept(typeof(Item), null));
 
-            Assert.AreEqual("nonIndexablePaths", ex.ParamName);
+            Assert.AreEqual("memberPaths", ex.ParamName);
         }
 
         [Test]
@@ -20,7 +20,7 @@ namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
         {
             var ex = Assert.Throws<ArgumentException>(() => ReflecterFor().GetIndexablePropertiesExcept(typeof(Item), new string[] { }));
 
-            Assert.AreEqual("nonIndexablePaths", ex.ParamName);
+            Assert.AreEqual("memberPaths", ex.ParamName);
         }
 
         [Test]

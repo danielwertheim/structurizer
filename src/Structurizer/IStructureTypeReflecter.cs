@@ -10,7 +10,7 @@ namespace Structurizer
     public interface IStructureTypeReflecter
     {
         IStructureProperty[] GetIndexableProperties(Type structureType);
-        IStructureProperty[] GetIndexablePropertiesExcept(Type structureType, ICollection<string> nonIndexablePaths);
-        IStructureProperty[] GetSpecificIndexableProperties(Type structureType, ICollection<string> indexablePaths);
+        IStructureProperty[] GetIndexablePropertiesExcept(Type structureType, IList<string> memberPaths);
+        IStructureProperty[] GetSpecificIndexableProperties(Type structureType, IList<string> memberPaths);
     }
 }

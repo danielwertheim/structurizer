@@ -27,20 +27,20 @@ namespace Structurizer.Schemas
             return GetIndexableProperties(structureType, null, EmptyArray, null);
         }
 
-        public IStructureProperty[] GetIndexablePropertiesExcept(Type structureType, ICollection<string> nonIndexablePaths)
+        public IStructureProperty[] GetIndexablePropertiesExcept(Type structureType, IList<string> memberPaths)
         {
-            Ensure.That(nonIndexablePaths, "nonIndexablePaths").HasItems();
+            Ensure.That(memberPaths, nameof(memberPaths)).HasItems();
 
-            return GetIndexableProperties(structureType, null, nonIndexablePaths, null);
+            return GetIndexableProperties(structureType, null, memberPaths, null);
         }
 
-        public IStructureProperty[] GetSpecificIndexableProperties(Type structureType, ICollection<string> indexablePaths)
+        public IStructureProperty[] GetSpecificIndexableProperties(Type structureType, IList<string> memberPaths)
         {
-            Ensure.That(indexablePaths, "indexablePaths").HasItems();
+            Ensure.That(memberPaths, nameof(memberPaths)).HasItems();
 
             var sb = new StringBuilder();
             var paths = new HashSet<string>();
-            foreach (var path in indexablePaths)
+            foreach (var path in memberPaths)
             {
                 sb.Clear();
                 var parts = path.Split(new[] {'.'}, StringSplitOptions.RemoveEmptyEntries);

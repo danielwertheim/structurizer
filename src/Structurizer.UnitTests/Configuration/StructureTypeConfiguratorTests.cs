@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 using Structurizer.Configuration;
 
@@ -10,138 +11,76 @@ namespace Structurizer.UnitTests.Configuration
     {
         private IStructureTypeConfig UseNonGenericConfiguratorFor<T>(Action<IStructureTypeConfigurator> configure) where T : class
         {
-            var config = new StructureTypeConfig(typeof(T));
-            var configurator = new StructureTypeConfigurator(config);
+            var configurator = new StructureTypeConfigurator(typeof(T));
 
             configure(configurator);
 
-            return config;
+            return configurator.GenerateConfig();
         }
 
         private IStructureTypeConfig UseGenericConfiguratorFor<T>(Action<IStructureTypeConfigurator<T>> configure) where T : class
         {
-            var config = new StructureTypeConfig(typeof(T));
-            var configurator = new StructureTypeConfigurator<T>(config);
+            var configurator = new StructureTypeConfigurator<T>(typeof(T));
 
             configure(configurator);
 
-            return config;
+            return configurator.GenerateConfig();
         }
 
         [Test]
-        public void StringBased_OnlyIndexThis_Should_Have_MemberPaths_StoredIn_MemberPathsBeingIndexedCollection()
+        public void NonGeneric_Should_assign_IndexMode()
         {
-            var config = UseNonGenericConfiguratorFor<Dummy>(cfg => cfg.OnlyIndexThis("Int1", "String1", "Nested.Int1", "Nested.String1"));
+            var config1 = UseNonGenericConfiguratorFor<Dummy>(cfg => cfg.UsingIndexMode(IndexMode.Exclusive));
+            var config2 = UseNonGenericConfiguratorFor<Dummy>(cfg => cfg.UsingIndexMode(IndexMode.Inclusive));
 
-            var memberPaths = config.MemberPathsBeingIndexed.ToArray();
-            Assert.AreEqual(4, memberPaths.Length);
-            Assert.AreEqual("Int1", memberPaths[0]);
-            Assert.AreEqual("String1", memberPaths[1]);
-            Assert.AreEqual("Nested.Int1", memberPaths[2]);
-            Assert.AreEqual("Nested.String1", memberPaths[3]);
+            config1.IndexMode.Should().Be(IndexMode.Exclusive);
+            config2.IndexMode.Should().Be(IndexMode.Inclusive);
         }
 
         [Test]
-        public void ExpressionBased_OnlyIndexThis_Should_Have_MemberPaths_StoredIn_MemberPathsBeingIndexedCollection()
+        public void Generic_Should_assign_IndexMode()
         {
-            var config = UseGenericConfiguratorFor<Dummy>(cfg => cfg.OnlyIndexThis(x => x.Int1, x => x.String1, x => x.Nested.Int1, x => x.Nested.String1));
+            var config1 = UseGenericConfiguratorFor<Dummy>(cfg => cfg.UsingIndexMode(IndexMode.Exclusive));
+            var config2 = UseGenericConfiguratorFor<Dummy>(cfg => cfg.UsingIndexMode(IndexMode.Inclusive));
 
-            var memberPaths = config.MemberPathsBeingIndexed.ToArray();
-            Assert.AreEqual(4, memberPaths.Length);
-            Assert.AreEqual("Int1", memberPaths[0]);
-            Assert.AreEqual("String1", memberPaths[1]);
-            Assert.AreEqual("Nested.Int1", memberPaths[2]);
-            Assert.AreEqual("Nested.String1", memberPaths[3]);
+            config1.IndexMode.Should().Be(IndexMode.Exclusive);
+            config2.IndexMode.Should().Be(IndexMode.Inclusive);
         }
 
         [Test]
-        public void StringBased_OnlyIndexThis_WhenCalledWithSameValueTwice_OnlyStoredOnce()
+        public void NonGeneric_Should_store_member_paths_When_defining_specific_members()
         {
-            var config = UseNonGenericConfiguratorFor<Dummy>(cfg => cfg.OnlyIndexThis("String1", "String1"));
+            var config = UseNonGenericConfiguratorFor<Dummy>(cfg => cfg.Members("Int1", "String1", "Nested.Int1", "Nested.String1"));
 
-            Assert.AreEqual(1, config.MemberPathsBeingIndexed.Count);
+            var memberPaths = config.MemberPaths.ToArray();
+            memberPaths.Should().HaveCount(4);
+            memberPaths.Should().BeEquivalentTo("Int1", "String1", "Nested.Int1", "Nested.String1");
         }
 
         [Test]
-        public void ExpressionBased_OnlyIndexThis_WhenCalledWithSameValueTwice_OnlyStoredOnce()
+        public void Generic_Should_store_member_paths_When_defining_specific_members()
         {
-            var config = UseGenericConfiguratorFor<Dummy>(cfg => cfg.OnlyIndexThis(x => x.String1, x => x.String1));
+            var config = UseGenericConfiguratorFor<Dummy>(cfg => cfg.Members(x => x.Int1, x => x.String1, x => x.Nested.Int1, x => x.Nested.String1));
 
-            Assert.AreEqual(1, config.MemberPathsBeingIndexed.Count);
+            var memberPaths = config.MemberPaths.ToArray();
+            memberPaths.Should().HaveCount(4);
+            memberPaths.Should().BeEquivalentTo("Int1", "String1", "Nested.Int1", "Nested.String1");
         }
 
         [Test]
-        public void StringBased_OnlyIndexThis_WhenSpecificNotIndexedMemberPathsExists_MemberPathsNotBeingIndexedGetsCleared()
+        public void NonGeneric_Should_only_store_member_once_When_called_twice()
         {
-            var config = UseNonGenericConfiguratorFor<Dummy>(cfg =>
-            {
-                cfg.DoNotIndexThis("Int1");
-                cfg.OnlyIndexThis("String1");
-            });
+            var config = UseNonGenericConfiguratorFor<Dummy>(cfg => cfg.Members("String1", "String1"));
 
-            Assert.IsFalse(config.MemberPathsNotBeingIndexed.Any());
+            config.MemberPaths.Should().HaveCount(1);
         }
 
         [Test]
-        public void ExpressionBased_OnlyIndexThis_WhenSpecificNotIndexedMemberPathsExists_MemberPathsNotBeingIndexedGetsCleared()
+        public void Generic_Should_only_store_member_once_When_called_twice()
         {
-            var config = UseGenericConfiguratorFor<Dummy>(cfg =>
-            {
-                cfg.DoNotIndexThis(x => x.Int1);
-                cfg.OnlyIndexThis(x => x.String1);
-            });
+            var config = UseGenericConfiguratorFor<Dummy>(cfg => cfg.Members(x => x.String1, x => x.String1));
 
-            Assert.IsFalse(config.MemberPathsNotBeingIndexed.Any());
-        }
-
-        [Test]
-        public void StringBased_DoNotIndexThis_WhenSpecificOnlyIndexthisMemberPathsExists_MemberPathsBeingIndexedGetsCleared()
-        {
-            var config = UseNonGenericConfiguratorFor<Dummy>(cfg =>
-            {
-                cfg.OnlyIndexThis("String1");
-                cfg.DoNotIndexThis("Int1");
-            });
-
-            Assert.IsFalse(config.MemberPathsBeingIndexed.Any());
-        }
-
-        [Test]
-        public void ExpressionBased_DoNotIndexThis_WhenSpecificOnlyIndexthisMemberPathsExists_MemberPathsBeingIndexedGetsCleared()
-        {
-            var config = UseGenericConfiguratorFor<Dummy>(cfg =>
-            {
-                cfg.OnlyIndexThis(x => x.String1);
-                cfg.DoNotIndexThis(x => x.Int1);
-            });
-
-            Assert.IsFalse(config.MemberPathsBeingIndexed.Any());
-        }
-
-        [Test]
-        public void StringBased_DoNotIndexThis_WhenFirstTimeCalled_MemberPathsIsStoredIn_MemberPathsNotBeingIndexedCollection()
-        {
-            var config = UseNonGenericConfiguratorFor<Dummy>(cfg => cfg.DoNotIndexThis("Int1", "String1", "Nested.Int1", "Nested.String1"));
-
-            var memberPaths = config.MemberPathsNotBeingIndexed.ToArray();
-            Assert.AreEqual(4, memberPaths.Length);
-            Assert.AreEqual("Int1", memberPaths[0]);
-            Assert.AreEqual("String1", memberPaths[1]);
-            Assert.AreEqual("Nested.Int1", memberPaths[2]);
-            Assert.AreEqual("Nested.String1", memberPaths[3]);
-        }
-
-        [Test]
-        public void ExpressionBased_DoNotIndexThis_WhenFirstTimeCalled_MemberPathsIsStoredIn_MemberPathsNotBeingIndexedCollection()
-        {
-            var config = UseGenericConfiguratorFor<Dummy>(cfg => cfg.DoNotIndexThis(x => x.Int1, x => x.String1, x => x.Nested.Int1, x => x.Nested.String1));
-
-            var memberPaths = config.MemberPathsNotBeingIndexed.ToArray();
-            Assert.AreEqual(4, memberPaths.Length);
-            Assert.AreEqual("Int1", memberPaths[0]);
-            Assert.AreEqual("String1", memberPaths[1]);
-            Assert.AreEqual("Nested.Int1", memberPaths[2]);
-            Assert.AreEqual("Nested.String1", memberPaths[3]);
+            config.MemberPaths.Should().HaveCount(1);
         }
 
         private class Dummy

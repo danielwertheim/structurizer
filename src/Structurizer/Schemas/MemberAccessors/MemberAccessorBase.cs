@@ -4,7 +4,7 @@ namespace Structurizer.Schemas.MemberAccessors
 {
     public abstract class MemberAccessorBase : IMemberAccessor
     {
-        protected IStructureProperty Property { get; private set; }
+        protected IStructureProperty Property { get; }
 
         public string Path => Property.Path;
         public Type DataType => Property.DataType;

@@ -5,15 +5,16 @@ using NUnit.Framework;
 namespace Structurizer.UnitTests.Schemas
 {
     [TestFixture]
-    public class StructureTypeFactoryTests
+    public class StructureTypeFactoryTests : UnitTestBase
     {
         [Test]
-        public void CreateFor_WhenNoExplicitConfigExistsForType_InvokesGetIndexablePropertiesOnReflecter()
+        public void Should_use_reflecter_to_get_all_indexable_properties_When_no_explicit_excludes_exists()
         {
             var typeConfigStub = new Mock<IStructureTypeConfig>();
             var typeConfig = typeConfigStub.Object;
             typeConfigStub.Setup(m => m.Type).Returns(typeof(MyClass));
-            typeConfigStub.Setup(m => m.IndexConfigIsEmpty).Returns(true);
+            typeConfigStub.Setup(m => m.IndexMode).Returns(IndexMode.Exclusive);
+            typeConfigStub.Setup(m => m.MemberPaths).Returns(new List<string>());
 
             var reflecterMock = new Mock<IStructureTypeReflecter>();
 
@@ -24,38 +25,37 @@ namespace Structurizer.UnitTests.Schemas
         }
 
         [Test]
-        public void CreateFor_WhenConfigExcludingMembersExistsForType_InvokesGetIndexablePropertiesExceptOnReflecter()
+        public void Should_use_reflecter_to_get_indexable_properties_except_excluded_ones_When_excludes_exists()
         {
             var typeConfigStub = new Mock<IStructureTypeConfig>();
             var typeConfig = typeConfigStub.Object;
             typeConfigStub.Setup(m => m.Type).Returns(typeof(MyClass));
-            typeConfigStub.Setup(m => m.IndexConfigIsEmpty).Returns(false);
-            typeConfigStub.Setup(m => m.MemberPathsNotBeingIndexed).Returns(() => new HashSet<string> { "ExcludeTEMP" });
+            typeConfigStub.Setup(m => m.IndexMode).Returns(IndexMode.Exclusive);
+            typeConfigStub.Setup(m => m.MemberPaths).Returns(new List<string> { "FooBeingExcluded" });
 
             var reflecterMock = new Mock<IStructureTypeReflecter>();
 
             var factory = new StructureTypeFactory(reflecterMock.Object);
             factory.CreateFor(typeConfig);
 
-            reflecterMock.Verify(m => m.GetIndexablePropertiesExcept(typeConfig.Type, new[] { "ExcludeTEMP" }));
+            reflecterMock.Verify(m => m.GetIndexablePropertiesExcept(typeConfig.Type, It.IsAny<IList<string>>()));
         }
 
         [Test]
-        public void CreateFor_WhenConfigIncludingMembersExistsForType_InvokesGetSpecificIndexablePropertiesOnReflecter()
+        public void Should_use_reflecter_to_get_specific_indexable_properties_When_includes_exists()
         {
             var typeConfigStub = new Mock<IStructureTypeConfig>();
             var typeConfig = typeConfigStub.Object;
             typeConfigStub.Setup(m => m.Type).Returns(typeof(MyClass));
-            typeConfigStub.Setup(m => m.IndexConfigIsEmpty).Returns(false);
-            typeConfigStub.Setup(m => m.MemberPathsNotBeingIndexed).Returns(() => new HashSet<string>());
-            typeConfigStub.Setup(m => m.MemberPathsBeingIndexed).Returns(() => new HashSet<string> { "IncludeTEMP" });
+            typeConfigStub.Setup(m => m.IndexMode).Returns(IndexMode.Inclusive);
+            typeConfigStub.Setup(m => m.MemberPaths).Returns(new List<string> { "FooBeingIncluded" });
 
             var reflecterMock = new Mock<IStructureTypeReflecter>();
 
             var factory = new StructureTypeFactory(reflecterMock.Object);
             factory.CreateFor(typeConfig);
 
-            reflecterMock.Verify(m => m.GetSpecificIndexableProperties(typeConfig.Type, new[] { "IncludeTEMP" }));
+            reflecterMock.Verify(m => m.GetSpecificIndexableProperties(typeConfig.Type, It.IsAny<IList<string>>()));
         }
 
         private class MyClass { }

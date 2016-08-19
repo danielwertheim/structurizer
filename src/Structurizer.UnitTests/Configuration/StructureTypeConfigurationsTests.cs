@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
@@ -9,71 +10,69 @@ namespace Structurizer.UnitTests.Configuration
     public class StructureTypeConfigurationsTests : UnitTestBase
     {
         [Test]
-        public void Register_Should_add_config_When_no_registration_exists()
+        public void Register_with_null_config_Should_add_config_with_exclusive_mode()
         {
             var configs = new StructureTypeConfigurations();
 
             configs.Register(typeof(Dummy));
 
-            Assert.AreEqual(1, configs.Count());
+            configs.Should().HaveCount(1);
+            configs.First().IndexMode.Should().Be(IndexMode.Exclusive);
         }
 
         [Test]
-        public void Register_with_empty_config_Should_add_config_When_no_registration_exists()
+        public void Register_with_empty_config_Should_add_config_with_exclusive_mode()
         {
             var configs = new StructureTypeConfigurations();
 
             configs.Register(typeof(Dummy), cfg => { });
 
-            Assert.AreEqual(1, configs.Count());
+            configs.Should().HaveCount(1);
+            configs.First().IndexMode.Should().Be(IndexMode.Exclusive);
         }
 
         [Test]
-        public void Register_generic_Should_add_config_When_no_registration_exists()
+        public void Register_generic_with_null_config_Should_add_config_with_exclusive_mode()
         {
             var configs = new StructureTypeConfigurations();
 
             configs.Register<Dummy>();
 
-            Assert.AreEqual(1, configs.Count());
+            configs.Should().HaveCount(1);
+            configs.First().IndexMode.Should().Be(IndexMode.Exclusive);
         }
 
         [Test]
-        public void Register_generic_with_empty_config_Should_add_config_When_no_registration_exists()
+        public void Register_generic_with_empty_config_Should_add_config_with_exclusive_mode()
         {
             var configs = new StructureTypeConfigurations();
 
             configs.Register<Dummy>(cfg => { });
 
-            Assert.AreEqual(1, configs.Count());
+            configs.Should().HaveCount(1);
+            configs.First().IndexMode.Should().Be(IndexMode.Exclusive);
         }
 
         [Test]
-        public void Register_Should_add_to_existing_config_When_called_twice()
+        public void Register_Should_throw_When_registrering_same_time_more_than_once()
         {
             var configs = new StructureTypeConfigurations();
-            IStructureTypeConfig config1 = null;
-            IStructureTypeConfig config2 = null;
+            configs.Register(typeof(Dummy));
 
-            configs.Register(typeof(Dummy), cfg => { config1 = cfg.Config; });
-            configs.Register(typeof(Dummy), cfg => { config2 = cfg.Config; });
+            Action invalidAction = () => configs.Register(typeof(Dummy));
 
-            Assert.AreSame(config1, config2);
-            Assert.AreEqual(1, configs.Count());
+            invalidAction.ShouldThrow<ArgumentException>();
         }
 
         [Test]
-        public void Register_generic_Should_add_to_existing_config_When_called_twice()
+        public void Register_generic_Should_throw_When_registrering_same_time_more_than_once()
         {
             var configs = new StructureTypeConfigurations();
-            IStructureTypeConfig config1 = null;
-            IStructureTypeConfig config2 = null;
+            configs.Register<Dummy>();
 
-            configs.Register<Dummy>(cfg => { config1 = cfg.Config; });
-            configs.Register<Dummy>(cfg => { config2 = cfg.Config; });
+            Action invalidAction = () => configs.Register<Dummy>();
 
-            Assert.AreSame(config1, config2);
-            Assert.AreEqual(1, configs.Count());
+            invalidAction.ShouldThrow<ArgumentException>();
         }
 
         [Test]

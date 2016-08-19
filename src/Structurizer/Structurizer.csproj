@@ -45,6 +45,7 @@
     <Compile Include="DataTypeCode.cs" />
     <Compile Include="Extensions\ExpressionExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="IndexMode.cs" />
     <Compile Include="IStructure.cs" />
     <Compile Include="IStructureBuilder.cs" />
     <Compile Include="IStructureIndex.cs" />

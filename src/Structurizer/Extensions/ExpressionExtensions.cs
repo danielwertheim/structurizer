@@ -27,10 +27,7 @@ namespace Structurizer.Extensions
                 string.Format(StructurizerExceptionMessages.ExpressionEvaluation_DontKnowHowToEvalExpression, e.GetType().Name));
         }
 
-        internal static object[] Evaluate(this NewArrayExpression e)
-        {
-            return e.Expressions.Select(ie => ie.Evaluate()).ToArray();
-        }
+        internal static object[] Evaluate(this NewArrayExpression e) => e.Expressions.Select(ie => ie.Evaluate()).ToArray();
 
         internal static object Evaluate(this UnaryExpression e)
         {
@@ -69,10 +66,7 @@ namespace Structurizer.Extensions
             return Expression.Lambda(memberExpression).Compile().DynamicInvoke();
         }
 
-        internal static object Evaluate(this ConstantExpression constantExpression)
-        {
-            return constantExpression.Value;
-        }
+        internal static object Evaluate(this ConstantExpression constantExpression) => constantExpression.Value;
 
         public static MemberExpression GetRightMostMember(this Expression e)
         {
@@ -104,13 +98,17 @@ namespace Structurizer.Extensions
 
         public static string ToPath(this MemberExpression e)
         {
-            var parent = e.Expression as MemberExpression;
-            var path = "";
+            if (e == null)
+                return null;
 
-            if (parent != null)
-                path = parent.ToPath() + ".";
+            if (e.Expression == null)
+                return e.Member.Name;
 
-            return path + e.Member.Name;
+            var parentPath = e.Expression != null ? GetRightMostMember(e.Expression).ToPath() : null;
+
+            return parentPath != null
+                ? string.Concat(parentPath, ".", e.Member.Name)
+                : e.Member.Name;
         }
     }
 }

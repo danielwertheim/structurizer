@@ -15,21 +15,18 @@ namespace Structurizer
 
         public IStructureType CreateFor(IStructureTypeConfig typeConfig)
         {
-            //TODO: Inverse
-            var shouldIndexAllMembers = typeConfig.IndexConfigIsEmpty;
+            var shouldIndexAllMembers = typeConfig.IndexMode == IndexMode.Exclusive && !typeConfig.MemberPaths.Any();
 
             if (shouldIndexAllMembers)
                 return new StructureType(
                     typeConfig.Type,
                     Reflecter.GetIndexableProperties(typeConfig.Type));
 
-            var shouldExcludeMembers = typeConfig.MemberPathsNotBeingIndexed.Any();
-
             return new StructureType(
                 typeConfig.Type,
-                shouldExcludeMembers
-                    ? Reflecter.GetIndexablePropertiesExcept(typeConfig.Type, typeConfig.MemberPathsNotBeingIndexed)
-                    : Reflecter.GetSpecificIndexableProperties(typeConfig.Type, typeConfig.MemberPathsBeingIndexed));
+                typeConfig.IndexMode == IndexMode.Exclusive
+                    ? Reflecter.GetIndexablePropertiesExcept(typeConfig.Type, typeConfig.MemberPaths.ToList())
+                    : Reflecter.GetSpecificIndexableProperties(typeConfig.Type, typeConfig.MemberPaths.ToList()));
         }
     }
 }

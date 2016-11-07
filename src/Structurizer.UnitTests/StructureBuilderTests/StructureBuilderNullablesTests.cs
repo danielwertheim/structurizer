@@ -19,11 +19,11 @@ namespace Structurizer.UnitTests.StructureBuilderTests
 
             Assert.AreEqual("NullableInt", structure.Indexes[0].Path);
             Assert.AreEqual(typeof(int?), structure.Indexes[0].DataType);
-            Assert.AreEqual(item.NullableInt, structure.Indexes[0].Value);
+            Assert.AreEqual(item.NullableInt, structure.Indexes[0].Node);
 
             Assert.AreEqual("NullableGuid", structure.Indexes[1].Path);
             Assert.AreEqual(typeof(Guid?), structure.Indexes[1].DataType);
-            Assert.AreEqual(item.NullableGuid, structure.Indexes[1].Value);
+            Assert.AreEqual(item.NullableGuid, structure.Indexes[1].Node);
         }
 
         [Test]
@@ -49,11 +49,11 @@ namespace Structurizer.UnitTests.StructureBuilderTests
 
             Assert.AreEqual("NullableInt", structure.Indexes[0].Path);
             Assert.AreEqual(typeof(int?), structure.Indexes[0].DataType);
-            Assert.AreEqual(item.NullableInt, structure.Indexes[0].Value);
+            Assert.AreEqual(item.NullableInt, structure.Indexes[0].Node);
 
             Assert.AreEqual("NullableGuid", structure.Indexes[1].Path);
             Assert.AreEqual(typeof(Guid?), structure.Indexes[1].DataType);
-            Assert.AreEqual(item.NullableGuid, structure.Indexes[1].Value);
+            Assert.AreEqual(item.NullableGuid, structure.Indexes[1].Node);
         }
 
         [Test]

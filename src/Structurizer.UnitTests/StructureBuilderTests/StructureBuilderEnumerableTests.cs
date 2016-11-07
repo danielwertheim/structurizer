@@ -17,9 +17,9 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             var structure = Builder.CreateStructure(item);
 
             var indices = structure.Indexes.Where(i => i.Path == "IntArray").ToList();
-            Assert.AreEqual(5, indices[0].Value);
-            Assert.AreEqual(6, indices[1].Value);
-            Assert.AreEqual(7, indices[2].Value);
+            Assert.AreEqual(5, indices[0].Node);
+            Assert.AreEqual(6, indices[1].Node);
+            Assert.AreEqual(7, indices[2].Node);
         }
 
         [Test]
@@ -57,9 +57,9 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             var structure = Builder.CreateStructure(item);
 
             var indices = structure.Indexes.Where(i => i.Path == "Container.IntArray").ToList();
-            Assert.AreEqual(5, indices[0].Value);
-            Assert.AreEqual(6, indices[1].Value);
-            Assert.AreEqual(7, indices[2].Value);
+            Assert.AreEqual(5, indices[0].Node);
+            Assert.AreEqual(6, indices[1].Node);
+            Assert.AreEqual(7, indices[2].Node);
         }
 
         [Test]
@@ -73,10 +73,10 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             var structure = Builder.CreateStructure(item);
 
             var indices = structure.Indexes.Skip(1).ToList();
-            Assert.AreEqual("A", indices[0].Value);
-            Assert.AreEqual("B", indices[1].Value);
-            Assert.AreEqual(1, indices[2].Value);
-            Assert.AreEqual(2, indices[3].Value);
+            Assert.AreEqual("A", indices[0].Node);
+            Assert.AreEqual("B", indices[1].Node);
+            Assert.AreEqual(1, indices[2].Node);
+            Assert.AreEqual(2, indices[3].Node);
         }
 
         [Test]
@@ -88,9 +88,9 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             var structure = Builder.CreateStructure(item);
 
             var indices = structure.Indexes.Where(i => i.Path == "HashSetOfInts").ToList();
-            Assert.AreEqual(5, indices[0].Value);
-            Assert.AreEqual(6, indices[1].Value);
-            Assert.AreEqual(7, indices[2].Value);
+            Assert.AreEqual(5, indices[0].Node);
+            Assert.AreEqual(6, indices[1].Node);
+            Assert.AreEqual(7, indices[2].Node);
         }
 
         [Test]
@@ -115,9 +115,9 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             var structure = Builder.CreateStructure(item);
 
             var indices = structure.Indexes.Where(i => i.Path == "SetOfInts").ToList();
-            Assert.AreEqual(5, indices[0].Value);
-            Assert.AreEqual(6, indices[1].Value);
-            Assert.AreEqual(7, indices[2].Value);
+            Assert.AreEqual(5, indices[0].Node);
+            Assert.AreEqual(6, indices[1].Node);
+            Assert.AreEqual(7, indices[2].Node);
         }
 
         [Test]
@@ -150,9 +150,9 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             var structure = Builder.CreateStructure(item);
 
             var indices = structure.Indexes.Where(i => i.Path == "HashSetOfComplex.Is").ToList();
-            Assert.AreEqual(5, indices[0].Value);
-            Assert.AreEqual(6, indices[1].Value);
-            Assert.AreEqual(7, indices[2].Value);
+            Assert.AreEqual(5, indices[0].Node);
+            Assert.AreEqual(6, indices[1].Node);
+            Assert.AreEqual(7, indices[2].Node);
         }
 
         [Test]
@@ -187,18 +187,18 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(6, indices.Count);
 
             Assert.AreEqual("KeyValues.Key", indices[0].Path);
-            Assert.AreEqual("Key1", indices[0].Value);
+            Assert.AreEqual("Key1", indices[0].Node);
             Assert.AreEqual("KeyValues.Key", indices[1].Path);
-            Assert.AreEqual("Key2", indices[1].Value);
+            Assert.AreEqual("Key2", indices[1].Node);
             Assert.AreEqual("KeyValues.Key", indices[2].Path);
-            Assert.AreEqual("Key3", indices[2].Value);
+            Assert.AreEqual("Key3", indices[2].Node);
 
             Assert.AreEqual("KeyValues.Value", indices[3].Path);
-            Assert.AreEqual(5, indices[3].Value);
+            Assert.AreEqual(5, indices[3].Node);
             Assert.AreEqual("KeyValues.Value", indices[4].Path);
-            Assert.AreEqual(6, indices[4].Value);
+            Assert.AreEqual(6, indices[4].Node);
             Assert.AreEqual("KeyValues.Value", indices[5].Path);
-            Assert.AreEqual(7, indices[5].Value);
+            Assert.AreEqual(7, indices[5].Node);
         }
 
         [Test]
@@ -213,18 +213,18 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(6, indices.Count);
 
             Assert.AreEqual("KeyValues.Key", indices[0].Path);
-            Assert.AreEqual("Key1", indices[0].Value);
+            Assert.AreEqual("Key1", indices[0].Node);
             Assert.AreEqual("KeyValues.Key", indices[1].Path);
-            Assert.AreEqual("Key2", indices[1].Value);
+            Assert.AreEqual("Key2", indices[1].Node);
             Assert.AreEqual("KeyValues.Key", indices[2].Path);
-            Assert.AreEqual("Key3", indices[2].Value);
+            Assert.AreEqual("Key3", indices[2].Node);
 
             Assert.AreEqual("KeyValues.Value", indices[3].Path);
-            Assert.AreEqual(5, indices[3].Value);
+            Assert.AreEqual(5, indices[3].Node);
             Assert.AreEqual("KeyValues.Value", indices[4].Path);
-            Assert.AreEqual(6, indices[4].Value);
+            Assert.AreEqual(6, indices[4].Node);
             Assert.AreEqual("KeyValues.Value", indices[5].Path);
-            Assert.AreEqual(7, indices[5].Value);
+            Assert.AreEqual(7, indices[5].Node);
         }
 
         [Test]
@@ -247,18 +247,18 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(6, indices.Count);
 
             Assert.AreEqual("KeyValues.Key", indices[0].Path);
-            Assert.AreEqual("Key1", indices[0].Value);
+            Assert.AreEqual("Key1", indices[0].Node);
             Assert.AreEqual("KeyValues.Key", indices[1].Path);
-            Assert.AreEqual("Key2", indices[1].Value);
+            Assert.AreEqual("Key2", indices[1].Node);
             Assert.AreEqual("KeyValues.Key", indices[2].Path);
-            Assert.AreEqual("Key3", indices[2].Value);
+            Assert.AreEqual("Key3", indices[2].Node);
 
             Assert.AreEqual("KeyValues.Value.Is", indices[3].Path);
-            Assert.AreEqual(5, indices[3].Value);
+            Assert.AreEqual(5, indices[3].Node);
             Assert.AreEqual("KeyValues.Value.Is", indices[4].Path);
-            Assert.AreEqual(6, indices[4].Value);
+            Assert.AreEqual(6, indices[4].Node);
             Assert.AreEqual("KeyValues.Value.Is", indices[5].Path);
-            Assert.AreEqual(7, indices[5].Value);
+            Assert.AreEqual(7, indices[5].Node);
         }
 
         [Test]
@@ -273,18 +273,18 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(6, indexes.Count);
 
             Assert.AreEqual("KeyValues.Key", indexes[0].Path);
-            Assert.AreEqual("Key1", indexes[0].Value);
+            Assert.AreEqual("Key1", indexes[0].Node);
             Assert.AreEqual("KeyValues.Key", indexes[1].Path);
-            Assert.AreEqual("Key2", indexes[1].Value);
+            Assert.AreEqual("Key2", indexes[1].Node);
             Assert.AreEqual("KeyValues.Key", indexes[2].Path);
-            Assert.AreEqual("Key3", indexes[2].Value);
+            Assert.AreEqual("Key3", indexes[2].Node);
 
             Assert.AreEqual("KeyValues.Value.Is", indexes[3].Path);
-            Assert.AreEqual(5, indexes[3].Value);
+            Assert.AreEqual(5, indexes[3].Node);
             Assert.AreEqual("KeyValues.Value.Is", indexes[4].Path);
-            Assert.AreEqual(6, indexes[4].Value);
+            Assert.AreEqual(6, indexes[4].Node);
             Assert.AreEqual("KeyValues.Value.Is", indexes[5].Path);
-            Assert.AreEqual(7, indexes[5].Value);
+            Assert.AreEqual(7, indexes[5].Node);
         }
 
         private class ModelForMyCustomNonGenericEnumerable

@@ -17,7 +17,7 @@ namespace Structurizer.UnitTests
             var factory = new StructureIndexesFactory();
             var indexes = factory.CreateIndexes(schemaStub, item).ToList();
 
-            Assert.AreEqual(value, indexes.Single(i => i.Path == "GuidValue").Value);
+            Assert.AreEqual(value, indexes.Single(i => i.Path == "GuidValue").Node);
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace Structurizer.UnitTests
             var factory = new StructureIndexesFactory();
             var indexes = factory.CreateIndexes(schemaStub, item).ToList();
 
-            Assert.AreEqual(value, indexes.Single(i => i.Path == "GuidValue").Value);
+            Assert.AreEqual(value, indexes.Single(i => i.Path == "GuidValue").Node);
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace Structurizer.UnitTests
             var factory = new StructureIndexesFactory();
             var indexes = factory.CreateIndexes(schemaStub, item).ToList();
 
-            Assert.AreEqual("A", indexes.Single(i => i.Path == "StringValue").Value);
+            Assert.AreEqual("A", indexes.Single(i => i.Path == "StringValue").Node);
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace Structurizer.UnitTests
             var factory = new StructureIndexesFactory();
             var indexes = factory.CreateIndexes(schemaStub, item).ToList();
 
-            Assert.AreEqual(42, indexes.Single(i => i.Path == "IntValue").Value);
+            Assert.AreEqual(42, indexes.Single(i => i.Path == "IntValue").Node);
         }
 
         [Test]
@@ -114,7 +114,7 @@ namespace Structurizer.UnitTests
             var factory = new StructureIndexesFactory();
             var indexes = factory.CreateIndexes(schemaStub, item).ToList();
 
-            Assert.AreEqual("A", indexes.Single(i => i.Path == "StringValues").Value);
+            Assert.AreEqual("A", indexes.Single(i => i.Path == "StringValues").Node);
         }
 
         [Test]
@@ -151,7 +151,7 @@ namespace Structurizer.UnitTests
             var factory = new StructureIndexesFactory();
             var indexes = factory.CreateIndexes(schemaStub, item).ToList();
 
-            Assert.AreEqual(42, indexes.Single(i => i.Path == "IntValues").Value);
+            Assert.AreEqual(42, indexes.Single(i => i.Path == "IntValues").Node);
         }
 
         [Test]
@@ -163,8 +163,8 @@ namespace Structurizer.UnitTests
             var factory = new StructureIndexesFactory();
             var indexes = factory.CreateIndexes(schemaStub, item).ToList();
 
-            Assert.AreEqual("A", indexes[0].Value);
-            Assert.AreEqual("B", indexes[1].Value);
+            Assert.AreEqual("A", indexes[0].Node);
+            Assert.AreEqual("B", indexes[1].Node);
         }
 
         [Test]
@@ -176,8 +176,8 @@ namespace Structurizer.UnitTests
             var factory = new StructureIndexesFactory();
             var indexes = factory.CreateIndexes(schemaStub, item).ToList();
 
-            Assert.AreEqual(42, indexes[0].Value);
-            Assert.AreEqual(43, indexes[1].Value);
+            Assert.AreEqual(42, indexes[0].Node);
+            Assert.AreEqual(43, indexes[1].Node);
         }
 
         [Test]
@@ -189,8 +189,8 @@ namespace Structurizer.UnitTests
             var factory = new StructureIndexesFactory();
             var indexes = factory.CreateIndexes(schemaStub, item).ToList();
 
-            Assert.AreEqual("A", indexes[0].Value);
-            Assert.AreEqual("A", indexes[1].Value);
+            Assert.AreEqual("A", indexes[0].Node);
+            Assert.AreEqual("A", indexes[1].Node);
         }
 
         [Test]
@@ -202,8 +202,8 @@ namespace Structurizer.UnitTests
             var factory = new StructureIndexesFactory();
             var indexes = factory.CreateIndexes(schemaStub, item).ToList();
 
-            Assert.AreEqual(42, indexes[0].Value);
-            Assert.AreEqual(42, indexes[1].Value);
+            Assert.AreEqual(42, indexes[0].Node);
+            Assert.AreEqual(42, indexes[1].Node);
         }
 
         private class WithGuid

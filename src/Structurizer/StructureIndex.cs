@@ -6,21 +6,21 @@ namespace Structurizer
     public class StructureIndex : IStructureIndex
     {
         public string Path { get; }
-        public object Value { get; }
+        public INodeValue Node { get; }
         public Type DataType { get; }
         public DataTypeCode DataTypeCode { get; }
 
-        public StructureIndex(string path, object value, Type dataType, DataTypeCode dataTypeCode)
+        public StructureIndex(string path, INodeValue nodeValue, Type dataType, DataTypeCode dataTypeCode)
         {
             Ensure.That(path, nameof(path)).IsNotNullOrWhiteSpace();
             Ensure.That(dataType, nameof(path)).IsNotNull();
 
-            var valueIsOkType = value is string || value is ValueType;
-            if (value != null && !valueIsOkType)
+            var valueIsOkType = nodeValue.Value is string || nodeValue.Value is ValueType;
+            if (nodeValue != null && !valueIsOkType)
                 throw new ArgumentException(StructurizerExceptionMessages.StructureIndex_ValueArgument_IncorrectType);
 
             Path = path;
-            Value = value;
+            Node = nodeValue;
             DataType = dataType;
             DataTypeCode = dataTypeCode;
         }

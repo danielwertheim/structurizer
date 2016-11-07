@@ -57,19 +57,20 @@ namespace Structurizer.Schemas.MemberAccessors
                 if (currentNode == null)
                     return new object[] { null };
 
+                var enumerableNode = currentNode as IEnumerable;
                 var currentProperty = _callstack[c];
-                var isLastProperty = c == (_callstack.Count - 1);
+                var isLastProperty = c == _callstack.Count - 1;
                 if (isLastProperty)
-                    return currentNode is IEnumerable
-                        ? ExtractValuesForEnumerableNode((IEnumerable)currentNode, currentProperty)
+                    return enumerableNode != null
+                        ? ExtractValuesForEnumerableNode(enumerableNode, currentProperty)
                         : ExtractValuesForSimpleNode(currentNode, currentProperty);
 
-                if (!(currentNode is IEnumerable))
+                if (enumerableNode == null)
                     currentNode = currentProperty.GetValue(currentNode);
                 else
                 {
                     var values = new List<object>();
-                    foreach (var node in (IEnumerable)currentNode)
+                    foreach (var node in enumerableNode)
                         values.AddRange(EvaluateCallstack(currentProperty.GetValue(node), startIndex: c + 1));
                     return values;
                 }
@@ -80,7 +81,9 @@ namespace Structurizer.Schemas.MemberAccessors
 
         private static IList<object> ExtractValuesForEnumerableNode<T>(T nodes, IStructureProperty property) where T : IEnumerable
         {
-            var values = nodes is ICollection ? new List<object>(((ICollection)nodes).Count) : new List<object>();
+            var values = nodes is ICollection
+                ? new List<object>(((ICollection)nodes).Count)
+                : new List<object>();
 
             foreach (var node in nodes)
             {

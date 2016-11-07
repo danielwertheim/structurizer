@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using EnsureThat;
 using Structurizer.Configuration;
@@ -8,28 +9,17 @@ namespace Structurizer
 {
     public class StructureBuilder : IStructureBuilder
     {
-        private readonly ConcurrentDictionary<Type, IStructureSchema> _schemas = new ConcurrentDictionary<Type, IStructureSchema>();
-
-        protected IStructureTypeConfigurations TypeConfigurations { get; }
-        protected IStructureTypeFactory TypeFactory { get; }
-        protected IStructureSchemaFactory SchemaFactory { get; }
+        protected IDictionary<Type, IStructureSchema> Schemas { get; }
         protected IStructureIndexesFactory IndexesFactory { get; }
 
-        protected StructureBuilder(
-            IStructureTypeConfigurations typeConfigurations,
-            IStructureTypeFactory structureTypeFactory,
-            IStructureSchemaFactory schemaFactory,
-            IStructureIndexesFactory indexesFactory)
+        public StructureBuilder(
+            IDictionary<Type, IStructureSchema> schemas,
+            IStructureIndexesFactory indexesFactory = null)
         {
-            Ensure.That(typeConfigurations, nameof(typeConfigurations)).IsNotNull();
-            Ensure.That(structureTypeFactory, nameof(structureTypeFactory)).IsNotNull();
-            Ensure.That(schemaFactory, nameof(schemaFactory)).IsNotNull();
-            Ensure.That(indexesFactory, nameof(indexesFactory)).IsNotNull();
+            Ensure.That(schemas, nameof(schemas)).IsNotNull().HasItems();
 
-            TypeConfigurations = typeConfigurations;
-            TypeFactory = structureTypeFactory;
-            SchemaFactory = schemaFactory;
-            IndexesFactory = indexesFactory;
+            Schemas = schemas;
+            IndexesFactory = indexesFactory ?? new StructureIndexesFactory();
         }
 
         public static IStructureBuilder Create(Action<IStructureTypeConfigurations> config)
@@ -47,11 +37,15 @@ namespace Structurizer
         {
             Ensure.That(config, nameof(config)).IsNotNull();
 
-            return new StructureBuilder(
-                config,
-                new StructureTypeFactory(),
-                new StructureSchemaFactory(),
-                new StructureIndexesFactory());
+            var structureTypeFactory = new StructureTypeFactory();
+            var schemaFactory = new StructureSchemaFactory();
+
+            var schemas = config
+                .Select(tc => structureTypeFactory.CreateFor(tc))
+                .Select(st => schemaFactory.CreateSchema(st))
+                .ToDictionary(s => s.StructureType.Type);
+
+            return new StructureBuilder(schemas);
         }
 
         public IStructure CreateStructure<T>(T item) where T : class
@@ -72,15 +66,7 @@ namespace Structurizer
                 : CreateStructuresInParallel(items, schema);
         }
 
-        private IStructureSchema GetSchema(Type type) => _schemas.GetOrAdd(type, CreateSchema);
-
-        private IStructureSchema CreateSchema(Type type)
-        {
-            var typeConfig = TypeConfigurations.GetConfiguration(type);
-            var structureType = TypeFactory.CreateFor(typeConfig);
-
-            return SchemaFactory.CreateSchema(structureType);
-        }
+        private IStructureSchema GetSchema(Type type) => Schemas[type];
 
         private IStructure[] CreateStructuresInParallel<T>(T[] items, IStructureSchema structureSchema) where T : class
         {

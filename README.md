@@ -82,8 +82,8 @@ will generate:
 Name=Foo Bar
 Score=2345
 OneChild.SomeString=One child
-ManyChildren.SomeString=List Child1
-ManyChildren.SomeString=List Child2
+ManyChildren[0].SomeString=List Child1
+ManyChildren[1].SomeString=List Child2
 ```
 
 ## Control what's being indexed

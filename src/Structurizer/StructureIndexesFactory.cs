@@ -10,38 +10,50 @@ namespace Structurizer
         {
             var indexes = new IEnumerable<IStructureIndex>[structureSchema.IndexAccessors.Count];
 
+#if DEBUG
             Parallel.For(0, indexes.Length, new ParallelOptions { MaxDegreeOfParallelism = 1 }, c =>
-              {
-                  var indexAccessor = structureSchema.IndexAccessors[c];
-                  var values = indexAccessor.GetValues(item);
-                  var valuesExists = values != null && values.Count > 0;
-                  var isCollectionOfValues = indexAccessor.IsEnumerable || indexAccessor.IsElement || (values != null && values.Count > 1);
+#else
+            Parallel.For(0, indexes.Length, c =>
+#endif
+            {
+                var indexAccessor = structureSchema.IndexAccessors[c];
+                var values = indexAccessor.GetValues(item);
 
-                  if (!valuesExists)
-                      return;
+                var valuesExists = values != null && values.Count > 0;
+                if (!valuesExists)
+                    return;
 
-                  if (!isCollectionOfValues)
-                      indexes[c] = new[]
-                      {
-                        new StructureIndex(indexAccessor.Path, values[0], indexAccessor.DataType, indexAccessor.DataTypeCode)
-                      };
-                  else
-                  {
-                      var subIndexes = new IStructureIndex[values.Count];
-                      Parallel.For(0, subIndexes.Length, subC =>
-                      {
-                          if (values[subC] != null)
-                              subIndexes[subC] = new StructureIndex(
-                                  indexAccessor.Path,
-                                  values[subC],
-                                  indexAccessor.DataType,
-                                  indexAccessor.DataTypeCode);
-                      });
-                      indexes[c] = subIndexes;
-                  }
-              });
+                var isCollectionOfValues = indexAccessor.IsEnumerable || indexAccessor.IsElement || values.Count > 1;
+                if (!isCollectionOfValues)
+                    indexes[c] = new[]
+                    {
+                        new StructureIndex(values[0].Path, values[0].Value, indexAccessor.DataType, indexAccessor.DataTypeCode)
+                    };
+                else
+                {
+                    var subIndexes = new IStructureIndex[values.Count];
+#if DEBUG
+                    Parallel.For(0, subIndexes.Length, new ParallelOptions { MaxDegreeOfParallelism = 1 }, subC =>
+#else
+                    Parallel.For(0, subIndexes.Length, subC =>
+#endif
+                    {
+                        if (values[subC] != null)
+                            subIndexes[subC] = new StructureIndex(
+                                values[subC].Path,
+                                values[subC].Value,
+                                indexAccessor.DataType,
+                                indexAccessor.DataTypeCode);
+                    });
+                    indexes[c] = subIndexes;
+                }
+            });
 
-            return indexes.Where(i => i != null).SelectMany(i => i).Where(i => i != null).ToArray();
+            return indexes
+                .Where(i => i != null)
+                .SelectMany(i => i)
+                .Where(i => i != null)
+                .ToArray();
         }
     }
 }

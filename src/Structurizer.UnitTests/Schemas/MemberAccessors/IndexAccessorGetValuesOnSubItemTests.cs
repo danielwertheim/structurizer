@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Linq;
+using NUnit.Framework;
 
 namespace Structurizer.UnitTests.Schemas.MemberAccessors
 {
@@ -15,7 +16,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var values = indexAccessor.GetValues(item);
 
-            CollectionAssert.AreEquivalent(new[] { "A", "B" }, values);
+            CollectionAssert.AreEquivalent(new[] { "A", "B" }, values.Select(i => i.Value));
         }
 
         [Test]
@@ -28,7 +29,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var values = indexAccessor.GetValues(item);
 
-            CollectionAssert.AreEquivalent(new string[] { null, null }, values);
+            CollectionAssert.AreEquivalent(new string[] { null, null }, values.Select(i => i.Value));
         }
 
         [Test]
@@ -53,7 +54,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var value = indexAccessor.GetValues(item);
 
-            Assert.AreEqual(new object[] { null, "A" }, value);
+            Assert.AreEqual(new object[] { null, "A" }, value.Select(i => i.Value));
         }
 
         [Test]
@@ -66,7 +67,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var value = indexAccessor.GetValues(item);
 
-            Assert.AreEqual(new object[] { "The value" }, value);
+            Assert.AreEqual(new object[] { "The value" }, value.Select(i => i.Value));
         }
 
         private class Item

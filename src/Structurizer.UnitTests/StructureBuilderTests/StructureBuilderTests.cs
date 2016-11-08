@@ -15,7 +15,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
 
             var structure = Builder.CreateStructure(item);
 
-            var actual = structure.Indexes.Single(si => si.Path == "IntValue").Node;
+            var actual = structure.Indexes.Single(si => si.Path == "IntValue").Value;
             Assert.AreEqual(42, actual);
         }
 
@@ -27,7 +27,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
 
             var structure = Builder.CreateStructure(item);
 
-            var actual = structure.Indexes.Single(si => si.Path == "UIntValue").Node;
+            var actual = structure.Indexes.Single(si => si.Path == "UIntValue").Value;
             Assert.AreEqual(42, actual);
         }
 
@@ -39,7 +39,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
 
             var structure = Builder.CreateStructure(item);
 
-            var actual = structure.Indexes.Single(si => si.Path == "Container.IntValue").Node;
+            var actual = structure.Indexes.Single(si => si.Path == "Container.IntValue").Value;
             Assert.AreEqual(42, actual);
         }
 
@@ -54,7 +54,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(1, structure.Indexes.Count);
             Assert.AreEqual("Content", structure.Indexes[0].Path);
             Assert.AreEqual(typeof(MyText), structure.Indexes[0].DataType);
-            Assert.AreEqual(new MyText("My content"), structure.Indexes[0].Node);
+            Assert.AreEqual(new MyText("My content"), structure.Indexes[0].Value);
         }
 
         [Test]

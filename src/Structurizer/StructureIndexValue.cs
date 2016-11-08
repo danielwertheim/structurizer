@@ -1,11 +1,11 @@
-namespace Structurizer.Schemas.MemberAccessors
+namespace Structurizer
 {
-    internal class NodeValue : INodeValue
+    internal class StructureIndexValue : IStructureIndexValue
     {
         public string Path { get; }
         public object Value { get; }
 
-        public NodeValue(string path, object value)
+        internal StructureIndexValue(string path, object value)
         {
             Path = path;
             Value = value;

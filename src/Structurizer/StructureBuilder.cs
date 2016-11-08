@@ -12,7 +12,7 @@ namespace Structurizer
         protected IDictionary<Type, IStructureSchema> Schemas { get; }
         protected IStructureIndexesFactory IndexesFactory { get; }
 
-        public StructureBuilder(
+        private StructureBuilder(
             IDictionary<Type, IStructureSchema> schemas,
             IStructureIndexesFactory indexesFactory = null)
         {
@@ -33,14 +33,14 @@ namespace Structurizer
             return Create(configs);
         }
 
-        public static IStructureBuilder Create(IStructureTypeConfigurations config)
+        public static IStructureBuilder Create(IStructureTypeConfigurations typeConfigs)
         {
-            Ensure.That(config, nameof(config)).IsNotNull();
+            Ensure.That(typeConfigs, nameof(typeConfigs)).IsNotNull();
 
             var structureTypeFactory = new StructureTypeFactory();
             var schemaFactory = new StructureSchemaFactory();
 
-            var schemas = config
+            var schemas = typeConfigs
                 .Select(tc => structureTypeFactory.CreateFor(tc))
                 .Select(st => schemaFactory.CreateSchema(st))
                 .ToDictionary(s => s.StructureType.Type);

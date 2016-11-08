@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 
 namespace Structurizer.UnitTests.Schemas.MemberAccessors
@@ -16,7 +17,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var retrievedValues = indexAccessor.GetValues(item);
 
-            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues);
+            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues.Select(i => i.Value));
         }
 
         [Test]
@@ -42,7 +43,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var retrievedValues = indexAccessor.GetValues(item);
 
-            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues);
+            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues.Select(i => i.Value));
         }
 
         [Test]
@@ -55,7 +56,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var retrievedValues = indexAccessor.GetValues(item);
 
-            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues);
+            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues.Select(i => i.Value));
         }
 
         [Test]
@@ -68,7 +69,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var retrievedValues = indexAccessor.GetValues(item);
 
-            CollectionAssert.AreEqual(new[] { initialValue.GetValueOrDefault() }, retrievedValues);
+            CollectionAssert.AreEqual(new[] { initialValue.GetValueOrDefault() }, retrievedValues.Select(i => i.Value));
         }
 
         [Test]
@@ -81,7 +82,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var retrievedValues = indexAccessor.GetValues(item);
 
-            Assert.IsNull(retrievedValues);
+            Assert.IsNull(retrievedValues.Select(i => i.Value));
         }
 
         [Test]
@@ -94,7 +95,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var retrievedValues = indexAccessor.GetValues(item);
 
-            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues);
+            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues.Select(i => i.Value));
         }
 
         [Test]
@@ -107,7 +108,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var retrievedValues = indexAccessor.GetValues(item);
 
-            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues);
+            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues.Select(i => i.Value));
         }
 
         [Test]
@@ -120,7 +121,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var retrievedValues = indexAccessor.GetValues(item);
 
-            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues);
+            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues.Select(i => i.Value));
         }
 
         private class Dummy

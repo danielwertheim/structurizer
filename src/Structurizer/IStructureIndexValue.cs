@@ -1,6 +1,6 @@
 ﻿namespace Structurizer
 {
-    public interface INodeValue
+    public interface IStructureIndexValue
     {
         string Path { get; }
         object Value { get; }

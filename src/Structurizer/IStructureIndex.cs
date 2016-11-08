@@ -5,7 +5,7 @@ namespace Structurizer
     public interface IStructureIndex
     {
         string Path { get; }
-        INodeValue Node { get; }
+        object Value { get; }
         Type DataType { get; }
         DataTypeCode DataTypeCode { get; }
     }

@@ -1,7 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text;
 
 namespace Structurizer.Schemas.MemberAccessors
 {
@@ -9,7 +8,7 @@ namespace Structurizer.Schemas.MemberAccessors
     {
         private delegate void OnLastPropertyFound(IStructureProperty lastProperty, object currentNode);
 
-        private readonly IStructureProperty[] _callstack;
+        private readonly StructurePropertyCallstack _callstack;
 
         public DataTypeCode DataTypeCode { get; }
 
@@ -20,66 +19,51 @@ namespace Structurizer.Schemas.MemberAccessors
         public IndexAccessor(IStructureProperty property, DataTypeCode dataTypeCode)
             : base(property)
         {
-            var callstack = ExtractCallstack(Property);
-            callstack.Reverse();
-            _callstack = callstack.ToArray();
-
+            _callstack = StructurePropertyCallstack.Generate(property);
             DataTypeCode = dataTypeCode;
         }
 
-        private static List<IStructureProperty> ExtractCallstack(IStructureProperty property)
-        {
-            if (property.IsRootMember)
-                return new List<IStructureProperty> { property };
-
-            var props = new List<IStructureProperty> { property };
-            props.AddRange(
-                ExtractCallstack(property.Parent));
-
-            return props;
-        }
-
-        public IList<INodeValue> GetValues<T>(T item) where T : class
+        public IList<IStructureIndexValue> GetValues<T>(T item) where T : class
         {
             if (!Property.IsRootMember)
-                return EvaluateCallstack(item, startAtCallstackIndex: 0, parentPath: Property.Path);
+                return EvaluateCallstack(item, startAtCallstackIndex: 0, startPath: null);
 
             var rootMemberValue = Property.GetValue(item);
             if (rootMemberValue == null)
                 return null;
 
             return IsEnumerable
-                ? CollectionOfValuesToList((IEnumerable)rootMemberValue)
-                : new List<INodeValue> { new NodeValue(Property.Path, rootMemberValue) };
+                ? CollectionOfValuesToList((IEnumerable)rootMemberValue, Property, startPath: null)
+                : new List<IStructureIndexValue> { new StructureIndexValue(Property.Path, rootMemberValue) };
         }
 
-        private IList<INodeValue> EvaluateCallstack<T>(T startNode, int startAtCallstackIndex, string parentPath)
+        private IList<IStructureIndexValue> EvaluateCallstack<T>(T startNode, int startAtCallstackIndex, string startPath)
         {
             object currentNode = startNode;
             var maxCallstackIndex = _callstack.Length - 1;
             for (var callstackIndex = startAtCallstackIndex; callstackIndex < _callstack.Length; callstackIndex++)
             {
                 if (currentNode == null)
-                    return new List<INodeValue> { null };
+                    return new List<IStructureIndexValue> { null };
 
-                var enumerableNode = currentNode as IEnumerable;
                 var currentProperty = _callstack[callstackIndex];
+                var enumerableNode = currentNode as IEnumerable;                
                 var isLastProperty = callstackIndex == maxCallstackIndex;
                 if (isLastProperty)
                     return enumerableNode != null
-                        ? ExtractValuesForEnumerableNode(enumerableNode, currentProperty, parentPath)
-                        : ExtractValuesForSimpleNode(currentNode, currentProperty);
+                        ? ExtractValuesForEnumerableNode(enumerableNode, currentProperty, startPath)
+                        : ExtractValuesForSimpleNode(currentNode, currentProperty, startPath);
 
                 if (enumerableNode == null)
                     currentNode = currentProperty.GetValue(currentNode);
                 else
                 {
-                    var values = new List<INodeValue>();
+                    var values = new List<IStructureIndexValue>();
                     var i = -1;
                     foreach (var node in enumerableNode)
                     {
                         i += 1;
-                        values.AddRange(EvaluateCallstack(currentProperty.GetValue(node), startAtCallstackIndex: callstackIndex + 1, parentPath: currentProperty.Parent.Path + $"[{i}]"));
+                        values.AddRange(EvaluateCallstack(currentProperty.GetValue(node), startAtCallstackIndex: callstackIndex + 1, startPath: $"{currentProperty.Parent.Path}[{i}]"));
                     }
                     return values;
                 }
@@ -88,44 +72,44 @@ namespace Structurizer.Schemas.MemberAccessors
             return null;
         }
 
-        private static IList<INodeValue> ExtractValuesForEnumerableNode<T>(T nodes, IStructureProperty property, string parentPath) where T : IEnumerable
+        private static IList<IStructureIndexValue> ExtractValuesForEnumerableNode<T>(T nodes, IStructureProperty property, string startPath) where T : IEnumerable
         {
             var collection = nodes as ICollection;
             var values = collection != null
-                ? new List<INodeValue>(collection.Count)
-                : new List<INodeValue>();
+                ? new List<IStructureIndexValue>(collection.Count)
+                : new List<IStructureIndexValue>();
 
             var i = -1;
             foreach (var node in nodes)
             {
                 i += 1;
-                var path = $"{parentPath}.{property.Parent.Name}[{i}].{property.Name}";
+                var path = $"{startPath}{(startPath != null ? "." : string.Empty)}{property.Parent.Name}[{i}]";
 
                 if (node == null)
                 {
-                    values.Add(new NodeValue(path, null));
+                    values.Add(new StructureIndexValue($"{path}.{property.Name}", null));
                     continue;
                 }
 
                 var nodeValue = property.GetValue(node);
                 if (nodeValue == null)
                 {
-                    values.Add(new NodeValue(path, null));
+                    values.Add(new StructureIndexValue($"{path}.{property.Name}", null));
                     continue;
                 }
 
                 var enumerableNode = nodeValue as IEnumerable;
 
                 if (enumerableNode != null && !(nodeValue is string))
-                    values.AddRange(CollectionOfValuesToList(enumerableNode));
+                    values.AddRange(CollectionOfValuesToList(enumerableNode, property, path));
                 else
-                    values.Add(new NodeValue(path, nodeValue));
+                    values.Add(new StructureIndexValue($"{path}.{property.Name}", nodeValue));
             }
 
             return values;
         }
 
-        private static IList<INodeValue> ExtractValuesForSimpleNode(object node, IStructureProperty property)
+        private static IList<IStructureIndexValue> ExtractValuesForSimpleNode(object node, IStructureProperty property, string startPath)
         {
             var currentValue = property.GetValue(node);
 
@@ -133,22 +117,33 @@ namespace Structurizer.Schemas.MemberAccessors
                 return null;
 
             if (!property.IsEnumerable)
-                return new List<INodeValue> { new NodeValue(property.Path, currentValue) };
+                return new List<IStructureIndexValue> { new StructureIndexValue(property.Path, currentValue) };
 
-            return CollectionOfValuesToList((IEnumerable)currentValue);
+            return CollectionOfValuesToList((IEnumerable)currentValue, property, startPath);
         }
 
-        private static IList<INodeValue> CollectionOfValuesToList<T>(T elements) where T : IEnumerable
+        private static IList<IStructureIndexValue> CollectionOfValuesToList<T>(T elements, IStructureProperty property, string startPath) where T : IEnumerable
         {
             var collection = elements as ICollection;
             var values = collection != null
-                ? new List<INodeValue>(collection.Count)
-                : new List<INodeValue>();
+                ? new List<IStructureIndexValue>(collection.Count)
+                : new List<IStructureIndexValue>();
 
             var i = 0;
+            var path = new StringBuilder();
             foreach (var element in elements)
             {
-                values.Add(new NodeValue("---", element));
+                if (startPath != null)
+                {
+                    path.Append(startPath);
+                    path.Append(".");
+                }
+
+                path.Append(property.Name);
+                path.Append($"[{i}]");
+
+                values.Add(new StructureIndexValue(path.ToString(), element));
+                path.Clear();
                 i += 1;
             }
 

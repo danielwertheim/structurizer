@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 
 namespace Structurizer.UnitTests.Schemas.MemberAccessors
@@ -30,8 +31,8 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
             var productNos = IndexAccessorTestFactory.CreateFor(prodNoProperty).GetValues(graph);
             var prices = IndexAccessorTestFactory.CreateFor(pricesProperty).GetValues(graph);
 
-            CollectionAssert.AreEqual(new[] { "P1", "P2" }, productNos);
-            CollectionAssert.AreEqual(new[] { 42, 4242, 43, 4343 }, prices);
+            CollectionAssert.AreEqual(new[] { "P1", "P2" }, productNos.Select(i => i.Value));
+            CollectionAssert.AreEqual(new[] { 42, 4242, 43, 4343 }, prices.Select(i => i.Value));
         }
 
         private class TestCustomer

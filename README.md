@@ -23,7 +23,7 @@ public class MyChild
 }
 ```
 
-### Builder construction Alternative 1
+### Builder construction
 **KEEP HOLD OF THE STRUCTUREBUILDER!** The `StructureBuilder.Create` function, will create the `Schemas` underneath. The Scheams contains a cache of IL-generated members for effective extraction of values.
 
 ```csharp
@@ -31,23 +31,6 @@ var typeConfigs = new StructureTypeConfigurations();
 typeConfigs.Register<MyRoot>();
 
 var builder = StructureBuilder.Create(typeConfigs);
-```
-
-### Builder construction Alternative 2
-**KEEP HOLD OF THE SCHEMAS!** The Scheams contains a cache of IL-generated members for effective extraction of values.
-
-```csharp
-var typeConfigs = new StructureTypeConfigurations();
-typeConfigs.Register<MyRoot>();
-
-var structureTypeFactory = new StructureTypeFactory();
-var schemaFactory = new StructureSchemaFactory();
-var schemas = typeConfigs
-    .Select(tc => structureTypeFactory.CreateFor(tc))
-    .Select(st => schemaFactory.CreateSchema(st))
-    .ToDictionary(s => s.StructureType.Type);
-
-var builder = new StructureBuilder(schemas));
 ```
 
 ### Create key-values

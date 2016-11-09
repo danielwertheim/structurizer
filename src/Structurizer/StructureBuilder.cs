@@ -72,7 +72,11 @@ namespace Structurizer
         {
             var structures = new IStructure[items.Length];
 
-            Parallel.For(0, items.Length, i =>
+#if DEBUG
+            Parallel.For(0, items.Length, new ParallelOptions { MaxDegreeOfParallelism = 1 }, i =>
+#else
+            Parallel.For(0, items.Length, new ParallelOptions { MaxDegreeOfParallelism = 1 }, i =>
+#endif
             {
                 var itm = items[i];
 

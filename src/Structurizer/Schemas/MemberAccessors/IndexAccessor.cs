@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Structurizer.Schemas.MemberAccessors
@@ -37,6 +38,9 @@ namespace Structurizer.Schemas.MemberAccessors
 
         private IList<IStructureIndexValue> EvaluateCallstack<T>(T startNode, int startAtCallstackIndex, string startPath)
         {
+            if (startPath == null)
+                startPath = _callstack[0].Name;
+
             object currentNode = startNode;
             var maxCallstackIndex = _callstack.Length - 1;
             for (var callstackIndex = startAtCallstackIndex; callstackIndex < _callstack.Length; callstackIndex++)
@@ -45,7 +49,8 @@ namespace Structurizer.Schemas.MemberAccessors
                     return new List<IStructureIndexValue> { null };
 
                 var currentProperty = _callstack[callstackIndex];
-                var enumerableNode = currentNode as IEnumerable;                
+
+                var enumerableNode = currentNode as IEnumerable;
                 var isLastProperty = callstackIndex == maxCallstackIndex;
                 if (isLastProperty)
                     return enumerableNode != null
@@ -61,7 +66,13 @@ namespace Structurizer.Schemas.MemberAccessors
                     foreach (var node in enumerableNode)
                     {
                         i += 1;
-                        values.AddRange(EvaluateCallstack(currentProperty.GetValue(node), startAtCallstackIndex: callstackIndex + 1, startPath: $"{currentProperty.Parent.Path}[{i}]"));
+                        var tmpValues = EvaluateCallstack(
+                            currentProperty.GetValue(node),
+                            startAtCallstackIndex: callstackIndex + 1,
+                            startPath: $"{currentProperty.Parent.Path}[{i}].{currentProperty.Name}");
+
+                        //if(tmpValues.Any())
+                            values.AddRange(tmpValues);
                     }
                     return values;
                 }
@@ -81,7 +92,7 @@ namespace Structurizer.Schemas.MemberAccessors
             foreach (var node in nodes)
             {
                 i += 1;
-                var path = $"{startPath}{(startPath != null ? "." : string.Empty)}{property.Parent.Name}[{i}]";
+                var path = $"{startPath}[{i}]";
 
                 if (node == null)
                 {
@@ -115,7 +126,7 @@ namespace Structurizer.Schemas.MemberAccessors
                 return null;
 
             if (!property.IsEnumerable)
-                return new List<IStructureIndexValue> { new StructureIndexValue(property.Path, currentValue) };
+                return new List<IStructureIndexValue> { new StructureIndexValue($"{startPath}.{property.Name}", currentValue) };
 
             return CollectionOfValuesToList((IEnumerable)currentValue, property, startPath);
         }

@@ -82,7 +82,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var retrievedValues = indexAccessor.GetValues(item);
 
-            Assert.IsNull(retrievedValues.Select(i => i.Value));
+            Assert.IsNull(retrievedValues);
         }
 
         [Test]

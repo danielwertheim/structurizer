@@ -32,7 +32,6 @@ namespace Structurizer.UnitTests.StructureBuilderTests
 
             var actual = structure.Indexes.SingleOrDefault(si => si.Path.StartsWith("IntArray"));
             Assert.IsNull(actual);
-            Assert.AreEqual(2, structure.Indexes.Count);
         }
 
         [Test]
@@ -45,13 +44,11 @@ namespace Structurizer.UnitTests.StructureBuilderTests
 
             var actual = structure.Indexes.SingleOrDefault(si => si.Path.StartsWith("Container.IntArray"));
             Assert.IsNull(actual);
-            Assert.AreEqual(2, structure.Indexes.Count);
         }
 
         [Test]
         public void CreateStructure_WhenEnumerableIntsOnSecondLevel_ReturnsOneIndexPerElementInCorrectOrder()
         {
-            throw new Exception("START HERE");
             Builder = StructureBuilder.Create(c => c.Register<TestItemForSecondLevel>());
             var item = new TestItemForSecondLevel { Container = new Container { IntArray = new[] { 5, 6, 7 } } };
 
@@ -73,7 +70,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
 
             var structure = Builder.CreateStructure(item);
 
-            var indices = structure.Indexes.Skip(1).ToList();
+            var indices = structure.Indexes;
             Assert.AreEqual("A", indices[0].Value);
             Assert.AreEqual("B", indices[1].Value);
             Assert.AreEqual(1, indices[2].Value);
@@ -88,7 +85,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
 
             var structure = Builder.CreateStructure(item);
 
-            var indices = structure.Indexes.Where(i => i.Path == "HashSetOfInts").ToList();
+            var indices = structure.Indexes.Where(i => i.Path.StartsWith("HashSetOfInts[")).ToList();
             Assert.AreEqual(5, indices[0].Value);
             Assert.AreEqual(6, indices[1].Value);
             Assert.AreEqual(7, indices[2].Value);
@@ -104,7 +101,6 @@ namespace Structurizer.UnitTests.StructureBuilderTests
 
             var actual = structure.Indexes.SingleOrDefault(si => si.Path.StartsWith("HashSetOfInts"));
             Assert.IsNull(actual);
-            Assert.AreEqual(1, structure.Indexes.Count);
         }
 
         [Test]
@@ -115,7 +111,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
 
             var structure = Builder.CreateStructure(item);
 
-            var indices = structure.Indexes.Where(i => i.Path == "SetOfInts").ToList();
+            var indices = structure.Indexes.Where(i => i.Path.StartsWith("SetOfInts[")).ToList();
             Assert.AreEqual(5, indices[0].Value);
             Assert.AreEqual(6, indices[1].Value);
             Assert.AreEqual(7, indices[2].Value);
@@ -131,7 +127,6 @@ namespace Structurizer.UnitTests.StructureBuilderTests
 
             var actual = structure.Indexes.SingleOrDefault(si => si.Path.StartsWith("SetOfInts"));
             Assert.IsNull(actual);
-            Assert.AreEqual(1, structure.Indexes.Count);
         }
 
         [Test]
@@ -150,7 +145,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
 
             var structure = Builder.CreateStructure(item);
 
-            var indices = structure.Indexes.Where(i => i.Path == "HashSetOfComplex.Is").ToList();
+            var indices = structure.Indexes.Where(i => i.Path.StartsWith("HashSetOfComplex[")).ToList();
             Assert.AreEqual(5, indices[0].Value);
             Assert.AreEqual(6, indices[1].Value);
             Assert.AreEqual(7, indices[2].Value);
@@ -282,15 +277,14 @@ namespace Structurizer.UnitTests.StructureBuilderTests
 
             Assert.AreEqual("KeyValues[0].Value.Is", indexes[3].Path);
             Assert.AreEqual(5, indexes[3].Value);
-            Assert.AreEqual("KeyValues[2].Value.Is", indexes[4].Path);
+            Assert.AreEqual("KeyValues[1].Value.Is", indexes[4].Path);
             Assert.AreEqual(6, indexes[4].Value);
-            Assert.AreEqual("KeyValues[3].Value.Is", indexes[5].Path);
+            Assert.AreEqual("KeyValues[2].Value.Is", indexes[5].Path);
             Assert.AreEqual(7, indexes[5].Value);
         }
 
         private class ModelForMyCustomNonGenericEnumerable
         {
-            public Guid StructureId { get; set; }
             public MyCustomNonGenericEnumerable Items { get; set; }
 
             public ModelForMyCustomNonGenericEnumerable()
@@ -311,8 +305,6 @@ namespace Structurizer.UnitTests.StructureBuilderTests
 
         private class TestItemForFirstLevel
         {
-            public Guid StructureId { get; set; }
-
             public int IntValue { get; set; }
 
             public int[] IntArray { get; set; }
@@ -320,8 +312,6 @@ namespace Structurizer.UnitTests.StructureBuilderTests
 
         private class TestItemForSecondLevel
         {
-            public Guid StructureId { get; set; }
-
             public Container Container { get; set; }
         }
 
@@ -339,64 +329,46 @@ namespace Structurizer.UnitTests.StructureBuilderTests
 
         private class TestItemWithHashSetOfComplex
         {
-            public Guid StructureId { get; set; }
-
             public HashSet<Value> HashSetOfComplex { get; set; }
         }
 
         private class TestItemWithHashSet
         {
-            public Guid StructureId { get; set; }
-
             public HashSet<int> HashSetOfInts { get; set; }
         }
 
         private class TestItemWithISet
         {
-            public Guid StructureId { get; set; }
-
             public ISet<int> SetOfInts { get; set; }
         }
 
         private class TestItemWithIDictionary
         {
-            public Guid StructureId { get; set; }
-
             public IDictionary<string, int> KeyValues { get; set; }
         }
 
         private class TestItemWithIDictionaryOfComplex
         {
-            public Guid StructureId { get; set; }
-
             public IDictionary<string, Value> KeyValues { get; set; }
         }
 
         private class TestItemWithDictionary
         {
-            public Guid StructureId { get; set; }
-
             public Dictionary<string, int> KeyValues { get; set; }
         }
 
         private class TestItemWithDictionaryOfComplex
         {
-            public Guid StructureId { get; set; }
-
             public Dictionary<string, Value> KeyValues { get; set; }
         }
 
         private class TestItemWithIntAsId
         {
-            public int StructureId { get; set; }
-
             public int IntValue { get; set; }
         }
 
         private class TestItemWithLongAsId
         {
-            public long StructureId { get; set; }
-
             public int IntValue { get; set; }
         }
     }

@@ -9,6 +9,5 @@ namespace Structurizer.Schemas.MemberAccessors
         bool IsElement { get; }
 
         IList<IStructureIndexValue> GetValues<T>(T item) where T : class;
-        void SetValue<T>(T item, object value) where T : class;
     }
 }

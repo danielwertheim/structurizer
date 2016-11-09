@@ -6,7 +6,6 @@ namespace Structurizer.Schemas
     public class StructureProperty : IStructureProperty
     {
         private readonly DynamicGetter _getter;
-        private readonly DynamicSetter _setter;
 
         public string Name { get; }
         public string Path { get; }
@@ -16,18 +15,15 @@ namespace Structurizer.Schemas
         public bool IsEnumerable { get; }
         public bool IsElement { get; }
         public Type ElementDataType { get; }
-        public bool IsReadOnly { get; }
 
-        public StructureProperty(StructurePropertyInfo info, DynamicGetter getter, DynamicSetter setter = null)
+        public StructureProperty(StructurePropertyInfo info, DynamicGetter getter)
         {
             _getter = getter;
-            _setter = setter;
 
             Parent = info.Parent;
             Name = info.Name;
             DataType = info.DataType;
             IsRootMember = info.Parent == null;
-            IsReadOnly = _setter == null;
 
             var isSimpleOrValueType = DataType.IsSimpleType() || DataType.IsValueType;
             IsEnumerable = !isSimpleOrValueType && DataType.IsEnumerableType();
@@ -37,13 +33,5 @@ namespace Structurizer.Schemas
         }
 
         public virtual object GetValue(object item) => _getter.GetValue(item);
-
-        public virtual void SetValue(object target, object value)
-        {
-            if (IsReadOnly)
-                throw new StructurizerException(string.Format(StructurizerExceptionMessages.StructureProperty_Setter_IsReadOnly, Path));
-
-            _setter.SetValue(target, value);
-        }
     }
 }

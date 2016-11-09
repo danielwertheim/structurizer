@@ -66,7 +66,6 @@
     <Compile Include="DataTypeConverter.cs" />
     <Compile Include="Schemas\DynamicGetter.cs" />
     <Compile Include="Schemas\DynamicPropertyFactory.cs" />
-    <Compile Include="Schemas\DynamicSetter.cs" />
     <Compile Include="IDataTypeConverter.cs" />
     <Compile Include="IStructureProperty.cs" />
     <Compile Include="IStructurePropertyFactory.cs" />

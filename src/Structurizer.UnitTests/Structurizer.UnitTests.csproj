@@ -70,8 +70,6 @@
     <Compile Include="Schemas\MemberAccessors\IndexAccessorGetValuesOnDeepGraphTests.cs" />
     <Compile Include="Schemas\MemberAccessors\IndexAccessorGetValuesOnSubItemTests.cs" />
     <Compile Include="Schemas\MemberAccessors\IndexAccessorGetValuesTests.cs" />
-    <Compile Include="Schemas\MemberAccessors\IndexAccessorSetValuesOnSubItemTests.cs" />
-    <Compile Include="Schemas\MemberAccessors\IndexAccessorSetValuesTests.cs" />
     <Compile Include="Schemas\PropertyPathBuilderTests.cs" />
     <Compile Include="Schemas\StructurePropertyTestFactory.cs" />
     <Compile Include="Schemas\StructurePropertyTests\StructurePropertyGetGuidValueTests.cs" />

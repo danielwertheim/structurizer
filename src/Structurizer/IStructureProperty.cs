@@ -12,8 +12,6 @@ namespace Structurizer
         bool IsEnumerable { get; }
         bool IsElement { get; }
         Type ElementDataType { get; }
-        bool IsReadOnly { get; }
         object GetValue(object item);
-        void SetValue(object target, object value);
     }
 }

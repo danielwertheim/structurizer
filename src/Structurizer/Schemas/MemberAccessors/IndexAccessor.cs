@@ -6,8 +6,6 @@ namespace Structurizer.Schemas.MemberAccessors
 {
     public class IndexAccessor : MemberAccessorBase, IIndexAccessor
     {
-        private delegate void OnLastPropertyFound(IStructureProperty lastProperty, object currentNode);
-
         private readonly StructurePropertyCallstack _callstack;
 
         public DataTypeCode DataTypeCode { get; }
@@ -148,35 +146,6 @@ namespace Structurizer.Schemas.MemberAccessors
             }
 
             return values;
-        }
-
-        public void SetValue<T>(T item, object value) where T : class
-        {
-            if (Property.IsRootMember)
-            {
-                Property.SetValue(item, value);
-                return;
-            }
-
-            EnumerateToLastProperty(item, startIndex: 0, onLastPropertyFound: (lastProperty, currentNode) => lastProperty.SetValue(currentNode, value));
-        }
-
-        private void EnumerateToLastProperty<T>(T startNode, int startIndex, OnLastPropertyFound onLastPropertyFound) where T : class
-        {
-            object currentNode = startNode;
-            var maxCallstackIndex = _callstack.Length - 1;
-            for (var c = startIndex; c < _callstack.Length; c++)
-            {
-                var currentProperty = _callstack[c];
-                var isLastPropertyInfo = c == maxCallstackIndex;
-                if (isLastPropertyInfo)
-                {
-                    onLastPropertyFound(currentProperty, currentNode);
-                    break;
-                }
-
-                currentNode = currentProperty.GetValue(currentNode);
-            }
         }
     }
 }

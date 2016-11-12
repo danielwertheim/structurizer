@@ -16,7 +16,7 @@ namespace Structurizer
             IDictionary<Type, IStructureSchema> schemas,
             IStructureIndexesFactory indexesFactory = null)
         {
-            Ensure.That(schemas, nameof(schemas)).IsNotNull().HasItems();
+            EnsureArg.HasItems(schemas, nameof(schemas));
 
             Schemas = schemas;
             IndexesFactory = indexesFactory ?? new StructureIndexesFactory();
@@ -24,7 +24,7 @@ namespace Structurizer
 
         public static IStructureBuilder Create(Action<IStructureTypeConfigurations> config)
         {
-            Ensure.That(config, nameof(config)).IsNotNull();
+            EnsureArg.IsNotNull(config, nameof(config));
 
             var configs = new StructureTypeConfigurations();
 
@@ -35,7 +35,7 @@ namespace Structurizer
 
         public static IStructureBuilder Create(IStructureTypeConfigurations typeConfigs)
         {
-            Ensure.That(typeConfigs, nameof(typeConfigs)).IsNotNull();
+            EnsureArg.IsNotNull(typeConfigs, nameof(typeConfigs));
 
             var structureTypeFactory = new StructureTypeFactory();
             var schemaFactory = new StructureSchemaFactory();

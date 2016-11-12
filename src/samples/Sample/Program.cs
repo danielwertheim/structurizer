@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Structurizer;
 using Structurizer.Configuration;
 
@@ -83,15 +84,19 @@ namespace Sample
                 }
             });
 
-            Console.WriteLine($"===== {orderStructure.Name} =====");
-            foreach (var index in orderStructure.Indexes)
-                Console.WriteLine(DefaultIndexValueFormatter.Format(index));
-
-            Console.WriteLine($"===== {fooStructure.Name} =====");
-            foreach (var index in fooStructure.Indexes)
-                Console.WriteLine(DefaultIndexValueFormatter.Format(index));
+            DumpStructure(orderStructure);
+            DumpStructure(fooStructure);
 
             Console.ReadLine();
+        }
+
+        private static void DumpStructure(IStructure structure)
+        {
+            Console.WriteLine($"===== {structure.Name} =====");
+            foreach (var index in structure.Indexes)
+            {
+                Console.WriteLine(DefaultIndexValueFormatter.Format(index));
+            }
         }
     }
 
@@ -99,18 +104,16 @@ namespace Sample
     {
         public static string Format(IStructureIndex index)
         {
-            var path = index.Path;
-
             switch (index.DataTypeCode)
             {
                 case DataTypeCode.String:
                 case DataTypeCode.Guid:
                 case DataTypeCode.Enum:
-                    return $"{path}=\"{index.Value}\"";
+                    return $"Name:\t{index.Name}\r\nPath\t{index.Path}=\"{index.Value}\"";
                 case DataTypeCode.DateTime:
-                    return $"{path}=\"{((DateTime)index.Value):O}\"";
+                    return $"Name\t{index.Name}\r\nPath\t{index.Path}=\"{((DateTime)index.Value):O}\"";
                 default:
-                    return $"{path}={index.Value}";
+                    return $"Name\t{index.Name}\r\nPath\t{index.Path}={index.Value}";
             }
         }
     }

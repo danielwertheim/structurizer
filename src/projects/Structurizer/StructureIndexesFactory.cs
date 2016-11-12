@@ -27,7 +27,7 @@ namespace Structurizer
                 if (!isCollectionOfValues)
                     indexes[c] = new[]
                     {
-                        new StructureIndex(values[0].Path, values[0].Value, indexAccessor.DataType, indexAccessor.DataTypeCode)
+                        new StructureIndex(indexAccessor.Path, values[0].Path, values[0].Value, indexAccessor.DataType, indexAccessor.DataTypeCode)
                     };
                 else
                 {
@@ -40,6 +40,7 @@ namespace Structurizer
                     {
                         if (values[subC] != null && values[subC].Value != null)
                             subIndexes[subC] = new StructureIndex(
+                                indexAccessor.Path,
                                 values[subC].Path,
                                 values[subC].Value,
                                 indexAccessor.DataType,

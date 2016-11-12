@@ -84,3 +84,12 @@ typeConfigs.Register<MyRoot>(cfg => cfg
     //Can also be done using strings if no index property exists
     .Members("ManyChildren.SomeString");
 ```
+
+# Use cases?
+Anywhere where you efficiently need to extract key-values from an object-graph. Could e.g. be for:
+
+- Logging
+- Selectively extracting some property values for generating a checksum for an object-graph
+- Comparing values
+- Storing key-values for searching
+- ...

@@ -1,5 +1,5 @@
 ﻿using System.Runtime.InteropServices;
- using System.Reflection;
+using System.Reflection;
 
 #if DEBUG
 [assembly: AssemblyProduct("Structurizer (Debug)")]
@@ -14,6 +14,3 @@
 [assembly: AssemblyCopyright("Copyright © 2016 Daniel Wertheim")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
-[assembly: AssemblyVersion("0.0.0.*")]
-[assembly: AssemblyInformationalVersion("0.0.0.*")]

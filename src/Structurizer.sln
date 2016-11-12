@@ -3,16 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structurizer", "Structurizer\Structurizer.csproj", "{0775822D-C8BE-4525-A379-0087AA37D933}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structurizer", "projects\Structurizer\Structurizer.csproj", "{0775822D-C8BE-4525-A379-0087AA37D933}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{314A2727-EED0-45D8-956A-573AF5E3E03F}"
 	ProjectSection(SolutionItems) = preProject
 		GlobalAssemblyInfo.cs = GlobalAssemblyInfo.cs
+		GlobalAssemblyVersion.cs = GlobalAssemblyVersion.cs
+		Structurizer.nuspec = Structurizer.nuspec
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structurizer.UnitTests", "Structurizer.UnitTests\Structurizer.UnitTests.csproj", "{0F834BEF-FD64-4C12-8794-87A00AA5DBE8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structurizer.UnitTests", "tests\Structurizer.UnitTests\Structurizer.UnitTests.csproj", "{0F834BEF-FD64-4C12-8794-87A00AA5DBE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{E921C1C6-8DC3-4ACE-9C0E-480EF1BDFE4F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "samples\Sample\Sample.csproj", "{E921C1C6-8DC3-4ACE-9C0E-480EF1BDFE4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

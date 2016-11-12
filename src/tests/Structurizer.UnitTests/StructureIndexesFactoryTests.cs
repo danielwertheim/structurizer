@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace Structurizer.UnitTests
@@ -132,7 +133,7 @@ namespace Structurizer.UnitTests
         [Test]
         public void GetIndexes_WhenItemWithComplexEnumerable_ReturnsIndexWithDataTypeOfStringElement()
         {
-            var item = new WithComplexArray { Items = new[] { new Complex {Name = "Foo", Value = 42} } };
+            var item = new WithComplexArray { Items = new[] { new Complex { Name = "Foo", Value = 42 } } };
             var schemaStub = StructureSchemaTestFactory.CreateRealFrom<WithComplexArray>();
 
             var factory = new StructureIndexesFactory();
@@ -204,6 +205,41 @@ namespace Structurizer.UnitTests
 
             Assert.AreEqual(42, indexes[0].Value);
             Assert.AreEqual(42, indexes[1].Value);
+        }
+
+        [Test]
+        public void GetIndexes_WhenItemWithArraysBeingNull_ReturnesNoIndexes()
+        {
+            var item = new WithArray
+            {
+                IntValues = null,
+                NullableIntValues = null,
+                StringValues = null
+            };
+
+            var schemaStub = StructureSchemaTestFactory.CreateRealFrom<WithArray>();
+
+            var factory = new StructureIndexesFactory();
+            var indexes = factory.CreateIndexes(schemaStub, item).ToList();
+
+            Assert.IsEmpty(indexes);
+        }
+
+        [Test]
+        public void GetIndexes_WhenArrayOfComplexWithChildBeingNull_ReturnesNoIndexes()
+        {
+            var item = new WithComplexArray
+            {
+                Items = new[] { new Complex { Name = null, Value = 42 } }
+            };
+
+            var schemaStub = StructureSchemaTestFactory.CreateRealFrom<WithComplexArray>();
+
+            var factory = new StructureIndexesFactory();
+            var indexes = factory.CreateIndexes(schemaStub, item).ToList();
+
+            indexes.Count.Should().Be(1);
+            indexes[0].Value.Should().Be(42);
         }
 
         private class WithGuid

@@ -38,7 +38,7 @@ namespace Structurizer
                     Parallel.For(0, subIndexes.Length, subC =>
 #endif
                     {
-                        if (values[subC] != null)
+                        if (values[subC] != null && values[subC].Value != null)
                             subIndexes[subC] = new StructureIndex(
                                 values[subC].Path,
                                 values[subC].Value,

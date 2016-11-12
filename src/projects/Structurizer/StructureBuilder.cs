@@ -54,7 +54,7 @@ namespace Structurizer
 
             return new Structure(
                 schema.Name,
-                IndexesFactory.CreateIndexes(schema, item));
+                CreateIndexes(schema, item));
         }
 
         public IStructure[] CreateStructures<T>(T[] items) where T : class
@@ -68,7 +68,7 @@ namespace Structurizer
 
         private IStructureSchema GetSchema(Type type) => Schemas[type];
 
-        private IStructure[] CreateStructuresInParallel<T>(T[] items, IStructureSchema structureSchema) where T : class
+        private IStructure[] CreateStructuresInParallel<T>(T[] items, IStructureSchema schema) where T : class
         {
             var structures = new IStructure[items.Length];
 
@@ -81,14 +81,14 @@ namespace Structurizer
                 var itm = items[i];
 
                 structures[i] = new Structure(
-                    structureSchema.Name,
-                    IndexesFactory.CreateIndexes(structureSchema, itm));
+                    schema.Name,
+                    CreateIndexes(schema, itm));
             });
 
             return structures;
         }
 
-        private IStructure[] CreateStructuresInSerial<T>(T[] items, IStructureSchema structureSchema) where T : class
+        private IStructure[] CreateStructuresInSerial<T>(T[] items, IStructureSchema schema) where T : class
         {
             var structures = new IStructure[items.Length];
 
@@ -97,11 +97,14 @@ namespace Structurizer
                 var itm = items[i];
 
                 structures[i] = new Structure(
-                    structureSchema.Name,
-                    IndexesFactory.CreateIndexes(structureSchema, itm));
+                    schema.Name,
+                    CreateIndexes(schema, itm));
             }
 
             return structures;
         }
+
+        private IStructureIndex[] CreateIndexes<T>(IStructureSchema schema, T item) where T : class
+            => IndexesFactory.CreateIndexes(schema, item);
     }
 }

@@ -79,9 +79,7 @@
     <Compile Include="IStructureTypeFactory.cs" />
     <Compile Include="IStructureTypeReflecter.cs" />
     <Compile Include="Schemas\MemberAccessors\IIndexAccessor.cs" />
-    <Compile Include="Schemas\MemberAccessors\IMemberAccessor.cs" />
     <Compile Include="Schemas\MemberAccessors\IndexAccessor.cs" />
-    <Compile Include="Schemas\MemberAccessors\MemberAccessorBase.cs" />
     <Compile Include="Schemas\PropertyPathBuilder.cs" />
     <Compile Include="Schemas\StructureProperty.cs" />
     <Compile Include="Schemas\StructurePropertyFactory.cs" />

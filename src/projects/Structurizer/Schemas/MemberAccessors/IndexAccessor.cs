@@ -1,24 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Structurizer.Schemas.MemberAccessors
 {
-    public class IndexAccessor : MemberAccessorBase, IIndexAccessor
+    public class IndexAccessor : IIndexAccessor
     {
         private readonly StructurePropertyCallstack _callstack;
 
+        protected IStructureProperty Property { get; }
+        public string Path => Property.Path;
+        public Type DataType => Property.DataType;
         public DataTypeCode DataTypeCode { get; }
-
         public bool IsEnumerable => Property.IsEnumerable;
-
         public bool IsElement => Property.IsElement;
 
         public IndexAccessor(IStructureProperty property, DataTypeCode dataTypeCode)
-            : base(property)
         {
             _callstack = StructurePropertyCallstack.Generate(property);
+            Property = property;
             DataTypeCode = dataTypeCode;
         }
 
@@ -72,7 +73,7 @@ namespace Structurizer.Schemas.MemberAccessors
                             startPath: $"{currentProperty.Parent.Path}[{i}].{currentProperty.Name}");
 
                         //if(tmpValues.Any())
-                            values.AddRange(tmpValues);
+                        values.AddRange(tmpValues);
                     }
                     return values;
                 }

@@ -1,6 +1,5 @@
 ﻿using EnsureThat;
 using Structurizer.Schemas;
-using Structurizer.Schemas.MemberAccessors;
 
 namespace Structurizer
 {

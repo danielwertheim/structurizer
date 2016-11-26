@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Structurizer.Schemas.MemberAccessors
+namespace Structurizer
 {
     public interface IIndexAccessor
     {

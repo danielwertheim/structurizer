@@ -1,5 +1,4 @@
 using Structurizer.Schemas;
-using Structurizer.Schemas.MemberAccessors;
 
 namespace Structurizer.UnitTests.Schemas
 {

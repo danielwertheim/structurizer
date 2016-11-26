@@ -3,7 +3,6 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using Structurizer.Schemas;
-using Structurizer.Schemas.MemberAccessors;
 
 namespace Structurizer.UnitTests.Schemas
 {

@@ -7,10 +7,10 @@ namespace Structurizer
     {
         public DataTypeCode Convert(IStructureProperty property)
         {
-            return Convert(property.ElementDataType ?? property.DataType, property.Name);
+            return Convert(property.ElementDataType ?? property.DataType);
         }
 
-        public DataTypeCode Convert(Type dataType, string memberName)
+        public DataTypeCode Convert(Type dataType)
         {
             if (dataType.IsAnySignedIntegerNumberType())
                 return DataTypeCode.IntegerNumber;

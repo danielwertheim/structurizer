@@ -1,7 +1,9 @@
+using System.Collections.Generic;
+
 namespace Structurizer
 {
     public interface IStructureIndexesFactory
     {
-        IStructureIndex[] CreateIndexes<T>(IStructureSchema structureSchema, T item) where T : class;
+        IList<IStructureIndex> CreateIndexes<T>(IStructureSchema structureSchema, T item) where T : class;
     }
 }

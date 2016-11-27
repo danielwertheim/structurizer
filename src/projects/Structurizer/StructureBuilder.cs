@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using EnsureThat;
 using Structurizer.Configuration;
 
@@ -61,32 +60,10 @@ namespace Structurizer
         {
             var schema = GetSchema(typeof(T));
 
-            return items.Length < 100
-                ? CreateStructuresInSerial(items, schema)
-                : CreateStructuresInParallel(items, schema);
+            return CreateStructuresInSerial(items, schema);
         }
 
         private IStructureSchema GetSchema(Type type) => Schemas[type];
-
-        private IStructure[] CreateStructuresInParallel<T>(T[] items, IStructureSchema schema) where T : class
-        {
-            var structures = new IStructure[items.Length];
-
-#if DEBUG
-            Parallel.For(0, items.Length, new ParallelOptions { MaxDegreeOfParallelism = 1 }, i =>
-#else
-            Parallel.For(0, items.Length, new ParallelOptions { MaxDegreeOfParallelism = 1 }, i =>
-#endif
-            {
-                var itm = items[i];
-
-                structures[i] = new Structure(
-                    schema.Name,
-                    CreateIndexes(schema, itm));
-            });
-
-            return structures;
-        }
 
         private IStructure[] CreateStructuresInSerial<T>(T[] items, IStructureSchema schema) where T : class
         {
@@ -104,7 +81,7 @@ namespace Structurizer
             return structures;
         }
 
-        private IStructureIndex[] CreateIndexes<T>(IStructureSchema schema, T item) where T : class
+        private IList<IStructureIndex> CreateIndexes<T>(IStructureSchema schema, T item) where T : class
             => IndexesFactory.CreateIndexes(schema, item);
     }
 }

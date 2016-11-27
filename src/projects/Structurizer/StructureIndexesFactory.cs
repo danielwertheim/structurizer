@@ -1,60 +1,51 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Structurizer
 {
     public class StructureIndexesFactory : IStructureIndexesFactory
     {
-        public IStructureIndex[] CreateIndexes<T>(IStructureSchema structureSchema, T item) where T : class
+        public IList<IStructureIndex> CreateIndexes<T>(IStructureSchema structureSchema, T item) where T : class
         {
-            var indexes = new IEnumerable<IStructureIndex>[structureSchema.IndexAccessors.Count];
+            var result = new List<IStructureIndex>();
 
-#if DEBUG
-            Parallel.For(0, indexes.Length, new ParallelOptions { MaxDegreeOfParallelism = 1 }, c =>
-#else
-            Parallel.For(0, indexes.Length, c =>
-#endif
+            for (var i = 0; i < structureSchema.IndexAccessors.Count; i++)
             {
-                var indexAccessor = structureSchema.IndexAccessors[c];
+                var indexAccessor = structureSchema.IndexAccessors[i];
                 var values = indexAccessor.GetValues(item);
 
                 var valuesExists = values != null && values.Count > 0;
                 if (!valuesExists)
-                    return;
+                    continue;
 
                 var isCollectionOfValues = indexAccessor.IsEnumerable || indexAccessor.IsElement || values.Count > 1;
                 if (!isCollectionOfValues)
-                    indexes[c] = new[]
-                    {
-                        new StructureIndex(indexAccessor.Path, values[0].Path, values[0].Value, indexAccessor.DataType, indexAccessor.DataTypeCode)
-                    };
+                {
+                    if (values[0].Value == null)
+                        continue;
+
+                    result.Add(new StructureIndex(indexAccessor.Path, values[0].Path, values[0].Value, indexAccessor.DataType, indexAccessor.DataTypeCode));
+                }
                 else
                 {
-                    var subIndexes = new IStructureIndex[values.Count];
-#if DEBUG
-                    Parallel.For(0, subIndexes.Length, new ParallelOptions { MaxDegreeOfParallelism = 1 }, subC =>
-#else
-                    Parallel.For(0, subIndexes.Length, subC =>
-#endif
+                    for (var subC = 0; subC < values.Count; subC++)
                     {
-                        if (values[subC] != null && values[subC].Value != null)
-                            subIndexes[subC] = new StructureIndex(
-                                indexAccessor.Path,
-                                values[subC].Path,
-                                values[subC].Value,
-                                indexAccessor.DataType,
-                                indexAccessor.DataTypeCode);
-                    });
-                    indexes[c] = subIndexes;
-                }
-            });
+                        if (values[subC] == null)
+                            continue;
 
-            return indexes
-                .Where(i => i != null)
-                .SelectMany(i => i)
-                .Where(i => i != null)
-                .ToArray();
+                        if (values[subC].Value == null)
+                            continue;
+
+                        result.Add(new StructureIndex(
+                            indexAccessor.Path,
+                            values[subC].Path,
+                            values[subC].Value,
+                            indexAccessor.DataType,
+                            indexAccessor.DataTypeCode));
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

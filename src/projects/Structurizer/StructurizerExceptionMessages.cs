@@ -4,8 +4,6 @@
     {
         public static readonly string AutoSchemaBuilder_MissingIndexableMembers
             = "The Item of type '{0}' has no members that are indexable. There's no point in treating items that has nothing to index.";
-        public static readonly string StructureIndex_ValueArgument_IncorrectType
-            = "Only strings and valuetypes can be stored as indexes.";
 
         public static readonly string ExpressionEvaluation_DontKnowHowToEvalExpression
             = "Don't know how to evaluate the expression type: '{0}'.";

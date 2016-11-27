@@ -17,10 +17,6 @@ namespace Structurizer
             EnsureArg.IsNotNullOrWhiteSpace(path, nameof(path));
             EnsureArg.IsNotNull(dataType, nameof(dataType));
 
-            var valueIsOkType = value is string || value is ValueType;
-            if (value != null && !valueIsOkType)
-                throw new ArgumentException(StructurizerExceptionMessages.StructureIndex_ValueArgument_IncorrectType);
-
             Name = name;
             Path = path;
             Value = value;

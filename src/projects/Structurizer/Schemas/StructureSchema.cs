@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using EnsureThat;
-using Structurizer.Schemas.MemberAccessors;
 
 namespace Structurizer.Schemas
 {

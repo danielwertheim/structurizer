@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Structurizer.Schemas.MemberAccessors;
 
 namespace Structurizer
 {

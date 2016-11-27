@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace Structurizer.Schemas.MemberAccessors
+namespace Structurizer
 {
-    public interface IIndexAccessor : IMemberAccessor
+    public interface IIndexAccessor
     {
+        string Path { get; }
+        Type DataType { get; }
         DataTypeCode DataTypeCode { get; }
         bool IsEnumerable { get; }
         bool IsElement { get; }

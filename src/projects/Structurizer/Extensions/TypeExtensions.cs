@@ -45,8 +45,8 @@ namespace Structurizer.Extensions
         private static readonly Type NullableDecimalType = typeof(decimal?);
         private static readonly Type NullableDoubleType = typeof(double?);
 
-        private static readonly HashSet<Type> ExtraPrimitiveTypes = new HashSet<Type> { typeof(string), typeof(Guid), typeof(DateTime), typeof(Decimal) };
-        private static readonly HashSet<Type> ExtraPrimitiveNullableTypes = new HashSet<Type> { typeof(Guid?), typeof(DateTime?), typeof(Decimal?) };
+        private static readonly HashSet<Type> ExtraPrimitiveTypes = new HashSet<Type> { typeof(string), typeof(Guid), typeof(DateTime), typeof(decimal) };
+        private static readonly HashSet<Type> ExtraPrimitiveNullableTypes = new HashSet<Type> { typeof(Guid?), typeof(DateTime?), typeof(decimal?) };
         private static readonly HashSet<Type> UnsignedTypes = new HashSet<Type> { typeof(ushort), typeof(uint), typeof(ulong) };
         private static readonly HashSet<Type> NullableUnsignedTypes = new HashSet<Type> { typeof(ushort?), typeof(uint?), typeof(ulong?) };
 

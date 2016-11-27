@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Structurizer;
 using Structurizer.Configuration;
 
@@ -10,81 +9,26 @@ namespace Sample
     {
         static void Main(string[] args)
         {
-            var order = new Order
-            {
-                Id = 1,
-                OrderSimpleInts = new[] { 1, 2, 3 },
-                OrderNo = "2016-1234",
-                PlacedAt = DateTime.Now,
-                Lines = new List<OrderLine>
-                {
-                    new OrderLine
-                    {
-                        OrderLineSimpleInts = new [] {11,12,13},
-                        ArticleNo = "Article-Line0",
-                        Qty = 42,
-                        Items =  new List<Item>
-                        {
-                            new Item
-                            {
-                                Name = "Key-Line0-Item0",
-                                Value = "Value-Line0-Item0",
-                                ItemSimpleInts = new [] {101, 102, 103}
-                            },
-                            new Item
-                            {
-                                Name = "Key-Line0-Item1",
-                                Value = "Value-Line0-Item1"
-                            }
-                        }
-                    },
-                    new OrderLine
-                    {
-                        ArticleNo = "Article-Line1",
-                        Qty = 3,
-                        Items =  new List<Item>
-                        {
-                            new Item
-                            {
-                                Name = "Key-Line1-Item0",
-                                Value = "Value-Line1-Item0"
-                            },
-                            new Item
-                            {
-                                Name = "Key-Line1-Item1",
-                                Value = "Value-Line1-Item1"
-                            }
-                        }
-                    }
-                }
-            };
-
-            var typeConfigs = new StructureTypeConfigurations();
-            typeConfigs.Register<Order>();
-            typeConfigs.Register<Foo>();
-
+            //var typeConfigs = new StructureTypeConfigurations();
             //typeConfigs.Register<Order>(cfg => cfg
-            //    .UsingIndexMode(IndexMode.Inclusive)
-            //    .Members(i => i.OrderNo));
-            //.Members(i => i.Lines[0].Items[0].Name));
+            //    .UsingIndexMode(IndexMode.Exclusive)
+            //    .Members(i => i.Lines[0].Props));
 
             //inclusive:Lines.*
             //inclusive:Lines.ArticleNo
             //exclusive:Lines.*
             //exclusive.Lines.ArticleNo
 
-            var structureBuilder = StructureBuilder.Create(typeConfigs);
-            var orderStructure = structureBuilder.CreateStructure(order);
-            var fooStructure = structureBuilder.CreateStructure(new Foo
-            {
-                FooScore = 1,
-                Bar = new Bar
-                {
-                    BarScore = new[] { 2, 3 }
-                }
-            });
 
-            DumpStructure(orderStructure);
+
+            //var structureBuilder = StructureBuilder.Create(cfg => cfg.Register<Order>());
+            //var order = Order.CreateSample();
+            //var orderStructure = structureBuilder.CreateStructure(order);
+            //DumpStructure(orderStructure);
+
+            var structureBuilder = StructureBuilder.Create(cfg => cfg.Register<Foo>());
+            var foo = Foo.CreateSample();
+            var fooStructure = structureBuilder.CreateStructure(foo);
             DumpStructure(fooStructure);
 
             Console.ReadLine();
@@ -94,9 +38,7 @@ namespace Sample
         {
             Console.WriteLine($"===== {structure.Name} =====");
             foreach (var index in structure.Indexes)
-            {
                 Console.WriteLine(DefaultIndexValueFormatter.Format(index));
-            }
         }
     }
 
@@ -104,57 +46,58 @@ namespace Sample
     {
         public static string Format(IStructureIndex index)
         {
+            return $"{index.Path}=\"{index.Value}\"";
             switch (index.DataTypeCode)
             {
                 case DataTypeCode.String:
                 case DataTypeCode.Guid:
                 case DataTypeCode.Enum:
-                    return $"Name:\t{index.Name}\r\nPath\t{index.Path}=\"{index.Value}\"";
+                    return $"Path\t{index.Path}=\"{index.Value}\"";
                 case DataTypeCode.DateTime:
-                    return $"Name\t{index.Name}\r\nPath\t{index.Path}=\"{((DateTime)index.Value):O}\"";
+                    return $"Path\t{index.Path}=\"{((DateTime)index.Value):O}\"";
                 default:
-                    return $"Name\t{index.Name}\r\nPath\t{index.Path}={index.Value}";
+                    return $"Path\t{index.Path}={index.Value}";
             }
         }
     }
 
-    public interface IOrder
-    {
-        int Id { get; set; }
-        string OrderNo { get; set; }
-        DateTime PlacedAt { get; set; }
-        List<OrderLine> Lines { get; set; }
-        int[] OrderSimpleInts { get; set; }
-    }
-
-    public class Order : IOrder
-    {
-        public int Id { get; set; }
-        public string OrderNo { get; set; }
-        public DateTime PlacedAt { get; set; }
-        public List<OrderLine> Lines { get; set; }
-        public int[] OrderSimpleInts { get; set; }
-    }
-
-    public class OrderLine
-    {
-        public string ArticleNo { get; set; }
-        public int Qty { get; set; }
-        public List<Item> Items { get; set; }
-        public int[] OrderLineSimpleInts { get; set; }
-    }
-
-    public class Item
-    {
-        public string Name { get; set; }
-        public string Value { get; set; }
-        public int[] ItemSimpleInts { get; set; }
-    }
-
     public class Foo
     {
-        public int FooScore { get; set; }
-        public Bar Bar { get; set; }
+        public int Score { get; set; }
+        public int[] Scores { get; set; }
+        public FooType Type { get; set; }
+        public DateTime TimeStamp { get; set; }
+        public int? OptScore { get; set; }
+        public int?[] OptScores { get; set; }
+        public string Name { get; set; }
+        public string[] Names { get; set; }
+        public bool Bool { get; set; }
+        public bool OptBool { get; set; }
+        //public Bar Bar { get; set; }
+        //public KeyValuePair<int, string> Kv { get; set; }
+
+        public static Foo CreateSample()
+        {
+            return new Foo
+            {
+                Score = 42,
+                Scores = new[] {1, 2, 3},
+                Type = FooType.One,
+                OptScore = 111,
+                OptScores = new int?[] {111, 112, 113},
+                Bool = true,
+                OptBool = true,
+                TimeStamp = DateTime.Now,
+                Name = "Test",
+                Names = new[] {"Name1", "Name2"},
+                //Kv = new KeyValuePair<int, string>(333, "aaa")
+            };
+        }
+    }
+
+    public enum FooType
+    {
+        One
     }
 
     public class Bar

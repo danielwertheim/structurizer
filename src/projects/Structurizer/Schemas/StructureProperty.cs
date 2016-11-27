@@ -25,13 +25,12 @@ namespace Structurizer.Schemas
             DataType = info.DataType;
             IsRootMember = info.Parent == null;
 
-            var isSimpleOrValueType = DataType.IsSimpleType() || DataType.IsValueType;
-            IsEnumerable = !isSimpleOrValueType && DataType.IsEnumerableType();
+            IsEnumerable = !DataType.IsSimpleType() && DataType.IsEnumerableType();
             IsElement = Parent != null && (Parent.IsElement || Parent.IsEnumerable);
             ElementDataType = IsEnumerable ? DataType.GetEnumerableElementType() : null;
             Path = PropertyPathBuilder.BuildPath(this);
         }
 
-        public virtual object GetValue(object item) => _getter.GetValue(item);
+        public object GetValue(object item) => _getter(item);
     }
 }

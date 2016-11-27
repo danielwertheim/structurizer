@@ -1,24 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Structurizer.Schemas.MemberAccessors
+namespace Structurizer.Schemas
 {
-    public class IndexAccessor : MemberAccessorBase, IIndexAccessor
+    public class IndexAccessor : IIndexAccessor
     {
         private readonly StructurePropertyCallstack _callstack;
 
+        protected IStructureProperty Property { get; }
+        public string Path => Property.Path;
+        public Type DataType => Property.DataType;
         public DataTypeCode DataTypeCode { get; }
-
         public bool IsEnumerable => Property.IsEnumerable;
-
         public bool IsElement => Property.IsElement;
 
         public IndexAccessor(IStructureProperty property, DataTypeCode dataTypeCode)
-            : base(property)
         {
             _callstack = StructurePropertyCallstack.Generate(property);
+            Property = property;
             DataTypeCode = dataTypeCode;
         }
 
@@ -46,7 +46,7 @@ namespace Structurizer.Schemas.MemberAccessors
             for (var callstackIndex = startAtCallstackIndex; callstackIndex < _callstack.Length; callstackIndex++)
             {
                 if (currentNode == null)
-                    return new List<IStructureIndexValue> { null };
+                    return null;
 
                 var currentProperty = _callstack[callstackIndex];
 
@@ -66,13 +66,16 @@ namespace Structurizer.Schemas.MemberAccessors
                     foreach (var node in enumerableNode)
                     {
                         i += 1;
+
+                        if (node == null)
+                            continue;
+
                         var tmpValues = EvaluateCallstack(
                             currentProperty.GetValue(node),
                             startAtCallstackIndex: callstackIndex + 1,
-                            startPath: $"{currentProperty.Parent.Path}[{i}].{currentProperty.Name}");
+                            startPath: $"{currentProperty.Parent.Path}[{i.ToString()}].{currentProperty.Name}");
 
-                        //if(tmpValues.Any())
-                            values.AddRange(tmpValues);
+                        values.AddRange(tmpValues);
                     }
                     return values;
                 }
@@ -95,17 +98,11 @@ namespace Structurizer.Schemas.MemberAccessors
                 var path = $"{startPath}[{i}]";
 
                 if (node == null)
-                {
-                    values.Add(new StructureIndexValue($"{path}.{property.Name}", null));
                     continue;
-                }
 
                 var nodeValue = property.GetValue(node);
                 if (nodeValue == null)
-                {
-                    values.Add(new StructureIndexValue($"{path}.{property.Name}", null));
                     continue;
-                }
 
                 var enumerableNode = nodeValue as IEnumerable;
 
@@ -138,21 +135,14 @@ namespace Structurizer.Schemas.MemberAccessors
                 ? new List<IStructureIndexValue>(collection.Count)
                 : new List<IStructureIndexValue>();
 
+            if (startPath != null)
+                startPath = startPath + ".";
+
             var i = 0;
-            var path = new StringBuilder();
             foreach (var element in elements)
             {
-                if (startPath != null)
-                {
-                    path.Append(startPath);
-                    path.Append(".");
-                }
-
-                path.Append(property.Name);
-                path.Append($"[{i}]");
-
-                values.Add(new StructureIndexValue(path.ToString(), element));
-                path.Clear();
+                if (element != null)
+                    values.Add(new StructureIndexValue($"{startPath}{property.Name}[{i.ToString()}]", element));
                 i += 1;
             }
 

@@ -39,15 +39,28 @@ namespace Structurizer.Schemas
                 return null;
 
             var getter = CreateDynamicGetMethod(propertyInfo);
-
             var generator = getter.GetILGenerator();
-            generator.DeclareLocal(ObjectType);
+
+            var x = generator.DeclareLocal(propertyInfo.DeclaringType);//Arg
+            var y = generator.DeclareLocal(propertyInfo.PropertyType); //Prop val
+            var z = generator.DeclareLocal(ObjectType); //Prop val as obj
+
             generator.Emit(OpCodes.Ldarg_0);
             generator.Emit(OpCodes.Castclass, propertyInfo.DeclaringType);
-            generator.EmitCall(OpCodes.Callvirt, propGetMethod, (Type[])null);
+            generator.Emit(OpCodes.Stloc, x);
+
+            generator.Emit(OpCodes.Ldloc, x);
+            generator.EmitCall(OpCodes.Callvirt, propGetMethod, null);
+            generator.Emit(OpCodes.Stloc, y);
+
+            generator.Emit(OpCodes.Ldloc, y);
 
             if (!propertyInfo.PropertyType.IsClass)
+            {
                 generator.Emit(OpCodes.Box, propertyInfo.PropertyType);
+                generator.Emit(OpCodes.Stloc, z);
+                generator.Emit(OpCodes.Ldloc, z);
+            }
 
             generator.Emit(OpCodes.Ret);
 
@@ -57,7 +70,7 @@ namespace Structurizer.Schemas
         private static DynamicMethod CreateDynamicGetMethod(PropertyInfo propertyInfo)
         {
             var args = new[] { ObjectType };
-            var name = $"_Get{propertyInfo.Name}_";
+            var name = $"_{propertyInfo.DeclaringType.Name}_Get{propertyInfo.Name}_";
             var returnType = ObjectType;
 
             return !propertyInfo.DeclaringType.IsInterface

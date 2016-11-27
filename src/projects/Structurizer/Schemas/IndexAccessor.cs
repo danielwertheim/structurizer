@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Structurizer.Schemas
 {
@@ -47,7 +46,7 @@ namespace Structurizer.Schemas
             for (var callstackIndex = startAtCallstackIndex; callstackIndex < _callstack.Length; callstackIndex++)
             {
                 if (currentNode == null)
-                    return new List<IStructureIndexValue> { null };
+                    return null;
 
                 var currentProperty = _callstack[callstackIndex];
 
@@ -138,23 +137,14 @@ namespace Structurizer.Schemas
                 ? new List<IStructureIndexValue>(collection.Count)
                 : new List<IStructureIndexValue>();
 
+            if (startPath != null)
+                startPath = startPath + ".";
+
             var i = 0;
-            var path = new StringBuilder();
             foreach (var element in elements)
             {
-                if (startPath != null)
-                {
-                    path.Append(startPath);
-                    path.Append(".");
-                }
-
-                path.Append(property.Name);
-                path.Append("[");
-                path.Append(i);
-                path.Append("]");
-
-                values.Add(new StructureIndexValue(path.ToString(), element));
-                path.Clear();
+                if(element != null)
+                    values.Add(new StructureIndexValue($"{startPath}{property.Name}[{i.ToString()}]", element));
                 i += 1;
             }
 

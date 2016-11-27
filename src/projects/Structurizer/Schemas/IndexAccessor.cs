@@ -70,9 +70,8 @@ namespace Structurizer.Schemas
                         var tmpValues = EvaluateCallstack(
                             currentProperty.GetValue(node),
                             startAtCallstackIndex: callstackIndex + 1,
-                            startPath: $"{currentProperty.Parent.Path}[{i}].{currentProperty.Name}");
+                            startPath: $"{currentProperty.Parent.Path}[{i.ToString()}].{currentProperty.Name}");
 
-                        //if(tmpValues.Any())
                         values.AddRange(tmpValues);
                     }
                     return values;
@@ -150,7 +149,9 @@ namespace Structurizer.Schemas
                 }
 
                 path.Append(property.Name);
-                path.Append($"[{i}]");
+                path.Append("[");
+                path.Append(i);
+                path.Append("]");
 
                 values.Add(new StructureIndexValue(path.ToString(), element));
                 path.Clear();

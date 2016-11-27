@@ -66,6 +66,10 @@ namespace Structurizer.Schemas
                     foreach (var node in enumerableNode)
                     {
                         i += 1;
+
+                        if(node == null)
+                            continue;
+
                         var tmpValues = EvaluateCallstack(
                             currentProperty.GetValue(node),
                             startAtCallstackIndex: callstackIndex + 1,

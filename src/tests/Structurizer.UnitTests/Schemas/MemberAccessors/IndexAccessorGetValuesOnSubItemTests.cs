@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace Structurizer.UnitTests.Schemas.MemberAccessors
@@ -20,7 +21,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
         }
 
         [Test]
-        public void GetValues_WhenSubItemsArrayHasElementsWithNullValues_ReturnsTheNullValues()
+        public void GetValues_WhenSubItemsArrayHasElementsWithNullValues_DoesNotReturnTheNullValues()
         {
             var subItems = new[] { new SubItem { Value = null }, new SubItem { Value = null } };
             var item = new Item { SubItems = subItems };
@@ -29,7 +30,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var values = indexAccessor.GetValues(item);
 
-            CollectionAssert.AreEquivalent(new string[] { null, null }, values.Select(i => i.Value));
+            values.Should().BeEmpty();
         }
 
         [Test]
@@ -41,11 +42,11 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var value = indexAccessor.GetValues(item);
 
-            Assert.AreEqual(new string[] { null }, value);
+            value.Should().BeNull();
         }
 
         [Test]
-        public void GetValues_WhenSubItemsArrayHasBothNullAndNonNullItems_ReturnsNonNullAndNullItems()
+        public void GetValues_WhenSubItemsArrayHasBothNullAndNonNullItems_ReturnsNonNullItemsOnly()
         {
             var subItems = new[] { null, new SubItem { Value = "A" } };
             var item = new Item { SubItems = subItems };
@@ -54,7 +55,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var value = indexAccessor.GetValues(item);
 
-            Assert.AreEqual(new object[] { null, "A" }, value.Select(i => i.Value));
+            Assert.AreEqual(new object[] { "A" }, value.Select(i => i.Value));
         }
 
         [Test]

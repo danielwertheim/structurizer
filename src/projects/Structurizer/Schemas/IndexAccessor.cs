@@ -67,7 +67,7 @@ namespace Structurizer.Schemas
                     {
                         i += 1;
 
-                        if(node == null)
+                        if (node == null)
                             continue;
 
                         var tmpValues = EvaluateCallstack(
@@ -98,17 +98,11 @@ namespace Structurizer.Schemas
                 var path = $"{startPath}[{i}]";
 
                 if (node == null)
-                {
-                    values.Add(new StructureIndexValue($"{path}.{property.Name}", null));
                     continue;
-                }
 
                 var nodeValue = property.GetValue(node);
                 if (nodeValue == null)
-                {
-                    values.Add(new StructureIndexValue($"{path}.{property.Name}", null));
                     continue;
-                }
 
                 var enumerableNode = nodeValue as IEnumerable;
 
@@ -147,7 +141,7 @@ namespace Structurizer.Schemas
             var i = 0;
             foreach (var element in elements)
             {
-                if(element != null)
+                if (element != null)
                     values.Add(new StructureIndexValue($"{startPath}{property.Name}[{i.ToString()}]", element));
                 i += 1;
             }

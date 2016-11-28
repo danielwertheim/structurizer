@@ -60,13 +60,6 @@ namespace Structurizer
         {
             var schema = GetSchema(typeof(T));
 
-            return CreateStructuresInSerial(items, schema);
-        }
-
-        private IStructureSchema GetSchema(Type type) => Schemas[type];
-
-        private IStructure[] CreateStructuresInSerial<T>(T[] items, IStructureSchema schema) where T : class
-        {
             var structures = new IStructure[items.Length];
 
             for (var i = 0; i < structures.Length; i++)
@@ -80,6 +73,8 @@ namespace Structurizer
 
             return structures;
         }
+
+        private IStructureSchema GetSchema(Type type) => Schemas[type];
 
         private IList<IStructureIndex> CreateIndexes<T>(IStructureSchema schema, T item) where T : class
             => IndexesFactory.CreateIndexes(schema, item);

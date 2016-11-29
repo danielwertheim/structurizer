@@ -23,6 +23,12 @@ public class MyChild
 }
 ```
 
+### Install
+
+```
+install-package structurizer
+```
+
 ### Builder construction
 **KEEP HOLD OF THE STRUCTUREBUILDER!** The `StructureBuilder.Create` function, will create the `Schemas` underneath. The Scheams contains a cache of IL-generated members for effective extraction of values.
 

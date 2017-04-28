@@ -1,6 +1,6 @@
 public class BuildConfig
 {
-    private const string Version = "1.0.0";
+    private const string Version = "1.1.0";
     private const bool IsPreRelease = false;
 
     public readonly string SrcDir = "./src/";
@@ -19,12 +19,11 @@ public class BuildConfig
         if (context == null)
             throw new ArgumentNullException("context");
 
-        var target = context.Argument("target", "Default");
         var buildRevision = context.Argument("buildrevision", "0");
 
         return new BuildConfig
         {
-            Target = target,
+            Target = context.Argument("target", "Default"),
             SemVer = Version + (IsPreRelease ? "-b" + buildRevision : string.Empty),
             BuildVersion = Version + "." + buildRevision,
             BuildProfile = context.Argument("configuration", "Release"),

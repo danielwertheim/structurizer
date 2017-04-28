@@ -64,6 +64,7 @@
       <Link>Properties\GlobalAssemblyVersion.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schemas\StructurePropertyTests\StructurePropertyAttributesTests.cs" />
     <Compile Include="Schemas\StructureSchemaFactoryTests.cs" />
     <Compile Include="Configuration\StructureTypeConfigTests.cs" />
     <Compile Include="Configuration\StructureTypeConfigurationsTests.cs" />
@@ -79,7 +80,7 @@
     <Compile Include="Schemas\StructurePropertyTests\StructurePropertyGetIdentityValueTests.cs" />
     <Compile Include="Schemas\StructurePropertyTests\StructurePropertyGetPrimitiveValueTests.cs" />
     <Compile Include="Schemas\StructurePropertyTests\StructurePropertyGetStringValueTests.cs" />
-    <Compile Include="Schemas\StructurePropertyTests\StructurePropertyTests.cs" />
+    <Compile Include="Schemas\StructurePropertyTests\StructurePropertyEnumerableTests.cs" />
     <Compile Include="Schemas\StructureSchemaTests.cs" />
     <Compile Include="Schemas\StructureTypeFactoryTests.cs" />
     <Compile Include="Schemas\StructureTypeReflecterTests\StructureTypeReflecterComplexIndexablePropertiesTests.cs" />

@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using NUnit.Framework;
-using Structurizer.Schemas;
 
 namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
 {
     [TestFixture]
-    public class StructurePropertyTests : UnitTestBase
+    public class StructurePropertyEnumerableTests : UnitTestBase
     {
         [Test]
         public void IsEnumerable_WhenIEnumerableOfSimpleType_ReturnsTrue()

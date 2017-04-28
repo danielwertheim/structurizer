@@ -23,6 +23,7 @@ namespace Structurizer.Schemas
             return new StructurePropertyInfo(
                 propertyInfo.Name,
                 propertyInfo.PropertyType,
+                propertyInfo.GetCustomAttributes(true),
                 parent);
         }
     }

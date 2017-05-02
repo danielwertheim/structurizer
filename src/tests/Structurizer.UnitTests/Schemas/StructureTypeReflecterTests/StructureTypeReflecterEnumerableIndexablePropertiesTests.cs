@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
 {
-    [TestFixture]
+    [TestClass]
     public class StructureTypeReflecterEnumerableIndexablePropertiesTests : StructureTypeReflecterTestsBase
     {
-        [Test]
+        [TestMethod]
         public void GetIndexableProperties_WhenIListOfTIndexesExists_ReturnsTheElementMembers()
         {
             var props = ReflecterFor().GetIndexableProperties(typeof(WithCollectionIndexes));
@@ -16,7 +16,7 @@ namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
             Assert.IsTrue(props.Any(p => p.Path == "IList1.ElementInt1"));
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexableProperties_WhenIEnumerableOfTIndexesExists_ReturnsTheElementMembers()
         {
             var props = ReflecterFor().GetIndexableProperties(typeof(WithCollectionIndexes));
@@ -24,7 +24,7 @@ namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
             Assert.IsTrue(props.Any(p => p.Path == "IEnumerable1.ElementInt1"));
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexableProperties_WhenEnumerableOfBytes_NoPropertiesAreReturned()
         {
             var props = ReflecterFor().GetIndexableProperties(typeof(WithEnumerableBytes));
@@ -32,7 +32,7 @@ namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
             Assert.IsFalse(props.Any());
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexableProperties_WhenArrayOfStrings_OnlyReturnsPropertyForAccessingTheStringArray()
         {
             var properties = ReflecterFor().GetIndexableProperties(typeof(WithArrayOfStrings));
@@ -42,7 +42,7 @@ namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
             Assert.IsNotNull(arrayIndex);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexableProperties_WhenArrayOfIntegers_OnlyReturnsPropertyForAccessingTheStringArray()
         {
             var properties = ReflecterFor().GetIndexableProperties(typeof(WithArrayOfIntegers));
@@ -52,7 +52,7 @@ namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
             Assert.IsNotNull(arrayIndex);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexableProperties_WhenWithNestedArrayOfStrings_OnlyReturnsPropertyForAccessingTheStringArray()
         {
             var properties = ReflecterFor().GetIndexableProperties(typeof(WithNestedArrayOfStrings));
@@ -62,7 +62,7 @@ namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
             Assert.IsNotNull(arrayIndex);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexableProperties_WhenWithArrayOfNestedArrayOfStrings_OnlyReturnsPropertyForAccessingTheStringArray()
         {
             var properties = ReflecterFor().GetIndexableProperties(typeof(WithArrayOfNestedArrayOfStrings));

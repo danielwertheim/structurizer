@@ -1,16 +1,16 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.StructureBuilderTests
 {
-    [TestFixture]
+    [TestClass]
     public class StructureBuilderGraphTests : StructureBuilderBaseTests
     {
-        protected override void OnTestInitialize()
+        public StructureBuilderGraphTests()
         {
             Builder = StructureBuilder.Create(c => c.Register<Root>());
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenNestedItemExists_NestedWillBePartOfStructure()
         {
             var item = new Root { IntOnRoot = 142, Nested = new Child { IntOnChild = 242 } };

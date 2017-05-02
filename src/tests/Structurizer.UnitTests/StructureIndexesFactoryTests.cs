@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
 using FluentAssertions;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests
 {
-    [TestFixture]
+    [TestClass]
     public class StructureIndexesFactoryTests : UnitTestBase
     {
-        [Test]
+        [TestMethod]
         public void GetIndexes_WhenItemHasGuidId_ReturnsId()
         {
             var value = Guid.Parse("1F0E8C1D-7AF5-418F-A6F6-A40B7F31CB00");
@@ -21,7 +21,7 @@ namespace Structurizer.UnitTests
             Assert.AreEqual(value, indexes.Single(i => i.Path == "GuidValue").Value);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexes_WhenItemHasNulledGuidId_ReturnsNoIndex()
         {
             var item = new WithNullableGuid { GuidValue = null };
@@ -33,7 +33,7 @@ namespace Structurizer.UnitTests
             Assert.AreEqual(0, indexes.Count);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexes_WhenNullableGuidIdHasValue_ReturnsId()
         {
             var value = Guid.Parse("1F0E8C1D-7AF5-418F-A6F6-A40B7F31CB00");
@@ -46,7 +46,7 @@ namespace Structurizer.UnitTests
             Assert.AreEqual(value, indexes.Single(i => i.Path == "GuidValue").Value);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexes_WhenItemWithNullString_ReturnsNoIndex()
         {
             var item = new WithNoArray { StringValue = null };
@@ -58,7 +58,7 @@ namespace Structurizer.UnitTests
             Assert.IsNull(indexes.SingleOrDefault(i => i.Path == "StringValue"));
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexes_WhenItemWithAssignedString_ReturnsIndexWithStringValue()
         {
             var item = new WithNoArray { StringValue = "A" };
@@ -70,7 +70,7 @@ namespace Structurizer.UnitTests
             Assert.AreEqual("A", indexes.Single(i => i.Path == "StringValue").Value);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexes_WhenItemWithAssignedInt_ReturnsIndexWithIntValue()
         {
             var item = new WithNoArray { IntValue = 42 };
@@ -82,7 +82,7 @@ namespace Structurizer.UnitTests
             Assert.AreEqual(42, indexes.Single(i => i.Path == "IntValue").Value);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexes_WhenItemWithEnumerableWithOneNullInt_ReturnsNullIndex()
         {
             var item = new WithArray { NullableIntValues = new int?[] { null } };
@@ -94,7 +94,7 @@ namespace Structurizer.UnitTests
             Assert.IsNull(indexes.SingleOrDefault(i => i.Path == "NullableIntValues"));
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexes_WhenItemWithEnumerableWithOneNullString_ReturnsNullIndex()
         {
             var item = new WithArray { StringValues = new string[] { null } };
@@ -106,7 +106,7 @@ namespace Structurizer.UnitTests
             Assert.IsNull(indexes.SingleOrDefault(i => i.Path == "StringValues"));
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexes_WhenItemWithEnumerableWithOneString_ReturnsIndexWithString()
         {
             var item = new WithArray { StringValues = new[] { "A" } };
@@ -118,7 +118,7 @@ namespace Structurizer.UnitTests
             Assert.AreEqual("A", indexes.Single(i => i.Path == "StringValues[0]").Value);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexes_WhenItemWithEnumerableWithOneString_ReturnsIndexWithDataTypeOfStringElement()
         {
             var item = new WithArray { StringValues = new[] { "A" } };
@@ -130,7 +130,7 @@ namespace Structurizer.UnitTests
             Assert.AreEqual(DataTypeCode.String, indexes.Single(i => i.Path == "StringValues[0]").DataTypeCode);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexes_WhenItemWithComplexEnumerable_ReturnsIndexWithDataTypeOfStringElement()
         {
             var item = new WithComplexArray { Items = new[] { new Complex { Name = "Foo", Value = 42 } } };
@@ -143,7 +143,7 @@ namespace Structurizer.UnitTests
             Assert.AreEqual(DataTypeCode.IntegerNumber, indexes.Single(i => i.Path == "Items[0].Value").DataTypeCode);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexes_WhenItemWithEnumerableWithOneInt_ReturnsIndexWithInt()
         {
             var item = new WithArray { IntValues = new[] { 42 } };
@@ -155,7 +155,7 @@ namespace Structurizer.UnitTests
             Assert.AreEqual(42, indexes.Single(i => i.Path == "IntValues[0]").Value);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexes_WhenItemWithEnumerableWithTwoDifferentStrings_ReturnsTwoStringIndexes()
         {
             var item = new WithArray { StringValues = new[] { "A", "B" } };
@@ -168,7 +168,7 @@ namespace Structurizer.UnitTests
             Assert.AreEqual("B", indexes[1].Value);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexes_WhenItemWithEnumerableWithTwoDifferentInts_ReturnsTwoIntIndexes()
         {
             var item = new WithArray { IntValues = new[] { 42, 43 } };
@@ -181,7 +181,7 @@ namespace Structurizer.UnitTests
             Assert.AreEqual(43, indexes[1].Value);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexes_WhenItemWithEnumerableWithTwoEqualElements_ReturnsTwoStringIndexes()
         {
             var item = new WithArray { StringValues = new[] { "A", "A" } };
@@ -194,7 +194,7 @@ namespace Structurizer.UnitTests
             Assert.AreEqual("A", indexes[1].Value);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexes_WhenItemWithEnumerableWithTwoEqualElements_ReturnsTwoIntIndexes()
         {
             var item = new WithArray { IntValues = new[] { 42, 42 } };
@@ -207,7 +207,7 @@ namespace Structurizer.UnitTests
             Assert.AreEqual(42, indexes[1].Value);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexes_WhenItemWithArraysBeingNull_ReturnesNoIndexes()
         {
             var item = new WithArray
@@ -222,10 +222,10 @@ namespace Structurizer.UnitTests
             var factory = new StructureIndexesFactory();
             var indexes = factory.CreateIndexes(schemaStub, item).ToList();
 
-            Assert.IsEmpty(indexes);
+            indexes.Should().BeEmpty();
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexes_WhenArrayOfComplexWithChildBeingNull_ReturnesNoIndexes()
         {
             var item = new WithComplexArray

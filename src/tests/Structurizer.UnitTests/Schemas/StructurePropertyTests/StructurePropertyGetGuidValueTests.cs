@@ -1,12 +1,12 @@
 ﻿using System;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
 {
-    [TestFixture]
+    [TestClass]
     public class StructurePropertyGetGuidValueTests : UnitTestBase
     {
-        [Test]
+        [TestMethod]
         public void GetIdValue_WhenGuidOnFirstLevel_ReturnsGuid()
         {
             var expected = Guid.Parse("4217F3B7-6DEB-4DFA-B195-D111C1297988");
@@ -18,7 +18,7 @@ namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIdValue_WhenNullableGuidOnFirstLevel_ReturnsGuid()
         {
             var expected = Guid.Parse("4217F3B7-6DEB-4DFA-B195-D111C1297988");
@@ -30,7 +30,7 @@ namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIdValue_WhenNullAssignedNullableGuidOnFirstLevel_ReturnsNull()
         {
             var item = new NullableGuidOnRoot { Value = null };

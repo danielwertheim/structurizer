@@ -55,13 +55,15 @@ namespace Structurizer.Extensions
 
         internal static object Evaluate(this MemberExpression memberExpression)
         {
-            if (memberExpression.Member.MemberType == MemberTypes.Field && memberExpression.Expression is ConstantExpression)
+            var fieldInfo = memberExpression.Member as FieldInfo;
+
+            if (fieldInfo != null && memberExpression.Expression is ConstantExpression)
             {
                 var ce = (ConstantExpression)memberExpression.Expression;
                 var obj = ce.Value;
                 return obj == null
                     ? null
-                    : ((FieldInfo)memberExpression.Member).GetValue(obj);
+                    : fieldInfo.GetValue(obj);
             }
             return Expression.Lambda(memberExpression).Compile().DynamicInvoke();
         }

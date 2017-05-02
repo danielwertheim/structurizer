@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
 {
-    [TestFixture]
+    [TestClass]
     public class StructureTypeReflecterComplexIndexablePropertiesTests : StructureTypeReflecterTestsBase
     {
-        [Test]
+        [TestMethod]
         public void GetIndexableProperties_WhenItemWithComplexProperty_ReturnsComplexProperties()
         {
             var properties = ReflecterFor().GetIndexableProperties(typeof(WithComplexProperty));
@@ -17,7 +17,7 @@ namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
             Assert.IsTrue(properties.Any(p => p.Path == "Complex.StringValue"));
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexableProperties_WhenRootWithEnumerable_EnumerableMemberIsNotReturnedAsComplex()
         {
             var properties = ReflecterFor().GetIndexableProperties(typeof(WithEnumerableOfComplex));

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.Schemas.MemberAccessors
 {
-    [TestFixture]
+    [TestClass]
     public class IndexAccessorGetValuesTests : UnitTestBase
     {
-        [Test]
+        [TestMethod]
         public void GetValues_FromAssignedString_ReturnsAssignedString()
         {
             const string initialValue = "Hello tester!";
@@ -17,10 +17,10 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var retrievedValues = indexAccessor.GetValues(item);
 
-            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues.Select(i => i.Value));
+            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues.Select(i => i.Value).ToArray());
         }
 
-        [Test]
+        [TestMethod]
         public void GetValues_FromNullString_ReturnsNullString()
         {
             const string initialValue = null;
@@ -33,7 +33,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
             Assert.IsNull(retrievedValues);
         }
 
-        [Test]
+        [TestMethod]
         public void GetValues_FromAssignedInt_ReturnsAssignedInt()
         {
             const int initialValue = 12345;
@@ -43,10 +43,10 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var retrievedValues = indexAccessor.GetValues(item);
 
-            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues.Select(i => i.Value));
+            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues.Select(i => i.Value).ToArray());
         }
 
-        [Test]
+        [TestMethod]
         public void GetValues_FromAssignedDecimal_ReturnsAssignedDecimal()
         {
             const decimal initialValue = 12.56M;
@@ -56,10 +56,10 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var retrievedValues = indexAccessor.GetValues(item);
 
-            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues.Select(i => i.Value));
+            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues.Select(i => i.Value).ToArray());
         }
 
-        [Test]
+        [TestMethod]
         public void GetValues_FromAssignedNullableDecimal_ReturnsAssignedNullableDecimal()
         {
             decimal? initialValue = 13.34M;
@@ -69,10 +69,10 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var retrievedValues = indexAccessor.GetValues(item);
 
-            CollectionAssert.AreEqual(new[] { initialValue.GetValueOrDefault() }, retrievedValues.Select(i => i.Value));
+            CollectionAssert.AreEqual(new[] { initialValue.GetValueOrDefault() }, retrievedValues.Select(i => i.Value).ToArray());
         }
 
-        [Test]
+        [TestMethod]
         public void GetValues_FromNullableDecimalWithNullValue_ReturnsNull()
         {
             decimal? initialValue = null;
@@ -85,7 +85,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
             Assert.IsNull(retrievedValues);
         }
 
-        [Test]
+        [TestMethod]
         public void GetValue_FromAssignedDateTime_ReturnsAssignedDateTime()
         {
             var initialValue = new DateTime(2010, 2, 3);
@@ -95,10 +95,10 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var retrievedValues = indexAccessor.GetValues(item);
 
-            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues.Select(i => i.Value));
+            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues.Select(i => i.Value).ToArray());
         }
 
-        [Test]
+        [TestMethod]
         public void GetValue_FromAssignedBool_ReturnsAssignedBool()
         {
             const bool initialValue = true;
@@ -108,10 +108,10 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var retrievedValues = indexAccessor.GetValues(item);
 
-            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues.Select(i => i.Value));
+            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues.Select(i => i.Value).ToArray());
         }
 
-        [Test]
+        [TestMethod]
         public void GetValues_FromAssignedUInt_ReturnsAssignedInt()
         {
             const uint initialValue = 12345;
@@ -121,7 +121,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var retrievedValues = indexAccessor.GetValues(item);
 
-            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues.Select(i => i.Value));
+            CollectionAssert.AreEqual(new[] { initialValue }, retrievedValues.Select(i => i.Value).ToArray());
         }
 
         private class Dummy

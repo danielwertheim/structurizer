@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using FluentAssertions;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Structurizer.Configuration;
 
 namespace Structurizer.UnitTests.Configuration
 {
-    [TestFixture]
+    [TestClass]
     public class StructureTypeConfigTests : UnitTestBase
     {
-        [Test]
+        [TestMethod]
         public void Ctor_Should_throw_When_missing_type()
         {
             Action invalidAction = () => new StructureTypeConfig(null, default(IndexMode), new HashSet<string>());
@@ -17,7 +17,7 @@ namespace Structurizer.UnitTests.Configuration
             invalidAction.ShouldThrow<ArgumentException>().And.ParamName.Should().Be("structureType");
         }
 
-        [Test]
+        [TestMethod]
         public void Ctor_Should_throw_When_missing_member_paths()
         {
             Action invalidAction = () => new StructureTypeConfig(typeof(Dummy), default(IndexMode), null);
@@ -25,7 +25,7 @@ namespace Structurizer.UnitTests.Configuration
             invalidAction.ShouldThrow<ArgumentException>().And.ParamName.Should().Be("memberPaths");
         }
 
-        [Test]
+        [TestMethod]
         public void Ctor_Should_initialize_properly()
         {
             var expectedType = typeof(Dummy);

@@ -1,13 +1,13 @@
 using System;
 using FluentAssertions;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.StructureBuilderTests
 {
-    [TestFixture]
+    [TestClass]
     public class StructureBuilderNullablesTests : StructureBuilderBaseTests
     {
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenItemWithNullablesHasValues_IndexesAreCreated()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemWithNullables>());
@@ -26,7 +26,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(item.NullableGuid, structure.Indexes[1].Value);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenItemWithNullablesHasNullValues_NoIndexesAreCreated()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemWithNullables>());
@@ -37,7 +37,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             structure.Indexes.Should().BeEmpty();
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenChildItemWithInheritedNullablesHasValues_IndexesAreCreated()
         {
             Builder = StructureBuilder.Create(c => c.Register<ChildWithNullables>());
@@ -56,7 +56,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(item.NullableGuid, structure.Indexes[1].Value);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenChildItemWithInheritedNullablesHasNullValues_NoIndexesAreCreated()
         {
             Builder = StructureBuilder.Create(c => c.Register<ChildWithNullables>());

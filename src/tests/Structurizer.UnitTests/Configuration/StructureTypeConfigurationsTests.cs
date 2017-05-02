@@ -1,15 +1,15 @@
 using System;
 using System.Linq;
 using FluentAssertions;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Structurizer.Configuration;
 
 namespace Structurizer.UnitTests.Configuration
 {
-    [TestFixture]
+    [TestClass]
     public class StructureTypeConfigurationsTests : UnitTestBase
     {
-        [Test]
+        [TestMethod]
         public void Register_with_null_config_Should_add_config_with_exclusive_mode()
         {
             var configs = new StructureTypeConfigurations();
@@ -20,7 +20,7 @@ namespace Structurizer.UnitTests.Configuration
             configs.First().IndexMode.Should().Be(IndexMode.Exclusive);
         }
 
-        [Test]
+        [TestMethod]
         public void Register_with_empty_config_Should_add_config_with_exclusive_mode()
         {
             var configs = new StructureTypeConfigurations();
@@ -31,7 +31,7 @@ namespace Structurizer.UnitTests.Configuration
             configs.First().IndexMode.Should().Be(IndexMode.Exclusive);
         }
 
-        [Test]
+        [TestMethod]
         public void Register_generic_with_null_config_Should_add_config_with_exclusive_mode()
         {
             var configs = new StructureTypeConfigurations();
@@ -42,7 +42,7 @@ namespace Structurizer.UnitTests.Configuration
             configs.First().IndexMode.Should().Be(IndexMode.Exclusive);
         }
 
-        [Test]
+        [TestMethod]
         public void Register_generic_with_empty_config_Should_add_config_with_exclusive_mode()
         {
             var configs = new StructureTypeConfigurations();
@@ -53,7 +53,7 @@ namespace Structurizer.UnitTests.Configuration
             configs.First().IndexMode.Should().Be(IndexMode.Exclusive);
         }
 
-        [Test]
+        [TestMethod]
         public void Register_Should_throw_When_registrering_same_time_more_than_once()
         {
             var configs = new StructureTypeConfigurations();
@@ -64,7 +64,7 @@ namespace Structurizer.UnitTests.Configuration
             invalidAction.ShouldThrow<ArgumentException>();
         }
 
-        [Test]
+        [TestMethod]
         public void Register_generic_Should_throw_When_registrering_same_time_more_than_once()
         {
             var configs = new StructureTypeConfigurations();
@@ -75,7 +75,7 @@ namespace Structurizer.UnitTests.Configuration
             invalidAction.ShouldThrow<ArgumentException>();
         }
 
-        [Test]
+        [TestMethod]
         public void GetConfigurations_Should_return_null_When_no_config_registration_exists()
         {
             var configs = new StructureTypeConfigurations();
@@ -85,7 +85,7 @@ namespace Structurizer.UnitTests.Configuration
             config.Should().BeNull();
         }
 
-        [Test]
+        [TestMethod]
         public void GetConfigurations_Should_return_config_When_registrated_via_generic_version()
         {
             var configs = new StructureTypeConfigurations();
@@ -97,7 +97,7 @@ namespace Structurizer.UnitTests.Configuration
             Assert.AreEqual(typeof(Dummy), config.Type);
         }
 
-        [Test]
+        [TestMethod]
         public void GetConfigurations_Should_return_config_When_registrated_via_non_generic_version()
         {
             var configs = new StructureTypeConfigurations();

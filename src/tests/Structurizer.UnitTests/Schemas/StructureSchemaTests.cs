@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Structurizer.Schemas;
 
 namespace Structurizer.UnitTests.Schemas
 {
     public class StructureSchemaTests : UnitTestBase
     {
-        [Test]
+        [TestMethod]
         public void Should_initialize_type_and_name()
         {
             var structureType = new StructureType(typeof(Foo));
@@ -19,7 +19,7 @@ namespace Structurizer.UnitTests.Schemas
             schema.Name.Should().Be(typeof(Foo).Name);
         }
 
-        [Test]
+        [TestMethod]
         public void Should_assign_empty_index_accessors_When_not_passed()
         {
             var structureType = new StructureType(typeof(Foo));
@@ -29,7 +29,7 @@ namespace Structurizer.UnitTests.Schemas
             schema.IndexAccessors.Should().BeEmpty();
         }
 
-        [Test]
+        [TestMethod]
         public void Should_assign_index_accessors_When_present()
         {
             var structureType = new StructureType(typeof(Foo));

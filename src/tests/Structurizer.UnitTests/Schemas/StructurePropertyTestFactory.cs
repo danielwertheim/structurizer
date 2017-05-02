@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Reflection;
 using Structurizer.Schemas;
 
 namespace Structurizer.UnitTests.Schemas

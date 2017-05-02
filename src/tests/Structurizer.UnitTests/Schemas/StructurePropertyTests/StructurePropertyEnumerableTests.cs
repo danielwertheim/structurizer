@@ -1,12 +1,12 @@
 using System.Collections.Generic;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
 {
-    [TestFixture]
+    [TestClass]
     public class StructurePropertyEnumerableTests : UnitTestBase
     {
-        [Test]
+        [TestMethod]
         public void IsEnumerable_WhenIEnumerableOfSimpleType_ReturnsTrue()
         {
             var property = GetProperty<DummyForEnumerableTests>("Ints");
@@ -14,7 +14,7 @@ namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
             Assert.IsTrue(property.IsEnumerable);
         }
 
-        [Test]
+        [TestMethod]
         public void IsEnumerable_WhenPrimitiveType_ReturnsFalse()
         {
             var property = GetProperty<DummyForEnumerableTests>("Int1");

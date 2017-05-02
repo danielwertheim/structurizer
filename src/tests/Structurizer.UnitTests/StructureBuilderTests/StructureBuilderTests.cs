@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
+using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.StructureBuilderTests
 {
-    [TestFixture]
+    [TestClass]
     public class StructureBuilderTests : StructureBuilderBaseTests
     {
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenIntOnFirstLevel_ReturnsSimpleValue()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemForFirstLevel>());
@@ -19,7 +20,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(42, actual);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenUIntOnFirstLevel_ReturnsSimpleValue()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemForFirstLevel>());
@@ -28,10 +29,11 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             var structure = Builder.CreateStructure(item);
 
             var actual = structure.Indexes.Single(si => si.Path == "UIntValue").Value;
-            Assert.AreEqual(42, actual);
+
+            actual.Should().Be((uint)42);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenIntOnSecondLevel_ReturnsSimpleValue()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemForSecondLevel>());
@@ -43,7 +45,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(42, actual);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenStructureContainsStructWithValue_ValueOfStructIsRepresentedInIndex()
         {
             Builder = StructureBuilder.Create(c => c.Register<IHaveStruct>());
@@ -57,7 +59,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(new MyText("My content"), structure.Indexes[0].Value);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_When_structure_has_null_collection_It_should_create_structure_with_index_for_other_members()
         {
             Builder = StructureBuilder.Create(c => c.Register<WithNullCollection>());

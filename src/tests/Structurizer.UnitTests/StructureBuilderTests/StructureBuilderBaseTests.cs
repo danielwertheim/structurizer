@@ -1,8 +1,8 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.StructureBuilderTests
 {
-    [TestFixture]
+    [TestClass]
     public abstract class StructureBuilderBaseTests : UnitTestBase
     {
         protected IStructureBuilder Builder;

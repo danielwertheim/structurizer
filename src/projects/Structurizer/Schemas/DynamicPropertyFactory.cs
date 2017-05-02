@@ -55,7 +55,7 @@ namespace Structurizer.Schemas
 
             generator.Emit(OpCodes.Ldloc, y);
 
-            if (!propertyInfo.PropertyType.IsClass)
+            if (!propertyInfo.PropertyType.GetTypeInfo().IsClass)
             {
                 generator.Emit(OpCodes.Box, propertyInfo.PropertyType);
                 generator.Emit(OpCodes.Stloc, z);
@@ -73,7 +73,7 @@ namespace Structurizer.Schemas
             var name = $"_{propertyInfo.DeclaringType.Name}_Get{propertyInfo.Name}_";
             var returnType = ObjectType;
 
-            return !propertyInfo.DeclaringType.IsInterface
+            return !propertyInfo.DeclaringType.GetTypeInfo().IsInterface
                        ? new DynamicMethod(
                              name,
                              returnType,

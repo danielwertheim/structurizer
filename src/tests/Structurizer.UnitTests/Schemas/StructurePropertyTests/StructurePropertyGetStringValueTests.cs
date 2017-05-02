@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
-using NUnit.Framework;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
 {
-    [TestFixture]
+    [TestClass]
     public class StructurePropertyGetStringValueTests : UnitTestBase
     {
-        [Test]
+        [TestMethod]
         public void GetValue_WhenSingleStringMember_SingleValueIsReturned()
         {
             var property = StructurePropertyTestFactory.GetPropertyByPath<TestCustomer>("CustomerNo");
@@ -14,10 +15,10 @@ namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
             var customer = new TestCustomer { CustomerNo = "1234" };
             var customerNos = (string)property.GetValue(customer);
 
-            CollectionAssert.AreEqual("1234", customerNos);
+            Assert.AreEqual("1234", customerNos);
         }
 
-        [Test]
+        [TestMethod]
         public void GetValue_WhenArrayOfInt_ReturnsAValueArray()
         {
             var property = StructurePropertyTestFactory.GetPropertyByPath<TestCustomer>("Points");
@@ -25,7 +26,7 @@ namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
             var container = new TestCustomer { Points = new[] { 5, 4, 3, 2, 1 } };
             var values = (IEnumerable<int>)property.GetValue(container);
 
-            CollectionAssert.AreEqual(new[] { 5, 4, 3, 2, 1 }, values);
+            CollectionAssert.AreEqual(new[] { 5, 4, 3, 2, 1 }, values.ToArray());
         }
 
         private class TestCustomer

@@ -1,11 +1,11 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
 {
-    [TestFixture]
+    [TestClass]
     public class StructurePropertyGetIdentityValueTests : UnitTestBase
     {
-        [Test]
+        [TestMethod]
         public void GetIdValue_WhenIntOnFirstLevel_ReturnsInt()
         {
             const int expected = 42;
@@ -17,7 +17,7 @@ namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIdValue_WhenNullableIntOnFirstLevel_ReturnsInt()
         {
             const int expectedInt = 42;
@@ -29,7 +29,7 @@ namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
             Assert.AreEqual(expectedInt, actual);
         }
 
-        [Test]
+        [TestMethod]
         public void GetIdValue_WhenNullAssignedNullableIntOnFirstLevel_ReturnsInt()
         {
             var item = new NullableIdentityOnRoot { Value = null };

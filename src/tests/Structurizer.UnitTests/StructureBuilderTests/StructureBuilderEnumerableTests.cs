@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.StructureBuilderTests
 {
-    [TestFixture]
+    [TestClass]
     public class StructureBuilderEnumerableTests : StructureBuilderBaseTests
     {
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenEnumerableIntsOnFirstLevel_ReturnsOneIndexPerElementInCorrectOrder()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemForFirstLevel>());
@@ -22,7 +22,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(7, indices[2].Value);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenEnumerableIntsOnFirstLevelAreNull_ReturnsNoIndex()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemForFirstLevel>());
@@ -34,7 +34,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.IsNull(actual);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenEnumerableIntsOnSecondLevelAreNull_ReturnsNoIndex()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemForSecondLevel>());
@@ -46,7 +46,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.IsNull(actual);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenEnumerableIntsOnSecondLevel_ReturnsOneIndexPerElementInCorrectOrder()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemForSecondLevel>());
@@ -60,7 +60,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(7, indices[2].Value);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenCustomNonGenericEnumerableWithComplexElement_ReturnsIndexesForElements()
         {
             Builder = StructureBuilder.Create(c => c.Register<ModelForMyCustomNonGenericEnumerable>());
@@ -77,7 +77,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(2, indices[3].Value);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenHashSetOfInts_ReturnsOneIndexPerElementInCorrectOrder()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemWithHashSet>());
@@ -91,7 +91,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(7, indices[2].Value);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenHashSetOfIntsIsNull_ReturnsNoIndex()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemWithHashSet>());
@@ -103,7 +103,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.IsNull(actual);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenISetOfInts_ReturnsOneIndexPerElementInCorrectOrder()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemWithISet>());
@@ -117,7 +117,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(7, indices[2].Value);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenSetOfIntsIsNull_ReturnsNoIndex()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemWithISet>());
@@ -129,7 +129,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.IsNull(actual);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenHashSetOfComplex_ReturnsOneIndexPerElementInCorrectOrder()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemWithHashSetOfComplex>());
@@ -151,7 +151,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(7, indices[2].Value);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenHashSetOfComplex_HasThreeNullItems_ReturnsNoIndex()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemWithHashSetOfComplex>());
@@ -163,7 +163,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.IsNull(actual);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenIDictionary_ReturnsOneIndexPerElementInCorrectOrder()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemWithIDictionary>());
@@ -197,7 +197,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(7, indices[5].Value);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenDictionary_ReturnsOneIndexPerElementInCorrectOrder()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemWithDictionary>());
@@ -223,7 +223,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(7, indices[5].Value);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenIDictionaryWithComplex_ReturnsOneIndexPerElementInCorrectOrder()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemWithIDictionaryOfComplex>());
@@ -257,7 +257,7 @@ namespace Structurizer.UnitTests.StructureBuilderTests
             Assert.AreEqual(7, indices[5].Value);
         }
 
-        [Test]
+        [TestMethod]
         public void CreateStructure_WhenDictionaryWithComplex_ReturnsOneIndexPerElementInCorrectOrder()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemWithDictionaryOfComplex>());

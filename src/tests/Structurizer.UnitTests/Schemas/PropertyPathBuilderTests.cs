@@ -1,13 +1,13 @@
 using Moq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Structurizer.Schemas;
 
 namespace Structurizer.UnitTests.Schemas
 {
-    [TestFixture]
+    [TestClass]
     public class PropertyPathBuilderTests : UnitTestBase
     {
-        [Test]
+        [TestMethod]
         public void BuildPath_ForRootMember_PathContainsOnlyName()
         {
             var property = new Mock<IStructureProperty>();
@@ -19,7 +19,7 @@ namespace Structurizer.UnitTests.Schemas
             Assert.AreEqual("TheName", path);
         }
 
-        [Test]
+        [TestMethod]
         public void BuildPath_ForNestedMember_PathContainsRootAndDelimitorAndNameOfNested()
         {
             var rootProperty = new Mock<IStructureProperty>();
@@ -36,7 +36,7 @@ namespace Structurizer.UnitTests.Schemas
             Assert.AreEqual("TheRootMember.TheNestedProperty", path);
         }
 
-        [Test]
+        [TestMethod]
         public void BuildPath_ForRootMember_PathContainsNoRootButNestedNameAndMember()
         {
             var path = PropertyPathBuilder.BuildPath(null, "Temp");
@@ -44,7 +44,7 @@ namespace Structurizer.UnitTests.Schemas
             Assert.AreEqual("Temp", path);
         }
 
-        [Test]
+        [TestMethod]
         public void BuildPath_ForNestedMember_PathContainsNoRootButNestedNameAndMember()
         {
             var property = new Mock<IStructureProperty>();

@@ -1,12 +1,12 @@
 using System.Collections.Generic;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.StructureBuilderTests
 {
-    [TestFixture]
+    [TestClass]
     public class StructureBuilderIncludeAndExcludeTests : StructureBuilderBaseTests
     {
-        [Test]
+        [TestMethod]
         public void Should_be_able_to_index_nested_child_by_registrating_child_only()
         {
             Builder = StructureBuilder.Create(c => c.Register<MyRoot>(cfg => cfg

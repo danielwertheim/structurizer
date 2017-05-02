@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using Structurizer;
-using Structurizer.Configuration;
 
 namespace Sample
 {
@@ -47,17 +45,17 @@ namespace Sample
         public static string Format(IStructureIndex index)
         {
             return $"{index.Path}=\"{index.Value}\"";
-            switch (index.DataTypeCode)
-            {
-                case DataTypeCode.String:
-                case DataTypeCode.Guid:
-                case DataTypeCode.Enum:
-                    return $"Path\t{index.Path}=\"{index.Value}\"";
-                case DataTypeCode.DateTime:
-                    return $"Path\t{index.Path}=\"{((DateTime)index.Value):O}\"";
-                default:
-                    return $"Path\t{index.Path}={index.Value}";
-            }
+            //switch (index.DataTypeCode)
+            //{
+            //    case DataTypeCode.String:
+            //    case DataTypeCode.Guid:
+            //    case DataTypeCode.Enum:
+            //        return $"Path\t{index.Path}=\"{index.Value}\"";
+            //    case DataTypeCode.DateTime:
+            //        return $"Path\t{index.Path}=\"{((DateTime)index.Value):O}\"";
+            //    default:
+            //        return $"Path\t{index.Path}={index.Value}";
+            //}
         }
     }
 

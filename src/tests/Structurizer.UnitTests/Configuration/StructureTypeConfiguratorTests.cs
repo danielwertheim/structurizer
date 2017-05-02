@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
 using FluentAssertions;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Structurizer.Configuration;
 
 namespace Structurizer.UnitTests.Configuration
 {
-    [TestFixture]
+    [TestClass]
     public class StructureTypeConfiguratorTests : UnitTestBase
     {
         private IStructureTypeConfig UseNonGenericConfiguratorFor<T>(Action<IStructureTypeConfigurator> configure) where T : class
@@ -27,7 +27,7 @@ namespace Structurizer.UnitTests.Configuration
             return configurator.GenerateConfig();
         }
 
-        [Test]
+        [TestMethod]
         public void NonGeneric_Should_assign_IndexMode()
         {
             var config1 = UseNonGenericConfiguratorFor<Dummy>(cfg => cfg.UsingIndexMode(IndexMode.Exclusive));
@@ -37,7 +37,7 @@ namespace Structurizer.UnitTests.Configuration
             config2.IndexMode.Should().Be(IndexMode.Inclusive);
         }
 
-        [Test]
+        [TestMethod]
         public void Generic_Should_assign_IndexMode()
         {
             var config1 = UseGenericConfiguratorFor<Dummy>(cfg => cfg.UsingIndexMode(IndexMode.Exclusive));
@@ -47,7 +47,7 @@ namespace Structurizer.UnitTests.Configuration
             config2.IndexMode.Should().Be(IndexMode.Inclusive);
         }
 
-        [Test]
+        [TestMethod]
         public void NonGeneric_Should_store_member_paths_When_defining_specific_members()
         {
             var config = UseNonGenericConfiguratorFor<Dummy>(cfg => cfg.Members("Int1", "String1", "Nested.Int1", "Nested.String1"));
@@ -57,7 +57,7 @@ namespace Structurizer.UnitTests.Configuration
             memberPaths.Should().BeEquivalentTo("Int1", "String1", "Nested.Int1", "Nested.String1");
         }
 
-        [Test]
+        [TestMethod]
         public void Generic_Should_store_member_paths_When_defining_specific_members()
         {
             var config = UseGenericConfiguratorFor<Dummy>(cfg => cfg.Members(x => x.Int1, x => x.String1, x => x.Nested.Int1, x => x.Nested.String1));
@@ -67,7 +67,7 @@ namespace Structurizer.UnitTests.Configuration
             memberPaths.Should().BeEquivalentTo("Int1", "String1", "Nested.Int1", "Nested.String1");
         }
 
-        [Test]
+        [TestMethod]
         public void NonGeneric_Should_only_store_member_once_When_called_twice()
         {
             var config = UseNonGenericConfiguratorFor<Dummy>(cfg => cfg.Members("String1", "String1"));
@@ -75,7 +75,7 @@ namespace Structurizer.UnitTests.Configuration
             config.MemberPaths.Should().HaveCount(1);
         }
 
-        [Test]
+        [TestMethod]
         public void Generic_Should_only_store_member_once_When_called_twice()
         {
             var config = UseGenericConfiguratorFor<Dummy>(cfg => cfg.Members(x => x.String1, x => x.String1));

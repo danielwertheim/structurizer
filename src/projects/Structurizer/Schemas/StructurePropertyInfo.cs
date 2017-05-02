@@ -3,20 +3,27 @@ using EnsureThat;
 
 namespace Structurizer.Schemas
 {
-    public struct StructurePropertyInfo
+    public class StructurePropertyInfo
     {
-        public readonly IStructureProperty Parent;
         public readonly string Name;
         public readonly Type DataType;
+        public readonly IStructureProperty Parent;
+        public readonly Attribute[] Attributes;
 
-        public StructurePropertyInfo(string name, Type dataType, IStructureProperty parent = null)
+        public StructurePropertyInfo(
+            string name,
+            Type dataType,
+            Attribute[] attributes,
+            IStructureProperty parent = null)
         {
-            Ensure.That(name, nameof(name)).IsNotNullOrWhiteSpace();
-            Ensure.That(dataType, nameof(dataType)).IsNotNull();
+            EnsureArg.IsNotNullOrWhiteSpace(name, nameof(name));
+            EnsureArg.IsNotNull(dataType, nameof(dataType));
+            EnsureArg.IsNotNull(attributes, nameof(attributes));
 
-            Parent = parent;
             Name = name;
             DataType = dataType;
+            Attributes = attributes;
+            Parent = parent;
         }
     }
 }

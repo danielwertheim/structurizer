@@ -1,11 +1,11 @@
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
 {
-    [TestFixture]
+    [TestClass]
     public class StructurePropertyGetPrimitiveValueTests : UnitTestBase
     {
-        [Test]
+        [TestMethod]
         public void GetValue_WhenAssignedInt_ReturnsAssignedValue()
         {
             const int expected = 33;
@@ -17,7 +17,7 @@ namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
+        [TestMethod]
         public void GetValue_WhenAssignedNullableInt_ReturnsAssignedValue()
         {
             const int expected = 33;
@@ -29,7 +29,7 @@ namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
+        [TestMethod]
         public void GetValue_WhenUnAssignedNullableInt_ReturnsNull()
         {
             var item = new Dummy { NullableInt1 = null };
@@ -40,7 +40,7 @@ namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
             Assert.IsNull(actual);
         }
 
-        [Test]
+        [TestMethod]
         public void GetValue_WhenAssignedBool_ReturnsAssignedValue()
         {
             const bool expected = true;
@@ -52,7 +52,7 @@ namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
+        [TestMethod]
         public void GetValue_WhenAssignedNullableBool_ReturnsAssignedValue()
         {
             const bool expected = true;
@@ -64,7 +64,7 @@ namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
+        [TestMethod]
         public void GetValue_WhenUnAssignedNullableBool_ReturnsNull()
         {
             var item = new Dummy { NullableBool1 = null };
@@ -75,7 +75,7 @@ namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
             Assert.IsNull(actual);
         }
 
-        [Test]
+        [TestMethod]
         public void GetValue_WhenAssignedDecimal_ReturnsAssignedValue()
         {
             const decimal expected = 1.33m;
@@ -87,7 +87,7 @@ namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
+        [TestMethod]
         public void GetValue_WhenAssignedNullableDecimal_ReturnsAssignedValue()
         {
             const decimal expected = 1.33m;
@@ -99,7 +99,7 @@ namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
+        [TestMethod]
         public void GetValue_WhenUnAssignedNullableDecimal_ReturnsNull()
         {
             var item = new Dummy { NullableDecimal1 = null };
@@ -110,7 +110,7 @@ namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
             Assert.IsNull(actual);
         }
 
-        [Test]
+        [TestMethod]
         public void GetValue_WhenAssignedUInt_ReturnsAssignedValue()
         {
             const uint expected = 33;
@@ -122,7 +122,7 @@ namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
+        [TestMethod]
         public void GetValue_WhenAssignedNullableUInt_ReturnsAssignedValue()
         {
             const uint expected = 33;
@@ -134,7 +134,7 @@ namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
+        [TestMethod]
         public void GetValue_WhenUnAssignedNullableUInt_ReturnsNull()
         {
             var item = new Dummy { NullableUInt1 = null };

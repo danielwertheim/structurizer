@@ -1,29 +1,30 @@
 ﻿using System;
 using System.Linq;
-using NUnit.Framework;
+using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
 {
-    [TestFixture]
+    [TestClass]
     public class StructureTypeReflecterGetSpecificIndexablePropertiesTests : StructureTypeReflecterTestsBase
     {
-        [Test]
+        [TestMethod]
         public void GetSpecificIndexableProperties_WhenCalledWithNullExlcudes_ThrowsArgumentException()
         {
-            var ex = Assert.Throws<ArgumentException>(() => ReflecterFor().GetSpecificIndexableProperties(typeof(TestItem), null));
+            Action a = () => ReflecterFor().GetSpecificIndexableProperties(typeof(TestItem), null);
 
-            Assert.AreEqual("memberPaths", ex.ParamName);
+            a.ShouldThrow<ArgumentException>().Where(ex => ex.ParamName == "memberPaths");
         }
 
-        [Test]
+        [TestMethod]
         public void GetSpecificIndexableProperties_WhenCalledWithNoExlcudes_ThrowsArgumentException()
         {
-            var ex = Assert.Throws<ArgumentException>(() => ReflecterFor().GetSpecificIndexableProperties(typeof(TestItem), new string[] { }));
+            Action a = () => ReflecterFor().GetSpecificIndexableProperties(typeof(TestItem), new string[] { });
 
-            Assert.AreEqual("memberPaths", ex.ParamName);
+            a.ShouldThrow<ArgumentException>().Where(ex => ex.ParamName == "memberPaths");
         }
 
-        [Test]
+        [TestMethod]
         public void GetSpecificIndexableProperties_WhenIncludingBytesArray_PropertyIsNotReturned()
         {
             var properties = ReflecterFor().GetSpecificIndexableProperties(typeof(TestItem), new[] { "Bytes1" });
@@ -32,7 +33,7 @@ namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
             Assert.IsNull(properties.SingleOrDefault(p => p.Path == "Bytes1"));
         }
 
-        [Test]
+        [TestMethod]
         public void GetSpecificIndexableProperties_WhenIncludingProperty_PropertyIsReturned()
         {
             var properties = ReflecterFor().GetSpecificIndexableProperties(typeof(TestItem), new[] { "Bool1" });
@@ -41,7 +42,7 @@ namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
             Assert.IsNotNull(properties.SingleOrDefault(p => p.Path == "Bool1"));
         }
 
-        [Test]
+        [TestMethod]
         public void GetSpecificIndexableProperties_WhenIncludingNestedProperty_PropertyIsReturned()
         {
             var properties = ReflecterFor().GetSpecificIndexableProperties(typeof(TestItem), new[] { "Nested", "Nested.Int1OnNested" });

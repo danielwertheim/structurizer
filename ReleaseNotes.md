@@ -1,5 +1,9 @@
 #Release notes
 
+## v2.0.0 - 2017-05-02
+- Updated to target .NET Standard 1.3
+- Now also extracting attributes from properties for those using Structurizer for meta-data and schema stuff.
+
 ## v1.0.0 - 2016-11-28
 Might be weird you think to set 1.0.0 so soon. Remember that the code comes from two generations. One generation from the PineCone project and one from SisoDB. Structurizer is based upon this. But with a lot of stuff removed.
 

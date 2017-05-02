@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using FluentAssertions;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.Schemas.MemberAccessors
 {
-    [TestFixture]
+    [TestClass]
     public class IndexAccessorGetValuesOnSubItemTests : UnitTestBase
     {
-        [Test]
+        [TestMethod]
         public void GetValues_WhenSubItemsArrayHasElementsWithValues_ReturnsTheValues()
         {
             var subItems = new[] { new SubItem { Value = "A" }, new SubItem { Value = "B" } };
@@ -17,10 +17,10 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var values = indexAccessor.GetValues(item);
 
-            CollectionAssert.AreEquivalent(new[] { "A", "B" }, values.Select(i => i.Value));
+            CollectionAssert.AreEquivalent(new[] { "A", "B" }, values.Select(i => i.Value).ToArray());
         }
 
-        [Test]
+        [TestMethod]
         public void GetValues_WhenSubItemsArrayHasElementsWithNullValues_DoesNotReturnTheNullValues()
         {
             var subItems = new[] { new SubItem { Value = null }, new SubItem { Value = null } };
@@ -33,7 +33,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
             values.Should().BeEmpty();
         }
 
-        [Test]
+        [TestMethod]
         public void GetValues_WhenSubItemsArrayIsNull_ReturnsNull()
         {
             var item = new Item { SubItems = null };
@@ -45,7 +45,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
             value.Should().BeNull();
         }
 
-        [Test]
+        [TestMethod]
         public void GetValues_WhenSubItemsArrayHasBothNullAndNonNullItems_ReturnsNonNullItemsOnly()
         {
             var subItems = new[] { null, new SubItem { Value = "A" } };
@@ -55,10 +55,10 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var value = indexAccessor.GetValues(item);
 
-            Assert.AreEqual(new object[] { "A" }, value.Select(i => i.Value));
+            value.Select(i => i.Value).Should().BeEquivalentTo(new object[] { "A" });
         }
 
-        [Test]
+        [TestMethod]
         public void GetValues_WhenStringOnSingleSubItem_ReturnsValue()
         {
             var subItem = new SubItem { Value = "The value" };
@@ -68,7 +68,7 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
 
             var value = indexAccessor.GetValues(item);
 
-            Assert.AreEqual(new object[] { "The value" }, value.Select(i => i.Value));
+            value.Select(i => i.Value).Should().BeEquivalentTo(new object[] {"The value"});
         }
 
         private class Item

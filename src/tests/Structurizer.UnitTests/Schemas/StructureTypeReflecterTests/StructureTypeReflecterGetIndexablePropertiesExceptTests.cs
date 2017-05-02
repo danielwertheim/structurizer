@@ -1,29 +1,30 @@
 ﻿using System;
 using System.Linq;
-using NUnit.Framework;
+using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
 {
-    [TestFixture]
+    [TestClass]
     public class StructureTypeReflecterGetIndexablePropertiesExceptTests : StructureTypeReflecterTestsBase
     {
-        [Test]
+        [TestMethod]
         public void GetIndexablePropertiesExcept_WhenCalledWithNullExlcudes_ThrowsArgumentException()
         {
-            var ex = Assert.Throws<ArgumentException>(() => ReflecterFor().GetIndexablePropertiesExcept(typeof(Item), null));
+            Action a = () => ReflecterFor().GetIndexablePropertiesExcept(typeof(Item), null);
 
-            Assert.AreEqual("memberPaths", ex.ParamName);
+            a.ShouldThrow<ArgumentException>().Where(ex => ex.ParamName == "memberPaths");
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexablePropertiesExcept_WhenCalledWithNoExlcudes_ThrowsArgumentNullException()
         {
-            var ex = Assert.Throws<ArgumentException>(() => ReflecterFor().GetIndexablePropertiesExcept(typeof(Item), new string[] { }));
+            Action a = () => ReflecterFor().GetIndexablePropertiesExcept(typeof(Item), new string[] { });
 
-            Assert.AreEqual("memberPaths", ex.ParamName);
+            a.ShouldThrow<ArgumentException>().Where(ex => ex.ParamName == "memberPaths");
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexablePropertiesExcept_WhenBytesArrayExists_PropertyIsNotReturned()
         {
             var properties = ReflecterFor().GetIndexablePropertiesExcept(typeof(Item), new[] { "" });
@@ -31,7 +32,7 @@ namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
             Assert.IsNull(properties.SingleOrDefault(p => p.Path == "Bytes1"));
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexablePropertiesExcept_WhenExcludingAllProperties_NoPropertiesAreReturned()
         {
             var properties = ReflecterFor().GetIndexablePropertiesExcept(typeof(Item), new[] { "Bool1", "DateTime1", "String1", "Nested", "Nested.Int1OnNested", "Nested.String1OnNested" });
@@ -39,7 +40,7 @@ namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
             Assert.AreEqual(0, properties.Count());
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexablePropertiesExcept_WhenExcludingComplexNested_NoNestedPropertiesAreReturned()
         {
             var properties = ReflecterFor().GetIndexablePropertiesExcept(typeof(Item), new[] { "Nested" });
@@ -47,7 +48,7 @@ namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
             Assert.AreEqual(0, properties.Count(p => p.Path.StartsWith("Nested")));
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexablePropertiesExcept_WhenExcludingNestedSimple_OtherSimpleNestedPropertiesAreReturned()
         {
             var properties = ReflecterFor().GetIndexablePropertiesExcept(typeof(Item), new[] { "Nested.String1OnNested" });

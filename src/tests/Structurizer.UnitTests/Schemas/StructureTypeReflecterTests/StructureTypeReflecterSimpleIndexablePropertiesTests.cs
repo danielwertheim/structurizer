@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
 {
-    [TestFixture]
+    [TestClass]
     public class StructureTypeReflecterSimpleIndexablePropertiesTests : StructureTypeReflecterTestsBase
     {
-        [Test]
+        [TestMethod]
         public void GetIndexableProperties_WhenMultiplePublicSimplePropertiesExistsAndNoExclusions_ReturnsAllPublicSimpleProperties()
         {
             var properties = ReflecterFor().GetIndexableProperties(typeof(WithSimpleProperties));
@@ -25,7 +25,7 @@ namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
             CollectionAssert.Contains(paths, "ByteValue");
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexableProperties_WhenMultiplePublicSimpleNullablePropertiesExistsAndNoExclusions_ReturnsAllPublicSimpleProperties()
         {
             var properties = ReflecterFor().GetIndexableProperties(typeof(WithSimpleNullableProperties));
@@ -42,7 +42,7 @@ namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
             CollectionAssert.Contains(paths, "ByteValue");
         }
 
-        [Test]
+        [TestMethod]
         public void GetIndexableProperties_WhenSimplePrivatePropertyExists_PrivatePropertyIsNotReturned()
         {
             var properties = ReflecterFor().GetIndexableProperties(typeof(WithPrivateProperty));

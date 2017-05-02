@@ -1,16 +1,15 @@
 ﻿using System;
 using Moq;
-using NUnit.Framework;
-using Structurizer.Schemas;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.Schemas
 {
-	[TestFixture]
+	[TestClass]
 	public class DataTypeConverterTests : UnitTestBase
 	{
 	    private IDataTypeConverter _converter;
 
-        protected override void OnFixtureInitialize()
+        public DataTypeConverterTests()
         {
             _converter = new DataTypeConverter();
         }
@@ -24,78 +23,78 @@ namespace Structurizer.UnitTests.Schemas
             return property.Object;
         }
 
-        [Test]
-        [TestCase(typeof(ushort))]
-        [TestCase(typeof(ushort?))]
-        [TestCase(typeof(uint))]
-        [TestCase(typeof(uint?))]
-        [TestCase(typeof(ulong))]
-        [TestCase(typeof(ulong?))]
+        [TestMethod]
+        [DataRow(typeof(ushort))]
+        [DataRow(typeof(ushort?))]
+        [DataRow(typeof(uint))]
+        [DataRow(typeof(uint?))]
+        [DataRow(typeof(ulong))]
+        [DataRow(typeof(ulong?))]
         public void Convert_TypeIsUnsignedIntegerFamily_ReturnsUnsignedIntegerNumber(Type type)
         {
             Assert.AreEqual(DataTypeCode.UnsignedIntegerNumber, _converter.Convert(CreateProperty(type)));
         }
 
-		[Test]
-        [TestCase(typeof(short))]
-        [TestCase(typeof(short?))]
-		[TestCase(typeof(int))]
-		[TestCase(typeof(int?))]
-        [TestCase(typeof(long))]
-        [TestCase(typeof(long?))]
+		[TestMethod]
+        [DataRow(typeof(short))]
+        [DataRow(typeof(short?))]
+		[DataRow(typeof(int))]
+		[DataRow(typeof(int?))]
+        [DataRow(typeof(long))]
+        [DataRow(typeof(long?))]
 		public void Convert_TypeIsIntegerFamily_ReturnsIntegerNumber(Type type)
 		{
 			Assert.AreEqual(DataTypeCode.IntegerNumber, _converter.Convert(CreateProperty(type)));
 		}
 
-		[Test]
-		[TestCase(typeof(Single))]
-		[TestCase(typeof(Single?))]
-		[TestCase(typeof(double))]
-		[TestCase(typeof(double?))]
-		[TestCase(typeof(decimal))]
-		[TestCase(typeof(decimal?))]
-		[TestCase(typeof(float))]
-		[TestCase(typeof(float?))]
+		[TestMethod]
+		[DataRow(typeof(Single))]
+		[DataRow(typeof(Single?))]
+		[DataRow(typeof(double))]
+		[DataRow(typeof(double?))]
+		[DataRow(typeof(decimal))]
+		[DataRow(typeof(decimal?))]
+		[DataRow(typeof(float))]
+		[DataRow(typeof(float?))]
 		public void Convert_TypeIsFractalFamily_ReturnsFractalNumber(Type type)
 		{
 			Assert.AreEqual(DataTypeCode.FractalNumber, _converter.Convert(CreateProperty(type)));
 		}
 
-		[Test]
-		[TestCase(typeof(bool))]
-		[TestCase(typeof(bool?))]
+		[TestMethod]
+		[DataRow(typeof(bool))]
+		[DataRow(typeof(bool?))]
 		public void Convert_TypeIsBool_ReturnsBool(Type type)
 		{
 			Assert.AreEqual(DataTypeCode.Bool, _converter.Convert(CreateProperty(type)));
 		}
 
-		[Test]
-		[TestCase(typeof(DateTime))]
-		[TestCase(typeof(DateTime?))]
+		[TestMethod]
+		[DataRow(typeof(DateTime))]
+		[DataRow(typeof(DateTime?))]
 		public void Convert_TypeIsDateTime_ReturnsDateTime(Type type)
 		{
 			Assert.AreEqual(DataTypeCode.DateTime, _converter.Convert(CreateProperty(type)));
 		}
 
-		[Test]
-		[TestCase(typeof(Guid))]
-		[TestCase(typeof(Guid?))]
+		[TestMethod]
+		[DataRow(typeof(Guid))]
+		[DataRow(typeof(Guid?))]
 		public void Convert_TypeIsGuid_ReturnsGuid(Type type)
 		{
 			Assert.AreEqual(DataTypeCode.Guid, _converter.Convert(CreateProperty(type)));
 		}
 
-		[Test]
-		[TestCase(typeof(string))]
+		[TestMethod]
+		[DataRow(typeof(string))]
 		public void Convert_TypeIsString_ReturnsString(Type type)
 		{
 			Assert.AreEqual(DataTypeCode.String, _converter.Convert(CreateProperty(type)));
 		}
 
-		[Test]
-		[TestCase(typeof(DataTypeCode))]
-		[TestCase(typeof(DataTypeCode?))]
+		[TestMethod]
+		[DataRow(typeof(DataTypeCode))]
+		[DataRow(typeof(DataTypeCode?))]
 		public void Convert_TypeIsEnum_ReturnsEnum(Type type)
 		{
 			Assert.AreEqual(DataTypeCode.Enum, _converter.Convert(CreateProperty(type)));

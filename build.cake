@@ -1,69 +1,88 @@
-#tool "nuget:?package=NUnit.ConsoleRunner"
-
 #load "./buildconfig.cake"
 
 var config = BuildConfig.Create(Context, BuildSystem);
-var slns = config.SrcDir + "*.sln";
+
+Information("SrcDir: " + config.SrcDir);
+Information("OutDir: " + config.OutDir);
+Information("SemVer: " + config.SemVer);
+Information("BuildVersion: " + config.BuildVersion);
+Information("BuildProfile: " + config.BuildProfile);
+Information("IsTeamCityBuild: " + config.IsTeamCityBuild);
 
 Task("Default")
     .IsDependentOn("InitOutDir")
-    .IsDependentOn("NuGet-Restore")
-    .IsDependentOn("AssemblyVersion")
+    .IsDependentOn("Restore")
     .IsDependentOn("Build")
     .IsDependentOn("UnitTests");
 
 Task("CI")
     .IsDependentOn("Default")
-    .IsDependentOn("NuGet-Pack");
-  
-Task("InitOutDir")
-    .Does(() => {
-        EnsureDirectoryExists(config.OutDir);
-        CleanDirectory(config.OutDir);
-    });
-
-Task("NuGet-Restore")
-    .Does(() => NuGetRestore(GetFiles(slns)));
-
-Task("AssemblyVersion").Does(() => {
-    var file = config.SrcDir + "GlobalAssemblyVersion.cs";
-    var info = ParseAssemblyInfo(file);
-    CreateAssemblyInfo(file, new AssemblyInfoSettings {
-        Version = config.BuildVersion,
-        InformationalVersion = config.SemVer
-    });
+    .IsDependentOn("Pack");
+/********************************************/
+Task("InitOutDir").Does(() => {
+    EnsureDirectoryExists(config.OutDir);
+    CleanDirectory(config.OutDir);
 });
-    
-Task("Build").Does(() => {
-    foreach(var sln in GetFiles(slns)) {
-        MSBuild(sln, new MSBuildSettings {
-            Verbosity = Verbosity.Minimal,
-            ToolVersion = MSBuildToolVersion.VS2015,
-            Configuration = config.BuildProfile,
-            PlatformTarget = PlatformTarget.MSIL
-        }.WithTarget("Rebuild"));
+
+Task("Restore").Does(() => {
+    foreach(var sln in GetFiles(config.SrcDir + "*.sln")) {
+        DotNetBuild(sln, settings =>
+            settings
+                .SetConfiguration(config.BuildProfile)
+                .SetVerbosity(Verbosity.Minimal)
+                .WithTarget("Restore")
+                .WithProperty("TreatWarningsAsErrors", "true"));
     }
 });
 
-Task("UnitTests").Does(() =>
-{
-    NUnit3(config.SrcDir + "**/*.UnitTests/bin/" + config.BuildProfile + "/*.UnitTests.dll", new NUnit3Settings {
-        NoResults = true,
-        NoHeader = true,
-        TeamCity = config.IsTeamCityBuild
-    });
+Task("Build").Does(() => {
+    foreach(var sln in GetFiles(config.SrcDir + "*.sln")) {
+        DotNetBuild(sln, settings =>
+            settings
+                .SetConfiguration(config.BuildProfile)
+                .SetVerbosity(Verbosity.Minimal)
+                .WithTarget("Rebuild")
+                .WithProperty("TreatWarningsAsErrors", "true")
+                .WithProperty("Version", config.SemVer)
+                .WithProperty("AssemblyVersion", config.BuildVersion)
+                .WithProperty("FileVersion", config.BuildVersion));
+    }
 });
 
-Task("NuGet-Pack").Does(() => {
-    NuGetPack(GetFiles(config.SrcDir + "*.nuspec"), new NuGetPackSettings {
-        Version = config.SemVer,
-        BasePath = config.SrcDir,
-        OutputDirectory = config.OutDir,
-        Properties = new Dictionary<string, string>
-        {
-            {"Configuration", config.BuildProfile}
-        }
-    });
+Task("UnitTests").Does(() => {
+    var settings = new DotNetCoreTestSettings {
+        Configuration = config.BuildProfile,
+        NoBuild = true
+    };
+    foreach(var testProj in GetFiles(config.SrcDir + "tests/**/*.UnitTests.csproj")) {
+        DotNetCoreTest(testProj.FullPath, settings);
+    }
+});
+
+Task("IntegrationTests").Does(() => {
+    var settings = new DotNetCoreTestSettings {
+        Configuration = config.BuildProfile,
+        NoBuild = true
+    };
+    foreach(var testProj in GetFiles(config.SrcDir + "tests/**/*.IntegrationTests.csproj")) {
+        DotNetCoreTest(testProj.FullPath, settings);
+    }
+});
+
+Task("Pack").Does(() => {
+    foreach(var sln in GetFiles(config.SrcDir + "projects/**/*.csproj")) {
+        DotNetBuild(sln, settings =>
+            settings
+                .SetConfiguration(config.BuildProfile)
+                .SetVerbosity(Verbosity.Minimal)
+                .WithTarget("Pack")
+                .WithProperty("TreatWarningsAsErrors", "true")
+                .WithProperty("Version", config.SemVer));
+    }
+
+    CopyFiles(
+        GetFiles(config.SrcDir + "projects/**/*.nupkg"),
+        config.OutDir);
 });
 
 RunTarget(config.Target);

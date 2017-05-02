@@ -1,11 +1,11 @@
 using System;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.Schemas
 {
-    [TestFixture]
+    [TestClass]
     public class StructureSchemaFactoryTests : UnitTestBase
     {
         private static IStructureSchemaFactory CreateSut(IDataTypeConverter converter = null)
@@ -14,7 +14,7 @@ namespace Structurizer.UnitTests.Schemas
         //Dear lord, give me strength to instead fully mock the hiearchy of... I tried, but I gave up
         private IStructureType GetStructureTypeFor<T>() where T : class => StructureTypeTestFactory.CreateFor<T>();
 
-        [Test]
+        [TestMethod]
         public void Should_create_schema_for_passed_type()
         {
             var structureType = GetStructureTypeFor<WithTwoProperties>();
@@ -24,7 +24,7 @@ namespace Structurizer.UnitTests.Schemas
             Assert.AreEqual(structureType.Type, schema.StructureType.Type);
         }
 
-        [Test]
+        [TestMethod]
         public void Should_throw_When_structure_type_contains_no_index_accessors()
         {
             var structureType = GetStructureTypeFor<WithNoProperties>();
@@ -36,7 +36,7 @@ namespace Structurizer.UnitTests.Schemas
                 .WithMessage(string.Format(StructurizerExceptionMessages.AutoSchemaBuilder_MissingIndexableMembers, structureType.Name));
         }
 
-        [Test]
+        [TestMethod]
         public void Should_create_index_accessors_for_each_indexable_property()
         {
             var structureType = GetStructureTypeFor<WithTwoProperties>();
@@ -45,7 +45,7 @@ namespace Structurizer.UnitTests.Schemas
             schema.IndexAccessors.Should().HaveCount(2);
         }
 
-        [Test]
+        [TestMethod]
         public void Should_use_data_type_converter_When_creating_index_accessors()
         {
             var dataTypeConverterMock = new Mock<IDataTypeConverter>();

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using Structurizer;
-using Structurizer.Configuration;
 
 namespace Sample
 {
@@ -47,17 +45,17 @@ namespace Sample
         public static string Format(IStructureIndex index)
         {
             return $"{index.Path}=\"{index.Value}\"";
-            switch (index.DataTypeCode)
-            {
-                case DataTypeCode.String:
-                case DataTypeCode.Guid:
-                case DataTypeCode.Enum:
-                    return $"Path\t{index.Path}=\"{index.Value}\"";
-                case DataTypeCode.DateTime:
-                    return $"Path\t{index.Path}=\"{((DateTime)index.Value):O}\"";
-                default:
-                    return $"Path\t{index.Path}={index.Value}";
-            }
+            //switch (index.DataTypeCode)
+            //{
+            //    case DataTypeCode.String:
+            //    case DataTypeCode.Guid:
+            //    case DataTypeCode.Enum:
+            //        return $"Path\t{index.Path}=\"{index.Value}\"";
+            //    case DataTypeCode.DateTime:
+            //        return $"Path\t{index.Path}=\"{((DateTime)index.Value):O}\"";
+            //    default:
+            //        return $"Path\t{index.Path}={index.Value}";
+            //}
         }
     }
 
@@ -81,15 +79,15 @@ namespace Sample
             return new Foo
             {
                 Score = 42,
-                Scores = new[] {1, 2, 3},
+                Scores = new[] { 1, 2, 3 },
                 Type = FooType.One,
                 OptScore = 111,
-                OptScores = new int?[] {111, 112, 113},
+                OptScores = new int?[] { 111, 112, 113 },
                 Bool = true,
                 OptBool = true,
                 TimeStamp = DateTime.Now,
                 Name = "Test",
-                Names = new[] {"Name1", "Name2"},
+                Names = new[] { "Name1", "Name2" },
                 //Kv = new KeyValuePair<int, string>(333, "aaa")
             };
         }

@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.Schemas.MemberAccessors
 {
-    [TestFixture]
+    [TestClass]
     public class IndexAccessorGetValuesOnDeepGraphTests : UnitTestBase
     {
-        [Test]
+        [TestMethod]
         public void GetValues_WhenDeepGraphWithEnumerables_CanExtractValues()
         {
             var prodNoProperty = StructurePropertyTestFactory.GetPropertyByPath<TestCustomer>("Orders.Lines.ProductNo");
@@ -31,8 +31,8 @@ namespace Structurizer.UnitTests.Schemas.MemberAccessors
             var productNos = IndexAccessorTestFactory.CreateFor(prodNoProperty).GetValues(graph);
             var prices = IndexAccessorTestFactory.CreateFor(pricesProperty).GetValues(graph);
 
-            CollectionAssert.AreEqual(new[] { "P1", "P2" }, productNos.Select(i => i.Value));
-            CollectionAssert.AreEqual(new[] { 42, 4242, 43, 4343 }, prices.Select(i => i.Value));
+            CollectionAssert.AreEqual(new[] { "P1", "P2" }, productNos.Select(i => i.Value).ToArray());
+            CollectionAssert.AreEqual(new[] { 42, 4242, 43, 4343 }, prices.Select(i => i.Value).ToArray());
         }
 
         private class TestCustomer

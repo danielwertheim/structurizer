@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Structurizer.Extensions
 {
@@ -52,47 +53,37 @@ namespace Structurizer.Extensions
 
         internal static bool IsSimpleType(this Type type)
         {
-            return (type.IsGenericType == false && type.IsValueType) || type.IsPrimitive || type.IsEnum || ExtraPrimitiveTypes.Contains(type) || type.IsNullablePrimitiveType();
+            var info = type.GetTypeInfo();
+            return (info.IsGenericType == false && info.IsValueType) || info.IsPrimitive || info.IsEnum || ExtraPrimitiveTypes.Contains(type) || type.IsNullablePrimitiveType();
         }
 
         internal static bool IsKeyValuePairType(this Type type)
         {
-            return type.IsGenericType && type.IsValueType && type.GetGenericTypeDefinition() == KeyValuePairType;
+            var info = type.GetTypeInfo();
+            return info.IsGenericType && info.IsValueType && type.GetGenericTypeDefinition() == KeyValuePairType;
         }
 
-        internal static bool IsNumericType(this Type type)
-        {
-            return
-                IsAnyIntegerNumberType(type) ||
-                IsAnyFractalNumberType(type);
-        }
+        //internal static bool IsNumericType(this Type type) => IsAnyIntegerNumberType(type) ||
+        //                                                      IsAnyFractalNumberType(type);
 
-        internal static bool IsAnyIntegerNumberType(this Type type)
-        {
-            return type.IsAnySignedIntegerNumberType() || type.IsAnyUnsignedType();
-        }
+        //internal static bool IsAnyIntegerNumberType(this Type type) => type.IsAnySignedIntegerNumberType() || type.IsAnyUnsignedType();
 
-        internal static bool IsAnySignedIntegerNumberType(this Type type)
-        {
-            return type.IsAnyIntType()
-                || type.IsAnyLongType()
-                || type.IsAnyShortType()
-                || type.IsAnyByteType();
-        }
+        internal static bool IsAnySignedIntegerNumberType(this Type type) => type.IsAnyIntType()
+                                                                             || type.IsAnyLongType()
+                                                                             || type.IsAnyShortType()
+                                                                             || type.IsAnyByteType();
 
-        internal static bool IsAnyFractalNumberType(this Type type)
-        {
-            return type.IsAnyDoubleType()
-                || type.IsAnyDecimalType()
-                || type.IsAnySingleType()
-                || type.IsAnyFloatType();
-        }
+        internal static bool IsAnyFractalNumberType(this Type type) => type.IsAnyDoubleType()
+                                                                       || type.IsAnyDecimalType()
+                                                                       || type.IsAnySingleType()
+                                                                       || type.IsAnyFloatType();
 
         internal static bool IsEnumerableType(this Type type)
         {
+            var info = type.GetTypeInfo();
             return type != StringType
-                && type.IsValueType == false
-                && type.IsPrimitive == false
+                && info.IsValueType == false
+                && info.IsPrimitive == false
                 && EnumerableType.IsAssignableFrom(type);
         }
 
@@ -108,12 +99,13 @@ namespace Structurizer.Extensions
 
         internal static Type GetEnumerableElementType(this Type type)
         {
-            var elementType = (type.IsGenericType ? ExtractEnumerableGenericType(type) : type.GetElementType());
+            var info = type.GetTypeInfo();
+            var elementType = (info.IsGenericType ? ExtractEnumerableGenericType(type) : type.GetElementType());
             if (elementType != null)
                 return elementType;
 
-            if (type.BaseType.IsEnumerableType())
-                elementType = type.BaseType.GetEnumerableElementType();
+            if (info.BaseType.IsEnumerableType())
+                elementType = info.BaseType.GetEnumerableElementType();
 
             return elementType;
         }
@@ -131,209 +123,101 @@ namespace Structurizer.Extensions
             throw new StructurizerException(StructurizerExceptionMessages.TypeExtensions_ExtractEnumerableGenericType);
         }
 
-        internal static bool IsStringType(this Type t)
-        {
-            return t == StringType;
-        }
+        internal static bool IsStringType(this Type t) => t == StringType;
 
-        internal static bool IsDateTimeType(this Type t)
-        {
-            return t == DateTimeType;
-        }
+        internal static bool IsDateTimeType(this Type t) => t == DateTimeType;
 
-        internal static bool IsAnyDateTimeType(this Type t)
-        {
-            return IsDateTimeType(t) || IsNullableDateTimeType(t);
-        }
+        internal static bool IsAnyDateTimeType(this Type t) => IsDateTimeType(t) || IsNullableDateTimeType(t);
 
-        internal static bool IsBoolType(this Type t)
-        {
-            return t == BoolType;
-        }
+        internal static bool IsBoolType(this Type t) => t == BoolType;
 
-        internal static bool IsAnyBoolType(this Type t)
-        {
-            return IsBoolType(t) || IsNullableBoolType(t);
-        }
+        internal static bool IsAnyBoolType(this Type t) => IsBoolType(t) || IsNullableBoolType(t);
 
-        internal static bool IsDecimalType(this Type t)
-        {
-            return t == DecimalType;
-        }
+        internal static bool IsDecimalType(this Type t) => t == DecimalType;
 
-        internal static bool IsAnyDecimalType(this Type t)
-        {
-            return IsDecimalType(t) || IsNullableDecimalType(t);
-        }
+        internal static bool IsAnyDecimalType(this Type t) => IsDecimalType(t) || IsNullableDecimalType(t);
 
-        internal static bool IsSingleType(this Type t)
-        {
-            return t == SingleType;
-        }
+        internal static bool IsSingleType(this Type t) => t == SingleType;
 
-        internal static bool IsAnySingleType(this Type t)
-        {
-            return IsSingleType(t) || IsNullableSingleType(t);
-        }
+        internal static bool IsAnySingleType(this Type t) => IsSingleType(t) || IsNullableSingleType(t);
 
-        internal static bool IsFloatType(this Type t)
-        {
-            return t == FloatType;
-        }
+        internal static bool IsFloatType(this Type t) => t == FloatType;
 
-        internal static bool IsAnyFloatType(this Type t)
-        {
-            return IsFloatType(t) || IsNullableFloatType(t);
-        }
+        internal static bool IsAnyFloatType(this Type t) => IsFloatType(t) || IsNullableFloatType(t);
 
-        internal static bool IsDoubleType(this Type t)
-        {
-            return t == DoubleType;
-        }
+        internal static bool IsDoubleType(this Type t) => t == DoubleType;
 
-        internal static bool IsAnyDoubleType(this Type t)
-        {
-            return IsDoubleType(t) || IsNullableDoubleType(t);
-        }
+        internal static bool IsAnyDoubleType(this Type t) => IsDoubleType(t) || IsNullableDoubleType(t);
 
-        internal static bool IsLongType(this Type t)
-        {
-            return t == LongType;
-        }
+        internal static bool IsLongType(this Type t) => t == LongType;
 
-        internal static bool IsAnyLongType(this Type t)
-        {
-            return IsLongType(t) || IsNullableLongType(t);
-        }
+        internal static bool IsAnyLongType(this Type t) => IsLongType(t) || IsNullableLongType(t);
 
-        internal static bool IsGuidType(this Type t)
-        {
-            return t == GuidType;
-        }
+        internal static bool IsGuidType(this Type t) => t == GuidType;
 
-        internal static bool IsAnyGuidType(this Type t)
-        {
-            return IsGuidType(t) || IsNullableGuidType(t);
-        }
+        internal static bool IsAnyGuidType(this Type t) => IsGuidType(t) || IsNullableGuidType(t);
 
-        internal static bool IsIntType(this Type t)
-        {
-            return t == IntType;
-        }
+        internal static bool IsIntType(this Type t) => t == IntType;
 
-        internal static bool IsAnyIntType(this Type t)
-        {
-            return IsIntType(t) || IsNullableIntType(t);
-        }
+        internal static bool IsAnyIntType(this Type t) => IsIntType(t) || IsNullableIntType(t);
 
-        internal static bool IsByteType(this Type t)
-        {
-            return t == ByteType;
-        }
+        internal static bool IsByteType(this Type t) => t == ByteType;
 
-        internal static bool IsAnyByteType(this Type t)
-        {
-            return IsByteType(t) || IsNullableByteType(t);
-        }
+        internal static bool IsAnyByteType(this Type t) => IsByteType(t) || IsNullableByteType(t);
 
-        internal static bool IsShortType(this Type t)
-        {
-            return t == ShortType;
-        }
+        internal static bool IsShortType(this Type t) => t == ShortType;
 
-        internal static bool IsAnyShortType(this Type t)
-        {
-            return IsShortType(t) || IsNullableShortType(t);
-        }
+        internal static bool IsAnyShortType(this Type t) => IsShortType(t) || IsNullableShortType(t);
 
-        internal static bool IsCharType(this Type t)
-        {
-            return t == CharType;
-        }
+        internal static bool IsCharType(this Type t) => t == CharType;
 
-        internal static bool IsAnyCharType(this Type t)
-        {
-            return IsCharType(t) || IsNullableCharType(t);
-        }
+        internal static bool IsAnyCharType(this Type t) => IsCharType(t) || IsNullableCharType(t);
 
         internal static bool IsEnumType(this Type t)
         {
-            return (t.BaseType == EnumType) || t.IsEnum;
+            var info = t.GetTypeInfo();
+
+            return (info.BaseType == EnumType) || info.IsEnum;
         }
 
-        internal static bool IsAnyEnumType(this Type t)
-        {
-            return IsEnumType(t) || IsNullableEnumType(t);
-        }
+        internal static bool IsAnyEnumType(this Type t) => IsEnumType(t) || IsNullableEnumType(t);
 
         internal static bool IsNullablePrimitiveType(this Type t)
         {
-            return ExtraPrimitiveNullableTypes.Contains(t) || (t.IsValueType && t.IsGenericType && t.GetGenericTypeDefinition() == NullableType && t.GetGenericArguments()[0].IsPrimitive);
+            var info = t.GetTypeInfo();
+
+            return ExtraPrimitiveNullableTypes.Contains(t) || (info.IsValueType && info.IsGenericType && t.GetGenericTypeDefinition() == NullableType && t.GetGenericArguments()[0].GetTypeInfo().IsPrimitive);
         }
 
-        internal static bool IsNullableDateTimeType(this Type t)
-        {
-            return t == NullableDateTimeType;
-        }
+        internal static bool IsNullableDateTimeType(this Type t) => t == NullableDateTimeType;
 
-        internal static bool IsNullableDecimalType(this Type t)
-        {
-            return t == NullableDecimalType;
-        }
+        internal static bool IsNullableDecimalType(this Type t) => t == NullableDecimalType;
 
-        internal static bool IsNullableSingleType(this Type t)
-        {
-            return t == NullableSingleType;
-        }
+        internal static bool IsNullableSingleType(this Type t) => t == NullableSingleType;
 
-        internal static bool IsNullableFloatType(this Type t)
-        {
-            return t == NullableFloatType;
-        }
+        internal static bool IsNullableFloatType(this Type t) => t == NullableFloatType;
 
-        internal static bool IsNullableDoubleType(this Type t)
-        {
-            return t == NullableDoubleType;
-        }
+        internal static bool IsNullableDoubleType(this Type t) => t == NullableDoubleType;
 
-        internal static bool IsNullableBoolType(this Type t)
-        {
-            return t == NullableBoolType;
-        }
+        internal static bool IsNullableBoolType(this Type t) => t == NullableBoolType;
 
-        internal static bool IsNullableGuidType(this Type t)
-        {
-            return t == NullableGuidType;
-        }
+        internal static bool IsNullableGuidType(this Type t) => t == NullableGuidType;
 
-        internal static bool IsNullableShortType(this Type t)
-        {
-            return t == NullableShortType;
-        }
+        internal static bool IsNullableShortType(this Type t) => t == NullableShortType;
 
-        internal static bool IsNullableIntType(this Type t)
-        {
-            return t == NullableIntType;
-        }
+        internal static bool IsNullableIntType(this Type t) => t == NullableIntType;
 
-        internal static bool IsNullableByteType(this Type t)
-        {
-            return t == NullableByteType;
-        }
+        internal static bool IsNullableByteType(this Type t) => t == NullableByteType;
 
-        internal static bool IsNullableLongType(this Type t)
-        {
-            return t == NullableLongType;
-        }
+        internal static bool IsNullableLongType(this Type t) => t == NullableLongType;
 
-        internal static bool IsNullableCharType(this Type t)
-        {
-            return t == NullableCharType;
-        }
+        internal static bool IsNullableCharType(this Type t) => t == NullableCharType;
 
         internal static bool IsNullableEnumType(this Type t)
         {
-            if (t.IsGenericType && t.GetGenericTypeDefinition() == NullableType)
+            var info = t.GetTypeInfo();
+
+            if (info.IsGenericType && t.GetGenericTypeDefinition() == NullableType)
             {
                 t = Nullable.GetUnderlyingType(t);
                 return t.IsEnumType();
@@ -342,19 +226,20 @@ namespace Structurizer.Extensions
             return false;
         }
 
-        internal static bool IsAnyUnsignedType(this Type t)
-        {
-            return t.IsUnsignedType() || t.IsNullableUnsignedType();
-        }
+        internal static bool IsAnyUnsignedType(this Type t) => t.IsUnsignedType() || t.IsNullableUnsignedType();
 
         internal static bool IsUnsignedType(this Type t)
         {
-            return t.IsValueType && UnsignedTypes.Contains(t);
+            var info = t.GetTypeInfo();
+
+            return info.IsValueType && UnsignedTypes.Contains(t);
         }
 
         internal static bool IsNullableUnsignedType(this Type t)
         {
-            return t.IsValueType && NullableUnsignedTypes.Contains(t);
+            var info = t.GetTypeInfo();
+
+            return info.IsValueType && NullableUnsignedTypes.Contains(t);
         }
     }
 }

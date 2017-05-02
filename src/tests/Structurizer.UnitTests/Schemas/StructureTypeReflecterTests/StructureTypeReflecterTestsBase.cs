@@ -1,9 +1,9 @@
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Structurizer.Schemas;
 
 namespace Structurizer.UnitTests.Schemas.StructureTypeReflecterTests
 {
-    [TestFixture]
+    [TestClass]
     public abstract class StructureTypeReflecterTestsBase : UnitTestBase
     {
         protected IStructureTypeReflecter ReflecterFor()

@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structurizer", "projects\Structurizer\Structurizer.csproj", "{5E146D7D-A0A2-444A-AC34-628BA32210CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Structurizer", "projects\Structurizer\Structurizer.csproj", "{5E146D7D-A0A2-444A-AC34-628BA32210CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structurizer.UnitTests", "tests\Structurizer.UnitTests\Structurizer.UnitTests.csproj", "{9B412997-2AEE-4A06-A206-0B92E149E7F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Structurizer.UnitTests", "tests\Structurizer.UnitTests\Structurizer.UnitTests.csproj", "{9B412997-2AEE-4A06-A206-0B92E149E7F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "samples\Sample\Sample.csproj", "{ECAA857E-854B-4B7E-B959-BA32EAAEF3A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{9B412997-2AEE-4A06-A206-0B92E149E7F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B412997-2AEE-4A06-A206-0B92E149E7F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B412997-2AEE-4A06-A206-0B92E149E7F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECAA857E-854B-4B7E-B959-BA32EAAEF3A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECAA857E-854B-4B7E-B959-BA32EAAEF3A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECAA857E-854B-4B7E-B959-BA32EAAEF3A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECAA857E-854B-4B7E-B959-BA32EAAEF3A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

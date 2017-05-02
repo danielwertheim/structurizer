@@ -81,15 +81,15 @@ namespace Sample
             return new Foo
             {
                 Score = 42,
-                Scores = new[] {1, 2, 3},
+                Scores = new[] { 1, 2, 3 },
                 Type = FooType.One,
                 OptScore = 111,
-                OptScores = new int?[] {111, 112, 113},
+                OptScores = new int?[] { 111, 112, 113 },
                 Bool = true,
                 OptBool = true,
                 TimeStamp = DateTime.Now,
                 Name = "Test",
-                Names = new[] {"Name1", "Name2"},
+                Names = new[] { "Name1", "Name2" },
                 //Kv = new KeyValuePair<int, string>(333, "aaa")
             };
         }

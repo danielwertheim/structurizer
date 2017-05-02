@@ -16,7 +16,7 @@ namespace Structurizer.Schemas
         public bool IsEnumerable { get; }
         public bool IsElement { get; }
         public Type ElementDataType { get; }
-        public object[] Attributes => _info.Attributes;
+        public Attribute[] Attributes => _info.Attributes;
 
         public StructureProperty(StructurePropertyInfo info, DynamicGetter getter)
         {

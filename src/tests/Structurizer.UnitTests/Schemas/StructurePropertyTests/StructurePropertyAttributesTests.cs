@@ -1,13 +1,13 @@
 using System;
 using FluentAssertions;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
 {
-    [TestFixture]
+    [TestClass]
     public class StructurePropertyAttributesTests : UnitTestBase
     {
-        [Test]
+        [TestMethod]
         public void Should_have_two_attributes_When_property_has_two_attributes()
         {
             var property = GetProperty<DummyForAttributesTests>("SomePropWithAttributes");
@@ -16,7 +16,7 @@ namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
             property.Attributes.Should().Contain(new System.ComponentModel.DescriptionAttribute("test"));
         }
 
-        [Test]
+        [TestMethod]
         public void Should_have_no_attributes_When_property_has_no_properties()
         {
             var property = GetProperty<DummyForAttributesTests>("SomePropWithoutAttributes");

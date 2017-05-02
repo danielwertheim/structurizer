@@ -8,12 +8,12 @@ namespace Structurizer.Schemas
         public readonly string Name;
         public readonly Type DataType;
         public readonly IStructureProperty Parent;
-        public readonly object[] Attributes;
+        public readonly Attribute[] Attributes;
 
         public StructurePropertyInfo(
             string name,
             Type dataType,
-            object[] attributes,
+            Attribute[] attributes,
             IStructureProperty parent = null)
         {
             EnsureArg.IsNotNullOrWhiteSpace(name, nameof(name));

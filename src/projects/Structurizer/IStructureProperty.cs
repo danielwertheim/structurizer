@@ -12,7 +12,7 @@ namespace Structurizer
         bool IsEnumerable { get; }
         bool IsElement { get; }
         Type ElementDataType { get; }
-        object[] Attributes { get; }
+        Attribute[] Attributes { get; }
 
         object GetValue(object item);
     }

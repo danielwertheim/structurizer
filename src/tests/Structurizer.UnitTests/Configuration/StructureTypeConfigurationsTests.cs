@@ -54,25 +54,25 @@ namespace Structurizer.UnitTests.Configuration
         }
 
         [TestMethod]
-        public void Register_Should_throw_When_registrering_same_time_more_than_once()
+        public void Register_Should_not_throw_When_registrering_same_type_more_than_once()
         {
             var configs = new StructureTypeConfigurations();
             configs.Register(typeof(Dummy));
 
-            Action invalidAction = () => configs.Register(typeof(Dummy));
+            Action action = () => configs.Register(typeof(Dummy));
 
-            invalidAction.ShouldThrow<ArgumentException>();
+            action.ShouldNotThrow();
         }
 
         [TestMethod]
-        public void Register_generic_Should_throw_When_registrering_same_time_more_than_once()
+        public void Register_generic_Should_not_throw_When_registrering_same_type_more_than_once()
         {
             var configs = new StructureTypeConfigurations();
             configs.Register<Dummy>();
 
-            Action invalidAction = () => configs.Register<Dummy>();
+            Action action = () => configs.Register<Dummy>();
 
-            invalidAction.ShouldThrow<ArgumentException>();
+            action.ShouldNotThrow();
         }
 
         [TestMethod]

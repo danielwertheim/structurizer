@@ -6,6 +6,12 @@ using Structurizer.Configuration;
 
 namespace Structurizer
 {
+    /// <summary>
+    /// Static implementation of <see cref="IStructureBuilder"/> in the sense
+    /// of, when created, you pass all the type configurations <see cref="IStructureTypeConfigurations"/>
+    /// that the builder should be able to create structures for.
+    /// If you want a more dynamic and flexible builder, <see cref="FlexibleStructureBuilder"/>.
+    /// </summary>
     public class StructureBuilder : IStructureBuilder
     {
         protected IDictionary<Type, IStructureSchema> Schemas { get; }

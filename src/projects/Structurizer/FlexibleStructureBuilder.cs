@@ -6,6 +6,13 @@ using Structurizer.Configuration;
 
 namespace Structurizer
 {
+    /// <summary>
+    /// This builder adopts as time goes in the sense that if you
+    /// ask it to create a structure for a type it does not know of,
+    /// it creates the schemas etc and caches them. You can reconfigure
+    /// it at anytime using the <see cref="Configure{T}"/> and the
+    /// <see cref="ConfigureUsingTemplate{T}"/> methods.
+    /// </summary>
     public class FlexibleStructureBuilder : IStructureBuilder
     {
         private readonly IStructureTypeConfigurations _typeConfigurations;

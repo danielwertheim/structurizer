@@ -8,10 +8,10 @@ namespace Structurizer
 {
     public class FlexibleStructureBuilder : IStructureBuilder
     {
-        private readonly StructureTypeConfigurations _typeConfigurations;
-        private readonly StructureTypeFactory _typeFactory;
-        private readonly StructureSchemaFactory _schemaFactory;
-        private readonly StructureIndexesFactory _indexesFactory;
+        private readonly IStructureTypeConfigurations _typeConfigurations;
+        private readonly IStructureTypeFactory _typeFactory;
+        private readonly IStructureSchemaFactory _schemaFactory;
+        private readonly IStructureIndexesFactory _indexesFactory;
         private readonly ConcurrentDictionary<Type, IStructureSchema> _schemas;
 
         public FlexibleStructureBuilder()
@@ -22,6 +22,31 @@ namespace Structurizer
             _indexesFactory = new StructureIndexesFactory();
             _schemas = new ConcurrentDictionary<Type, IStructureSchema>();
         }
+
+        public void Configure(Type structureType, Action<IStructureTypeConfigurator> configurator = null)
+        {
+            EnsureArg.IsNotNull(structureType, nameof(structureType));
+
+            var typeConfig = _typeConfigurations.Register(structureType, configurator);
+
+            _schemas.AddOrUpdate(
+                structureType,
+                t => CreateSchema(t, typeConfig),
+                (type, schema) => CreateSchema(type, typeConfig));
+        }
+
+        public void Configure<T>(Action<IStructureTypeConfigurator<T>> configurator = null) where T : class
+        {
+            var typeConfig = _typeConfigurations.Register(configurator);
+
+            _schemas.AddOrUpdate(
+                typeof(T),
+                t => CreateSchema(t, typeConfig),
+                (type, schema) => CreateSchema(type, typeConfig));
+        }
+
+        public void ConfigureUsingTemplate<T>(T template, Action<IStructureTypeConfigurator<T>> configurator = null) where T : class
+            => Configure(configurator);
 
         public IStructure CreateStructure<T>(T item) where T : class
         {
@@ -36,17 +61,15 @@ namespace Structurizer
         {
             EnsureArg.HasItems(items, nameof(items));
 
-            return items.Select(CreateStructure).ToArray<IStructure>();
+            return items.Select(CreateStructure).ToArray();
         }
 
         private IStructureSchema GetSchema(Type type)
-        {
-            return _schemas.GetOrAdd(type, CreateSchema);
-        }
+            => _schemas.GetOrAdd(type, t => CreateSchema(t));
 
-        private IStructureSchema CreateSchema(Type type)
+        private IStructureSchema CreateSchema(Type type, IStructureTypeConfig typeConfig = null)
         {
-            var typeConfig = _typeConfigurations.GetConfiguration(type) ?? _typeConfigurations.Register(type);
+            typeConfig = typeConfig ?? _typeConfigurations.GetConfiguration(type) ?? _typeConfigurations.Register(type);
             var structureType = _typeFactory.CreateFor(typeConfig);
 
             return _schemaFactory.CreateSchema(structureType);

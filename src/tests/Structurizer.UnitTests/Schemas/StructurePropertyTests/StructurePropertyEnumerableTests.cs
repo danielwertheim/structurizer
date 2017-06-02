@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
 {
     [TestClass]
-    public class StructurePropertyEnumerableTests : UnitTestBase
+    public class StructurePropertyEnumerableTests : UnitTests
     {
         [TestMethod]
         public void IsEnumerable_WhenIEnumerableOfSimpleType_ReturnsTrue()

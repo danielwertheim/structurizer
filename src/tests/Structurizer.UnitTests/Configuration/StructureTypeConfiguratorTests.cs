@@ -7,7 +7,7 @@ using Structurizer.Configuration;
 namespace Structurizer.UnitTests.Configuration
 {
     [TestClass]
-    public class StructureTypeConfiguratorTests : UnitTestBase
+    public class StructureTypeConfiguratorTests : UnitTests
     {
         private IStructureTypeConfig UseNonGenericConfiguratorFor<T>(Action<IStructureTypeConfigurator> configure) where T : class
         {

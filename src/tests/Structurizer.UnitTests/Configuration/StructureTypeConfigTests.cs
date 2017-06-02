@@ -7,7 +7,7 @@ using Structurizer.Configuration;
 namespace Structurizer.UnitTests.Configuration
 {
     [TestClass]
-    public class StructureTypeConfigTests : UnitTestBase
+    public class StructureTypeConfigTests : UnitTests
     {
         [TestMethod]
         public void Ctor_Should_throw_When_missing_type()

@@ -5,7 +5,7 @@ using Structurizer.Schemas;
 namespace Structurizer.UnitTests.Schemas
 {
     [TestClass]
-    public class PropertyPathBuilderTests : UnitTestBase
+    public class PropertyPathBuilderTests : UnitTests
     {
         [TestMethod]
         public void BuildPath_ForRootMember_PathContainsOnlyName()

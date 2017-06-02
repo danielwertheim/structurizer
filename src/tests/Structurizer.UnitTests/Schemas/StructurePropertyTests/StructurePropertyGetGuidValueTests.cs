@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
 {
     [TestClass]
-    public class StructurePropertyGetGuidValueTests : UnitTestBase
+    public class StructurePropertyGetGuidValueTests : UnitTests
     {
         [TestMethod]
         public void GetIdValue_WhenGuidOnFirstLevel_ReturnsGuid()

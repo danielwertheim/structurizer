@@ -7,7 +7,7 @@ using Structurizer.Configuration;
 namespace Structurizer.UnitTests.Configuration
 {
     [TestClass]
-    public class StructureTypeConfigurationsTests : UnitTestBase
+    public class StructureTypeConfigurationsTests : UnitTests
     {
         [TestMethod]
         public void Register_with_null_config_Should_add_config_with_exclusive_mode()

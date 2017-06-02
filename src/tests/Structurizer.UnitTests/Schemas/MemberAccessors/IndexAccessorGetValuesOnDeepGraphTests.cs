@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Structurizer.UnitTests.Schemas.MemberAccessors
 {
     [TestClass]
-    public class IndexAccessorGetValuesOnDeepGraphTests : UnitTestBase
+    public class IndexAccessorGetValuesOnDeepGraphTests : UnitTests
     {
         [TestMethod]
         public void GetValues_WhenDeepGraphWithEnumerables_CanExtractValues()

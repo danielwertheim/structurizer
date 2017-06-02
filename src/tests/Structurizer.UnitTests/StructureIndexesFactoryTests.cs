@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Structurizer.UnitTests
 {
     [TestClass]
-    public class StructureIndexesFactoryTests : UnitTestBase
+    public class StructureIndexesFactoryTests : UnitTests
     {
         [TestMethod]
         public void GetIndexes_WhenItemHasGuidId_ReturnsId()

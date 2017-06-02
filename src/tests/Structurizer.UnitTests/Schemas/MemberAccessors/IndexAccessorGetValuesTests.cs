@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Structurizer.UnitTests.Schemas.MemberAccessors
 {
     [TestClass]
-    public class IndexAccessorGetValuesTests : UnitTestBase
+    public class IndexAccessorGetValuesTests : UnitTests
     {
         [TestMethod]
         public void GetValues_FromAssignedString_ReturnsAssignedString()

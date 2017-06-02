@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Structurizer.UnitTests.Schemas
 {
     [TestClass]
-    public class StructureSchemaFactoryTests : UnitTestBase
+    public class StructureSchemaFactoryTests : UnitTests
     {
         private static IStructureSchemaFactory CreateSut(IDataTypeConverter converter = null)
             => new StructureSchemaFactory(converter ?? Mock.Of<IDataTypeConverter>());

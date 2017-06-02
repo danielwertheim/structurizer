@@ -3,7 +3,7 @@
 namespace Structurizer.UnitTests.StructureBuilderTests
 {
     [TestClass]
-    public abstract class StructureBuilderBaseTests : UnitTestBase
+    public abstract class StructureBuilderBaseTests : UnitTests
     {
         protected IStructureBuilder Builder;
     }

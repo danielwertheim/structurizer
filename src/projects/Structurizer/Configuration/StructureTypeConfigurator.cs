@@ -41,7 +41,7 @@ namespace Structurizer.Configuration
 
     public class StructureTypeConfigurator<T> : IStructureTypeConfigurator<T> where T : class
     {
-        private readonly IStructureTypeConfigurator _internalConfigurator;
+        private readonly StructureTypeConfigurator _internalConfigurator;
 
         public StructureTypeConfigurator(Type structureType)
         {

@@ -25,14 +25,14 @@ namespace Structurizer.Configuration
             ? config
             : null;
 
-        public IStructureTypeConfig Register(Type structureType, Action<IStructureTypeConfigurator> config = null)
+        public IStructureTypeConfig Register(Type structureType, Action<IStructureTypeConfigurator> configurator = null)
         {
             Ensure.That(structureType, nameof(structureType)).IsNotNull();
 
             return _configurations.AddOrUpdate(
                 structureType,
-                t => CreateStructureTypeConfig(t, config),
-                (t, existing) => CreateStructureTypeConfig(t, config));
+                t => CreateStructureTypeConfig(t, configurator),
+                (t, existing) => CreateStructureTypeConfig(t, configurator));
         }
 
         private static IStructureTypeConfig CreateStructureTypeConfig(Type structureType, Action<IStructureTypeConfigurator> config = null)
@@ -43,11 +43,11 @@ namespace Structurizer.Configuration
             return configurator.GenerateConfig();
         }
 
-        public IStructureTypeConfig Register<T>(Action<IStructureTypeConfigurator<T>> config = null) where T : class
+        public IStructureTypeConfig Register<T>(Action<IStructureTypeConfigurator<T>> configurator = null) where T : class
             => _configurations.AddOrUpdate(
                 typeof(T),
-                t => CreateStructureTypeConfig(t, config),
-                (t, existing) => CreateStructureTypeConfig(t, config));
+                t => CreateStructureTypeConfig(t, configurator),
+                (t, existing) => CreateStructureTypeConfig(t, configurator));
 
         private static IStructureTypeConfig CreateStructureTypeConfig<T>(Type structureType, Action<IStructureTypeConfigurator<T>> config = null) where T : class
         {

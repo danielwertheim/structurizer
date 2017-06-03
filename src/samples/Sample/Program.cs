@@ -17,17 +17,27 @@ namespace Sample
             //exclusive:Lines.*
             //exclusive.Lines.ArticleNo
 
-
-
             //var structureBuilder = StructureBuilder.Create(cfg => cfg.Register<Order>());
             //var order = Order.CreateSample();
             //var orderStructure = structureBuilder.CreateStructure(order);
             //DumpStructure(orderStructure);
 
-            var structureBuilder = StructureBuilder.Create(cfg => cfg.Register<Foo>());
-            var foo = Foo.CreateSample();
-            var fooStructure = structureBuilder.CreateStructure(foo);
-            DumpStructure(fooStructure);
+            //var structureBuilder = StructureBuilder.Create(cfg => cfg.Register<Foo>());
+            //var foo = Foo.CreateSample();
+            //var fooStructure = structureBuilder.CreateStructure(foo);
+            //DumpStructure(fooStructure);
+
+            var flexibleStructureBuilder = new FlexibleStructureBuilder();
+
+            //Optionally configure
+            //flexibleStructureBuilder.ConfigureUsingTemplate(
+            //    new { Age = default(int), Name = default(string) },
+            //    c => c.Members(i => i.Age));
+
+            var structure1 = flexibleStructureBuilder.CreateStructure(new { Age = 37, Name = "Daniel" });
+            var structure2 = flexibleStructureBuilder.CreateStructure(new { Age = 36, Name = "John" });
+            DumpStructure(structure1);
+            DumpStructure(structure2);
 
             Console.ReadLine();
         }

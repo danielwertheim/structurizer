@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Structurizer.UnitTests.Schemas
 {
 	[TestClass]
-	public class DataTypeConverterTests : UnitTestBase
+	public class DataTypeConverterTests : UnitTests
 	{
 	    private IDataTypeConverter _converter;
 

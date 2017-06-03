@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
 {
     [TestClass]
-    public class StructurePropertyAttributesTests : UnitTestBase
+    public class StructurePropertyAttributesTests : UnitTests
     {
         [TestMethod]
         public void Should_have_two_attributes_When_property_has_two_attributes()

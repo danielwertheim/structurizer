@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Structurizer.UnitTests.Schemas.MemberAccessors
 {
     [TestClass]
-    public class IndexAccessorGetValuesOnSubItemTests : UnitTestBase
+    public class IndexAccessorGetValuesOnSubItemTests : UnitTests
     {
         [TestMethod]
         public void GetValues_WhenSubItemsArrayHasElementsWithValues_ReturnsTheValues()

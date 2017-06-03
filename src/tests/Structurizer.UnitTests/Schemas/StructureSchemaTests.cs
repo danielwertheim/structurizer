@@ -6,7 +6,7 @@ using Structurizer.Schemas;
 
 namespace Structurizer.UnitTests.Schemas
 {
-    public class StructureSchemaTests : UnitTestBase
+    public class StructureSchemaTests : UnitTests
     {
         [TestMethod]
         public void Should_initialize_type_and_name()

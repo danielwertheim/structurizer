@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -261,7 +260,15 @@ namespace Structurizer.UnitTests.StructureBuilderTests
         public void CreateStructure_WhenDictionaryWithComplex_ReturnsOneIndexPerElementInCorrectOrder()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemWithDictionaryOfComplex>());
-            var item = new TestItemWithDictionaryOfComplex { KeyValues = new Dictionary<string, Value> { { "Key1", new Value { Is = 5 } }, { "Key2", new Value { Is = 6 } }, { "Key3", new Value { Is = 7 } } } };
+            var item = new TestItemWithDictionaryOfComplex
+            {
+                KeyValues = new Dictionary<string, Value>
+                {
+                    { "Key1", new Value { Is = 5 } },
+                    { "Key2", new Value { Is = 6 } },
+                    { "Key3", new Value { Is = 7 } }
+                }
+            };
 
             var structure = Builder.CreateStructure(item);
 

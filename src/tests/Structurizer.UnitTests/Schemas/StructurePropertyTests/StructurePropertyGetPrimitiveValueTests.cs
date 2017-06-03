@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
 {
     [TestClass]
-    public class StructurePropertyGetPrimitiveValueTests : UnitTestBase
+    public class StructurePropertyGetPrimitiveValueTests : UnitTests
     {
         [TestMethod]
         public void GetValue_WhenAssignedInt_ReturnsAssignedValue()

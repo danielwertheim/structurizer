@@ -3,7 +3,7 @@
 namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
 {
     [TestClass]
-    public class StructurePropertyGetIdentityValueTests : UnitTestBase
+    public class StructurePropertyGetIdentityValueTests : UnitTests
     {
         [TestMethod]
         public void GetIdValue_WhenIntOnFirstLevel_ReturnsInt()

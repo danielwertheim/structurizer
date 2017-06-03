@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Structurizer.UnitTests.Schemas
 {
     [TestClass]
-    public class StructureTypeFactoryTests : UnitTestBase
+    public class StructureTypeFactoryTests : UnitTests
     {
         [TestMethod]
         public void Should_use_reflecter_to_get_all_indexable_properties_When_no_explicit_excludes_exists()

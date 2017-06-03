@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Structurizer.UnitTests.Schemas.StructurePropertyTests
 {
     [TestClass]
-    public class StructurePropertyGetStringValueTests : UnitTestBase
+    public class StructurePropertyGetStringValueTests : UnitTests
     {
         [TestMethod]
         public void GetValue_WhenSingleStringMember_SingleValueIsReturned()

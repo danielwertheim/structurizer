@@ -9,5 +9,6 @@ namespace Structurizer
         object Value { get; }
         Type DataType { get; }
         DataTypeCode DataTypeCode { get; }
+        bool IsNumeric { get; }
     }
 }

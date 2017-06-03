@@ -10,6 +10,7 @@ namespace Structurizer
         public object Value { get; }
         public Type DataType { get; }
         public DataTypeCode DataTypeCode { get; }
+        public bool IsNumeric { get; }
 
         public StructureIndex(string name, string path, object value, Type dataType, DataTypeCode dataTypeCode)
         {
@@ -22,6 +23,7 @@ namespace Structurizer
             Value = value;
             DataType = dataType;
             DataTypeCode = dataTypeCode;
+            IsNumeric = dataTypeCode.IsNumeric();
         }
     }
 }

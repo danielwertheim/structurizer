@@ -12,4 +12,12 @@ namespace Structurizer
         String,
         Enum
     }
+
+    public static class DataTypeCodeExtensions
+    {
+        public static bool IsNumeric(this DataTypeCode code) =>
+            code == DataTypeCode.IntegerNumber ||
+            code == DataTypeCode.FractalNumber ||
+            code == DataTypeCode.UnsignedIntegerNumber;
+    }
 }

@@ -1,8 +1,11 @@
 #Release notes
 
+## v3.1.0 - 2017-06-03
+- *New*: Added `IStructureIndex.IsNumeric` to indicate if the carried value is numeric or not. Use `DataTypeCode` for more finegrained details.
+
 ## v3.0.0 - 2017-06-03
 - *New*: `FlexibleStructureBuilder` which doesn't require you to pre-register types. It will do that automatically upon first contact with a new type. You can configure and reconfigure it at any time.
-- *New*: `StructureTypeConfigurations` are now thread-safe and you can call register multiple times, last in wins.
+- *Changed*: `StructureTypeConfigurations` are now thread-safe and you can call register multiple times, last in wins.
 
 ## v2.0.0 - 2017-05-02
 - Updated to target .NET Standard 1.3

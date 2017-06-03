@@ -30,7 +30,13 @@ install-package structurizer
 ```
 
 ### Builder construction
-**KEEP HOLD OF THE STRUCTUREBUILDER!** The `StructureBuilder.Create` function, will create the `Schemas` underneath. The Scheams contains a cache of IL-generated members for effective extraction of values.
+The easiest builder to use is the `FlexibleStructureBuilder` (introduced in `v3.0.0`).
+
+```csharp
+var builder = new FlexibleStructureBuilder();
+```
+
+You can also use the more static configured `StructureBuilder`:
 
 ```csharp
 var typeConfigs = new StructureTypeConfigurations();
@@ -76,6 +82,17 @@ ManyChildren[1].SomeString=List Child2
 ```
 
 ## Control what's being indexed
+
+### Using the FlexibleStructureBuilder
+At any point (last in wins), just use the `Configure` methods, e.g.
+
+```csharp
+builder.Configure(i => cfg
+    .UseIndexMode(IndexMode.Inclusive)
+    .Members(e => e.Name, e => e.Score));
+```
+
+### Using the Static StructureBuilder
 This is controlled using the `StructureTypeConfigurations.Register` member.
 
 By default it's going to index everything as the default is to have `IndexMode.Exclusive` with no exclusions. This can be changed.

@@ -59,7 +59,7 @@ namespace Structurizer
         {
             EnsureArg.IsNotNull(item, nameof(item));
 
-            var schema = GetSchema(typeof(T));
+            var schema = GetSchema(item.GetType());
 
             return new Structure(schema.Name, _indexesFactory.CreateIndexes(schema, item));
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Reflection;
 
@@ -16,7 +17,7 @@ namespace Structurizer.Schemas
         private static StructurePropertyInfo ConvertInfo(PropertyInfo propertyInfo, IStructureProperty parent = null) => new StructurePropertyInfo(
             propertyInfo.Name,
             propertyInfo.PropertyType,
-            propertyInfo.GetCustomAttributes(true).ToArray(),
+            propertyInfo.GetCustomAttributes(true).OfType<Attribute>().ToArray(),
             parent);
     }
 }

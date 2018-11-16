@@ -1,5 +1,9 @@
 #Release notes
 
+## v4.0.0 - 2018-11-16
+- *New*: .NET Standard 2.0 instead of .NET Standard 1.3. Also supports .NET4.5.1 for a while more.
+- *Changed*: Support for anonymous types passed as object.
+
 ## v3.1.0 - 2017-06-03
 - *New*: Added `IStructureIndex.IsNumeric` to indicate if the carried value is numeric or not. Use `DataTypeCode` for more finegrained details.
 

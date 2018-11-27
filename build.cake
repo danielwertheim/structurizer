@@ -54,7 +54,8 @@ Task("Build").Does(() => {
 Task("UnitTests").Does(() => {
     var settings = new DotNetCoreTestSettings {
         Configuration = config.BuildProfile,
-        NoBuild = true
+        NoBuild = true,
+        Logger = "console;verbosity=normal"
     };
     foreach(var testProj in GetFiles($"{config.SrcDir}tests/**/UnitTests.csproj")) {
         DotNetCoreTest(testProj.FullPath, settings);

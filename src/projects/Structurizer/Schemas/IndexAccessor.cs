@@ -75,7 +75,10 @@ namespace Structurizer.Schemas
                             startAtCallstackIndex: callstackIndex + 1,
                             startPath: $"{currentProperty.Parent.Path}[{i.ToString()}].{currentProperty.Name}");
 
-                        values.AddRange(tmpValues);
+                        if (tmpValues != null)
+                        {
+                            values.AddRange(tmpValues);
+                        }
                     }
                     return values;
                 }

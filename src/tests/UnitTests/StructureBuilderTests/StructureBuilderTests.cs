@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Structurizer;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace UnitTests.StructureBuilderTests
 {
@@ -72,6 +72,28 @@ namespace UnitTests.StructureBuilderTests
             Assert.AreEqual("Temp", structure.Indexes[0].Path);
         }
 
+        [TestMethod]
+        public void CreateStructure_When_5thLevel_has_null_values_It_should_create_structure_with_zero_index()
+        {
+            Builder = StructureBuilder.Create(c => c.Register<TestItemForFifthLevel>());
+            var item = new TestItemForFifthLevel
+            {
+                Containers = new List<Container>()
+                {
+                    new Container()
+                    {
+                        IntValue = 27,
+                        MyItem = new Item()
+                    }
+                }
+            };
+
+            var structure = Builder.CreateStructure(item);
+
+            Assert.AreEqual(1, structure.Indexes.Count);
+            Assert.AreEqual("Containers[0].IntValue", structure.Indexes[0].Path);
+        }
+
         private class TestItemForFirstLevel
         {
             public int IntValue { get; set; }
@@ -83,9 +105,16 @@ namespace UnitTests.StructureBuilderTests
             public Container Container { get; set; }
         }
 
+        private class TestItemForFifthLevel
+        {
+            public List<Container> Containers { get; set; }
+        }
+
         private class Container
         {
             public int IntValue { get; set; }
+
+            public Item MyItem { get; set; }
         }
 
         private class IHaveStruct

@@ -73,7 +73,7 @@ namespace UnitTests.StructureBuilderTests
         }
 
         [TestMethod]
-        public void CreateStructure_When_5thLevel_has_null_values_It_should_create_structure_with_zero_index()
+        public void CreateStructure_When_5thLevel_has_null_values_It_should_create_structure_with_index_for_other_members()
         {
             Builder = StructureBuilder.Create(c => c.Register<TestItemForFifthLevel>());
             var item = new TestItemForFifthLevel

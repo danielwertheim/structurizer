@@ -3,10 +3,12 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>false</IsTestProject>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\projects\Structurizer\Structurizer.csproj" />
+    <ProjectReference Include="..\Structurizer\Structurizer.csproj" />
   </ItemGroup>
 
 </Project>

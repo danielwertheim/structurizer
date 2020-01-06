@@ -1,4 +1,8 @@
 # Structurizer
+[![NuGet](https://img.shields.io/nuget/v/structurizer.svg?cacheSeconds=3600)](https://www.nuget.org/packages/structurizer)
+[![License MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://choosealicense.com/licenses/mit/)
+[![Build Status](https://dev.azure.com/danielwertheim/structurizer/_apis/build/status/danielwertheim.structurizer-CI?branchName=master)](https://dev.azure.com/danielwertheim/structurizer/_build/latest?definitionId=31&branchName=master)
+
 Structurizer is extracted from one of my other projects [PineCone](https://github.com/danielwertheim/pinecone), which was used for much of the underlying indexing stuff for another project of mine, SisoDB. Structurizer is reduced to only manage a key-value representation of an object-graph.
 
 ## Release notes

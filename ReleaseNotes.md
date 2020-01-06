@@ -1,5 +1,8 @@
 #Release notes
 
+## v4.0.1
+From this version release notes are kept in [each release](https://github.com/danielwertheim/structurizer/releases) on GitHub.
+
 ## v4.0.0 - 2018-11-16
 - *New*: .NET Standard 2.0 instead of .NET Standard 1.3. Also supports .NET4.5.1 for a while more.
 - *Changed*: Support for anonymous types passed as object.

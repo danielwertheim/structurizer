@@ -1,10 +1,15 @@
 <Project>
-	<PropertyGroup>
-	  <Product>Structurizer</Product>
+  <PropertyGroup>
     <Version>0.0.0</Version>
-		<Company>danielwertheim</Company>
-		<Authors>danielwertheim</Authors>
-		<Copyright>Copyright © danielwertheim 2016,2017,2018</Copyright>
-	  <RepositoryType>Git</RepositoryType>
-	</PropertyGroup>
+    <Company>danielwertheim</Company>
+    <Authors>danielwertheim</Authors>
+    <Copyright>Copyright © danielwertheim</Copyright>
+    <LangVersion>latest</LangVersion>
+    <RepositoryUrl>https://github.com/danielwertheim/structurizer</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/danielwertheim/structurizer</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/danielwertheim/structurizer/releases</PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
 </Project>

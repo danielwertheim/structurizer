@@ -13,7 +13,7 @@ trigger:
 pr: none
 
 pool:
-  vmImage: windows-2019
+  vmImage: ubuntu-latest
 
 stages:
 - template: azure-templates/stage-build.yml

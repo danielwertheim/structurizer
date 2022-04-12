@@ -119,4 +119,5 @@ Anywhere where you efficiently need to extract key-values from an object-graph. 
 - Selectively extracting some property values for generating a checksum for an object-graph
 - Comparing values
 - Storing key-values for searching
+- Creating a deltas for storing changes to entities in an audit database
 - ...
